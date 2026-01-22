@@ -1,9 +1,4 @@
-public with sharing class DemoAccountTriggerHandler {
-    public static void beforeInsert(List<Account> newAccounts) {
-        for (Account acc : newAccounts) {
-            if (String.isBlank(acc.Industry)) {
-                acc.Industry = 'Technology';
-            }
-        }
-    }
+// Add a usage of Status__c
+if (String.isBlank(acc.Status__c)) {
+    acc.Status__c = 'Active';
 }
