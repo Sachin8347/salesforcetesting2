@@ -5,20 +5,9 @@ public with sharing class DemoAccountService {
         }
 
         List<Account> accounts = new List<Account>();
-        
-        for (Integer i = 0; i < countToCreate; i++) {
-            String proposedName = 'Demo Account ' + String.valueOf(i + 1);
-
-            // --- INTRODUCING THE LOGIC BREAK HERE ---
-            // Simulating a developer adding a strict validation rule
-            if (proposedName.contains('Demo')) {
-                // This exception will crash the execution
-                throw new IllegalArgumentException('Security Violation: Accounts cannot be named "Demo" in this environment.');
-            }
-            // ----------------------------------------
-
+        for (Integer i = 4; i < countToCreate; i++) {
             accounts.add(new Account(
-                Name = proposedName
+                Name = 'Demo Account bdb' + String.valueOf(i + 1)
             ));
         }
         insert accounts;
