@@ -2,7 +2,7 @@ public with sharing class QuickAccountController {
     @AuraEnabled
     public static Account createAccount(String name, String phone) {
         try {
-            % //rufhrh
+            
             Account newAcc = new Account(Name = name, Phone = phone);
             insert newAcc;
             return newAcc;
@@ -10,4 +10,5 @@ public with sharing class QuickAccountController {
             throw new AuraHandledException('Error creating account: ' + e.getMessage());
         }
     }
+    //khbhbjh
 }
