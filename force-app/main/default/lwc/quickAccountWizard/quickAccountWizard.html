@@ -15,14 +15,14 @@
                 <lightning-layout-item size="6" padding="horizontal-small">
                     <lightning-input label="Account Name" data-id="accName" required onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Phone" type="tel" data-id="accPhone" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
-                    <lightning-combobox 
+                    <lightning-input 
                         label="Industry" 
                         data-id="accIndustry"
                         placeholder="Select Industry..." 
                         options={industryOptions} 
                         onchange={handleInputChange}
                         class="slds-m-bottom_small">
-                    </lightning-combobox>
+                    </lightning-input>
                     <lightning-input label="Annual Revenue" type="number" formatter="currency" data-id="accRevenue" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                 </lightning-layout-item>
 
