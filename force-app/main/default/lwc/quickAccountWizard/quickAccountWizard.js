@@ -46,6 +46,7 @@ export default class QuickAccountWizard extends LightningElement {
                 // Clear UI inputs
                 this.template.querySelectorAll('lightning-input').forEach(input => input.value = '');
             })
+            //jknhjhjhbjb
             .catch(error => {
                 this.message = 'Error creating account';
                 this.dispatchEvent(
