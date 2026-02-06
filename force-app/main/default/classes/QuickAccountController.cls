@@ -11,7 +11,12 @@ public with sharing class QuickAccountController {
         String city
     ) {
         try {
-            
+            // --- NEW BUSINESS LOGIC ---
+            // Requirement: Enterprise accounts must have > $10M Revenue
+            // if (revenue != null && revenue < 10000000) {
+            //    throw new AuraHandledException('Business Rule Violation: Enterprise Accounts must have Annual Revenue of at least $10,000,000.');
+            // }
+            // --------------------------
 
             Account newAcc = new Account(
                 Name = name,

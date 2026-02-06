@@ -33,9 +33,9 @@ export default class QuickAccountWizard extends LightningElement {
 
         // 2. Revenue must be >= 10,000,000
         // If revenue is missing OR less than 10M, disable button
-        if (!this.formData.revenue || this.formData.revenue < 10000000) {
-            return true;
-        }
+        // if (!this.formData.revenue || this.formData.revenue < 10000000) {
+        //     return true;
+        // }
 
         return false;
     }
