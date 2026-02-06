@@ -11,14 +11,14 @@
                 <lightning-layout-item size="6" padding="horizontal-small">
                     <lightning-input label="Account Name" data-id="accName" required onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Phone" type="tel" data-id="accPhone" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
-                    <lightning-input 
+                    <lightning-combobox 
                         label="Industry" 
                         data-id="accIndustry"
                         placeholder="Select Industry..." 
                         options={industryOptions} 
                         onchange={handleInputChange}
                         class="slds-m-bottom_small">
-                    </lightning-input>
+                    </lightning-combobox>
                     <!-- Revenue Input -->
                     <lightning-input 
                         label="Annual Revenue" 
@@ -43,8 +43,8 @@
                 <!-- MODIFIED BUTTON -->
                 <lightning-button 
                     variant="brand" 
-                    label="Save Account" 
-                    title="Save Account" 
+                    label="Create Account" 
+                    title="Create Account" 
                     onclick={handleCreate}
                     disabled={isSaveDisabled} 
                     class="create-btn">
