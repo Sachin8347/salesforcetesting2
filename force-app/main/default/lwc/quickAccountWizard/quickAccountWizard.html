@@ -9,7 +9,7 @@
 
             <lightning-layout multiple-rows="true">
                 <lightning-layout-item size="6" padding="horizontal-small">
-                    <lightning-input label="Org Name" data-id="orgName" required onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input label="Account Name" data-id="accName" required onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Phone" type="tel" data-id="accPhone" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-combobox 
                         label="Industry" 
@@ -43,8 +43,8 @@
                 <!-- MODIFIED BUTTON -->
                 <lightning-button 
                     variant="brand" 
-                    label="Create Application" 
-                    title="Create Application" 
+                    label="make account" 
+                    title="make account" 
                     onclick={handleCreate}
                     disabled={isSaveDisabled} 
                     class="create-btn">
