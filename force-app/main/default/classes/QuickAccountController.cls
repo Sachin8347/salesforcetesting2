@@ -14,7 +14,7 @@ public with sharing class QuickAccountController {
             // --- NEW BUSINESS LOGIC ---
             // Requirement: Enterprise accounts must have > $10M Revenue
             
-            // -------------------------jgfvrffvvfjg-
+            // -------------------------jgfvrffjhvvfjg-
 
             Account newAcc = new Account(
                 Name = name,
