@@ -33,9 +33,9 @@ export default class QuickAccountWizard extends LightningElement {
 
         // 2. Revenue must be >= 10,000,000
         // If revenue is missing OR less than 10M, disable button
-        // if (!this.formData.revenue || this.formData.revenue < 10000000) {
-        //     return true;
-        // }
+        if (!this.formData.revenue || this.formData.revenue < 10000000) {
+            return true;
+        }
 
         return false;
     }
@@ -59,15 +59,15 @@ export default class QuickAccountWizard extends LightningElement {
             this.formData[key] = event.target.value;
             
             //Optional: Show immediate error on the field for better screenshot
-            // if (fieldId === 'accRevenue') {
-            //     const inputCmp = this.template.querySelector('[data-id="accRevenue"]');
-            //     if (this.formData.revenue < 10000000) {
-            //         inputCmp.setCustomValidity("Revenue must be $10M+ for Enterprise Accounts.");
-            //     } else {
-            //         inputCmp.setCustomValidity("");
-            //     }
-            //     inputCmp.reportValidity();
-            // }
+            if (fieldId === 'accRevenue') {
+                const inputCmp = this.template.querySelector('[data-id="accRevenue"]');
+                if (this.formData.revenue < 10000000) {
+                    inputCmp.setCustomValidity("Revenue must be $10M+ for Enterprise Accounts.");
+                } else {
+                    inputCmp.setCustomValidity("");
+                }
+                inputCmp.reportValidity();
+            }
         }
     }
 
