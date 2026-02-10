@@ -29,6 +29,15 @@
                         onchange={handleInputChange} 
                         class="slds-m-bottom_small">
                     </lightning-input>
+                    
+                    <!-- Company Type -->
+                    <lightning-input 
+                        label="Company Type" 
+                        data-id="accType" 
+                        placeholder="e.g., Corporation, Partnership" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
 
                 </lightning-layout-item>
 
@@ -37,8 +46,64 @@
                     <lightning-input label="Website" type="url" data-id="accWebsite" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Employees" type="number" data-id="accEmployees" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Billing City" data-id="accCity" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input label="Billing State/Province" data-id="accState" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input label="Billing Postal Code" data-id="accPostalCode" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                 </lightning-layout-item>
 
+            </lightning-layout>
+            
+            <!-- Additional Details Section -->
+            <div class="slds-border_bottom slds-m-top_large slds-m-bottom_medium">
+                <h2 class="slds-text-heading_medium">Additional Information</h2>
+                <p class="slds-text-color_weak slds-m-bottom_small">Provide more details about the company.</p>
+            </div>
+            
+            <lightning-layout>
+                <lightning-layout-item size="12" padding="horizontal-small">
+                    <lightning-textarea 
+                        label="Company Description" 
+                        data-id="accDescription" 
+                        placeholder="Enter a brief description of the company's business, products, or services..."
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-textarea>
+                </lightning-layout-item>
+            </lightning-layout>
+            
+            <lightning-layout multiple-rows="true">
+                <lightning-layout-item size="6" padding="horizontal-small">
+                    <lightning-input 
+                        label="Ticker Symbol" 
+                        data-id="accTicker" 
+                        placeholder="e.g., AAPL, MSFT" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="Ownership" 
+                        data-id="accOwnership" 
+                        placeholder="e.g., Public, Private, Subsidiary" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                </lightning-layout-item>
+                
+                <lightning-layout-item size="6" padding="horizontal-small">
+                    <lightning-input 
+                        label="SIC Code" 
+                        data-id="accSicCode" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="Year Started" 
+                        type="number" 
+                        data-id="accYearStarted" 
+                        placeholder="e.g., 2010" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                </lightning-layout-item>
             </lightning-layout>
 
             <div class="slds-align_absolute-center slds-m-top_large">

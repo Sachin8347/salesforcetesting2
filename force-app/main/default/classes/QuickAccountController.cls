@@ -8,7 +8,15 @@ public with sharing class QuickAccountController {
         String industry, 
         Decimal revenue, 
         Integer employees, 
-        String city
+        String city,
+        String state,
+        String postalCode,
+        String type,
+        String description,
+        String ticker,
+        String ownership,
+        String sicCode,
+        Integer yearStarted
     ) {
         try {
             // --- NEW BUSINESS LOGIC ---
@@ -24,7 +32,15 @@ public with sharing class QuickAccountController {
                 Industry = industry,
                 AnnualRevenue = revenue,
                 NumberOfEmployees = employees,
-                BillingCity = city
+                BillingCity = city,
+                BillingState = state,
+                BillingPostalCode = postalCode,
+                Type = type,
+                Description = description,
+                TickerSymbol = ticker,
+                Ownership = ownership,
+                SicCode = sicCode,
+                YearStarted = yearStarted
             );
             
             // Allow duplicates for demo purposes

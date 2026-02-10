@@ -1,4 +1,5 @@
 import { LightningElement, track } from 'lwc';
+
 import createAccount from '@salesforce/apex/QuickAccountController.createAccount';
 
 export default class QuickAccountWizard extends LightningElement {
@@ -13,7 +14,15 @@ export default class QuickAccountWizard extends LightningElement {
         industry: '',
         revenue: '', 
         employees: null,
-        city: ''
+        city: '',
+        state: '',
+        postalCode: '',
+        type: '',
+        description: '',
+        ticker: '',
+        ownership: '',
+        sicCode: '',
+        yearStarted: null
     };
 
     // REMOVED: get industryOptions() {...} is no longer needed
@@ -27,7 +36,15 @@ export default class QuickAccountWizard extends LightningElement {
             'accIndustry': 'industry',
             'accRevenue': 'revenue',
             'accEmployees': 'employees',
-            'accCity': 'city'
+            'accCity': 'city',
+            'accState': 'state',
+            'accPostalCode': 'postalCode',
+            'accType': 'type',
+            'accDescription': 'description',
+            'accTicker': 'ticker',
+            'accOwnership': 'ownership',
+            'accSicCode': 'sicCode',
+            'accYearStarted': 'yearStarted'
         };
 
         const fieldId = event.target.dataset.id;
@@ -67,7 +84,15 @@ export default class QuickAccountWizard extends LightningElement {
             industry: this.formData.industry,
             revenue: cleanRevenue,
             employees: this.formData.employees,
-            city: this.formData.city
+            city: this.formData.city,
+            state: this.formData.state,
+            postalCode: this.formData.postalCode,
+            type: this.formData.type,
+            description: this.formData.description,
+            ticker: this.formData.ticker,
+            ownership: this.formData.ownership,
+            sicCode: this.formData.sicCode,
+            yearStarted: this.formData.yearStarted
         })
         .then(result => {
             this.successMessage = `Account "${result.Name}" created successfully!`;
