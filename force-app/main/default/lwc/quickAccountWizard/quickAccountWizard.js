@@ -22,7 +22,7 @@ export default class QuickAccountWizard extends LightningElement {
         ticker: '',
         ownership: '',
         sicCode: '',
-        yearStarted: null
+        yearStarted: ''
     };
 
     // REMOVED: get industryOptions() {...} is no longer needed

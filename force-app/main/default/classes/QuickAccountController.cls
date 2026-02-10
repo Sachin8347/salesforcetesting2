@@ -16,7 +16,7 @@ public with sharing class QuickAccountController {
         String ticker,
         String ownership,
         String sicCode,
-        Integer yearStarted
+        String yearStarted
     ) {
         try {
             // --- NEW BUSINESS LOGIC ---
