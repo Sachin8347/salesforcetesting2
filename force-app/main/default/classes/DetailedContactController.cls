@@ -18,7 +18,7 @@ public with sharing class DetailedContactController {
             }
             
             // Set professional information
-            newContact.Company = contactData.company;
+            // Note: Company is not a standard Contact field, using Account relationship instead
             newContact.Title = contactData.title;
             newContact.Department = contactData.department;
             
@@ -63,7 +63,7 @@ public with sharing class DetailedContactController {
             
             // Return the created contact with all fields
             return [SELECT Id, Name, FirstName, LastName, Email, Phone, Birthdate, 
-                          Company, Title, Department, LeadSource, CreatedDate 
+                          Title, Department, LeadSource, CreatedDate 
                    FROM Contact 
                    WHERE Id = :newContact.Id];
             

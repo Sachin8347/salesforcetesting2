@@ -9,15 +9,4 @@
         <target>lightningCommunity__Page</target>
         <target>lightningCommunity__Default</target>
     </targets>
-    <targetConfigs>
-        <targetConfig targets="lightning__AppPage">
-            <property name="title" type="string" default="Detailed Contact Form" />
-        </targetConfig>
-        <targetConfig targets="lightning__RecordPage">
-            <property name="title" type="string" default="Detailed Contact Form" />
-        </targetConfig>
-        <targetConfig targets="lightning__HomePage">
-            <property name="title" type="string" default="Detailed Contact Form" />
-        </targetConfig>
-    </targetConfigs>
 </LightningComponentBundle>
