@@ -32,7 +32,21 @@ export default class QuickAccountWizard extends LightningElement {
         ticker: '',
         ownership: '',
         sicCode: '',
-        yearStarted: ''
+        yearStarted: '',
+        marketCap: '',
+        locations: null,
+        fiscalYear: '',
+        currency: '',
+        stockExchange: '',
+        dunsNumber: '',
+        naicsCode: '',
+        source: '',
+        campaign: '',
+        leadSource: '',
+        lastActivityDate: '',
+        nextActivityDate: '',
+        activityType: '',
+        activityDescription: ''
     };
 
     // REMOVED: get industryOptions() {...} is no longer needed
@@ -64,7 +78,21 @@ export default class QuickAccountWizard extends LightningElement {
             'accTicker': 'ticker',
             'accOwnership': 'ownership',
             'accSicCode': 'sicCode',
-            'accYearStarted': 'yearStarted'
+            'accYearStarted': 'yearStarted',
+            'accMarketCap': 'marketCap',
+            'accLocations': 'locations',
+            'accFiscalYear': 'fiscalYear',
+            'accCurrency': 'currency',
+            'accStockExchange': 'stockExchange',
+            'accDunsNumber': 'dunsNumber',
+            'accNaicsCode': 'naicsCode',
+            'accSource': 'source',
+            'accCampaign': 'campaign',
+            'accLeadSource': 'leadSource',
+            'accLastActivityDate': 'lastActivityDate',
+            'accNextActivityDate': 'nextActivityDate',
+            'accActivityType': 'activityType',
+            'accActivityDescription': 'activityDescription'
         };
 
         const fieldId = event.target.dataset.id;
@@ -122,7 +150,21 @@ export default class QuickAccountWizard extends LightningElement {
             ticker: this.formData.ticker,
             ownership: this.formData.ownership,
             sicCode: this.formData.sicCode,
-            yearStarted: this.formData.yearStarted
+            yearStarted: this.formData.yearStarted,
+            marketCap: this.formData.marketCap,
+            locations: this.formData.locations,
+            fiscalYear: this.formData.fiscalYear,
+            currency: this.formData.currency,
+            stockExchange: this.formData.stockExchange,
+            dunsNumber: this.formData.dunsNumber,
+            naicsCode: this.formData.naicsCode,
+            source: this.formData.source,
+            campaign: this.formData.campaign,
+            leadSource: this.formData.leadSource,
+            lastActivityDate: this.formData.lastActivityDate,
+            nextActivityDate: this.formData.nextActivityDate,
+            activityType: this.formData.activityType,
+            activityDescription: this.formData.activityDescription
         })
         .then(result => {
             this.successMessage = `Account "${result.Name}" created successfully!`;

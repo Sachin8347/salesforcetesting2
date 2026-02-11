@@ -185,6 +185,110 @@
                         onchange={handleInputChange}
                         class="slds-m-bottom_small">
                     </lightning-input>
+                    
+                    <!-- Additional Business Fields -->
+                    <lightning-input 
+                        label="Market Cap" 
+                        data-id="accMarketCap" 
+                        placeholder="e.g., Large, Mid, Small" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="Number of Locations" 
+                        type="number" 
+                        data-id="accLocations" 
+                        placeholder="e.g., 5" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="Fiscal Year" 
+                        data-id="accFiscalYear" 
+                        placeholder="e.g., 2022" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="Currency" 
+                        data-id="accCurrency" 
+                        placeholder="e.g., USD" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="Stock Exchange" 
+                        data-id="accStockExchange" 
+                        placeholder="e.g., NYSE" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="DUNS Number" 
+                        data-id="accDunsNumber" 
+                        placeholder="e.g., 123456789" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="NAICS Code" 
+                        data-id="accNaicsCode" 
+                        placeholder="e.g., 541511" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="Account Source" 
+                        data-id="accSource" 
+                        placeholder="e.g., Website, Referral" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="Campaign" 
+                        data-id="accCampaign" 
+                        placeholder="e.g., Summer Sale" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="Lead Source" 
+                        data-id="accLeadSource" 
+                        placeholder="e.g., Social Media" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                </lightning-layout-item>
+                
+                <lightning-layout-item size="6" padding="horizontal-small">
+                    <lightning-input 
+                        label="Last Activity Date" 
+                        type="date" 
+                        data-id="accLastActivityDate" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="Next Activity Date" 
+                        type="date" 
+                        data-id="accNextActivityDate" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="Activity Type" 
+                        data-id="accActivityType" 
+                        placeholder="e.g., Call, Meeting" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    <lightning-input 
+                        label="Activity Description" 
+                        data-id="accActivityDescription" 
+                        placeholder="e.g., Discussed new product" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
                 </lightning-layout-item>
             </lightning-layout>
 

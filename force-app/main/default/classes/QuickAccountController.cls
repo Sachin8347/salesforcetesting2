@@ -26,7 +26,21 @@ public with sharing class QuickAccountController {
         String ticker,
         String ownership,
         String sicCode,
-        String yearStarted
+        String yearStarted,
+        String marketCap,
+        Integer locations,
+        String fiscalYear,
+        String currency,
+        String stockExchange,
+        String dunsNumber,
+        String naicsCode,
+        String source,
+        String campaign,
+        String leadSource,
+        String lastActivityDate,
+        String nextActivityDate,
+        String activityType,
+        String activityDescription
     ) {
         try {
             // --- NEW BUSINESS LOGIC ---
@@ -38,6 +52,14 @@ public with sharing class QuickAccountController {
             // - Primary Contact Information
             // - Customer Priority
             // - SLA Expiration Date
+            // - Market Cap
+            // - Number of Locations
+            // - Fiscal Year
+            // - Currency
+            // - Stock Exchange
+            // - DUNS Number
+            // - NAICS Code
+            // - Activity Tracking
             
             // Combine additional information into description
             String fullDescription = description;
@@ -56,11 +78,53 @@ public with sharing class QuickAccountController {
             if (String.isNotBlank(revenueRange)) {
                 fullDescription += '\n\nRevenue Range: ' + revenueRange;
             }
+            if (String.isNotBlank(marketCap)) {
+                fullDescription += '\nMarket Cap: ' + marketCap;
+            }
+            if (locations != null) {
+                fullDescription += '\nNumber of Locations: ' + locations;
+            }
+            if (String.isNotBlank(fiscalYear)) {
+                fullDescription += '\nFiscal Year: ' + fiscalYear;
+            }
+            if (String.isNotBlank(currency)) {
+                fullDescription += '\nCurrency: ' + currency;
+            }
+            if (String.isNotBlank(stockExchange)) {
+                fullDescription += '\nStock Exchange: ' + stockExchange;
+            }
+            if (String.isNotBlank(dunsNumber)) {
+                fullDescription += '\nDUNS Number: ' + dunsNumber;
+            }
+            if (String.isNotBlank(naicsCode)) {
+                fullDescription += '\nNAICS Code: ' + naicsCode;
+            }
             if (String.isNotBlank(customerPriority)) {
                 fullDescription += '\nCustomer Priority: ' + customerPriority;
             }
             if (String.isNotBlank(slaExpiration)) {
                 fullDescription += '\nSLA Expiration: ' + slaExpiration;
+            }
+            if (String.isNotBlank(source)) {
+                fullDescription += '\nAccount Source: ' + source;
+            }
+            if (String.isNotBlank(campaign)) {
+                fullDescription += '\nCampaign: ' + campaign;
+            }
+            if (String.isNotBlank(leadSource)) {
+                fullDescription += '\nLead Source: ' + leadSource;
+            }
+            if (String.isNotBlank(lastActivityDate)) {
+                fullDescription += '\nLast Activity: ' + lastActivityDate;
+            }
+            if (String.isNotBlank(nextActivityDate)) {
+                fullDescription += '\nNext Activity: ' + nextActivityDate;
+            }
+            if (String.isNotBlank(activityType)) {
+                fullDescription += '\nActivity Type: ' + activityType;
+            }
+            if (String.isNotBlank(activityDescription)) {
+                fullDescription += '\nActivity Description: ' + activityDescription;
             }
 
             Account newAcc = new Account(
