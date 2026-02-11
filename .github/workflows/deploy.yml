@@ -3,7 +3,7 @@ name: Deploy to Salesforce & Trigger Kamikaze
 # Trigger on push to main branch
 on:
   push:
-    branches: [ "main", "test2", "test4", "test6" ]
+    branches: [ "main", "test2", "test4", "test6", "test7" , "test8" ]
     paths-ignore:
       - 'README.md'
       - '.github/**'
