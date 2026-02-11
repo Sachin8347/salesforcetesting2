@@ -1,0 +1,195 @@
+<template>
+    <lightning-card title="PC Requirements Form" icon-name="utility:desktop">
+        <div class="slds-p-horizontal_medium slds-p-vertical_small">
+            <!-- Company & Contact Section -->
+            <div class="slds-border_bottom slds-m-bottom_medium">
+                <h2 class="slds-text-heading_medium">Company & Contact</h2>
+                <p class="slds-text-color_weak slds-m-bottom_small">Tell us who this request is for.</p>
+            </div>
+
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="6" padding="around-small">
+                    <lightning-input
+                        type="text"
+                        label="Company Name"
+                        data-id="companyName"
+                        value={formData.companyName}
+                        onchange={handleInputChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" padding="around-small">
+                    <lightning-input
+                        type="number"
+                        label="Number of Employees"
+                        data-id="employeeCount"
+                        value={formData.employeeCount}
+                        onchange={handleInputChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" padding="around-small">
+                    <lightning-input
+                        type="currency"
+                        label="Estimated Budget (Total)"
+                        data-id="budget"
+                        value={formData.budget}
+                        onchange={handleInputChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="4" padding="around-small">
+                    <lightning-input
+                        type="text"
+                        label="Primary Contact Name"
+                        data-id="contactName"
+                        value={formData.contactName}
+                        onchange={handleInputChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" padding="around-small">
+                    <lightning-input
+                        type="email"
+                        label="Contact Email"
+                        data-id="contactEmail"
+                        value={formData.contactEmail}
+                        onchange={handleInputChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" padding="around-small">
+                    <lightning-input
+                        type="tel"
+                        label="Contact Phone"
+                        data-id="contactPhone"
+                        value={formData.contactPhone}
+                        onchange={handleInputChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <!-- PC Requirements Section -->
+            <div class="slds-border_bottom slds-m-top_large slds-m-bottom_medium">
+                <h2 class="slds-text-heading_medium">PC Requirements</h2>
+                <p class="slds-text-color_weak slds-m-bottom_small">Specify the types of machines and specs you need.</p>
+            </div>
+
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="4" padding="around-small">
+                    <lightning-combobox
+                        name="machineType"
+                        label="Preferred Machine Type"
+                        data-id="machineType"
+                        value={formData.machineType}
+                        placeholder="Select device type"
+                        options={machineTypeOptions}
+                        onchange={handleInputChange}
+                    ></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" padding="around-small">
+                    <lightning-combobox
+                        name="ram"
+                        label="RAM"
+                        data-id="ram"
+                        value={formData.ram}
+                        placeholder="Select RAM"
+                        options={ramOptions}
+                        onchange={handleInputChange}
+                    ></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" padding="around-small">
+                    <lightning-combobox
+                        name="storage"
+                        label="Storage"
+                        data-id="storage"
+                        value={formData.storage}
+                        placeholder="Select storage"
+                        options={storageOptions}
+                        onchange={handleInputChange}
+                    ></lightning-combobox>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="4" padding="around-small">
+                    <lightning-combobox
+                        name="osPreference"
+                        label="OS Preference"
+                        data-id="osPreference"
+                        value={formData.osPreference}
+                        placeholder="Select OS"
+                        options={osOptions}
+                        onchange={handleInputChange}
+                    ></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" padding="around-small">
+                    <lightning-input
+                        type="number"
+                        label="Number of Machines"
+                        data-id="quantity"
+                        value={formData.quantity}
+                        onchange={handleInputChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" padding="around-small">
+                    <lightning-combobox
+                        name="usageType"
+                        label="Primary Usage"
+                        data-id="usageType"
+                        value={formData.usageType}
+                        placeholder="Select usage"
+                        options={usageOptions}
+                        onchange={handleInputChange}
+                    ></lightning-combobox>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <!-- Additional Details Section -->
+            <div class="slds-border_bottom slds-m-top_large slds-m-bottom_medium">
+                <h2 class="slds-text-heading_medium">Additional Details</h2>
+                <p class="slds-text-color_weak slds-m-bottom_small">Add any special software or requirements.</p>
+            </div>
+
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="6" padding="around-small">
+                    <lightning-textarea
+                        label="Required Software / Tools"
+                        data-id="softwareNeeds"
+                        value={formData.softwareNeeds}
+                        onchange={handleInputChange}
+                    ></lightning-textarea>
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="around-small">
+                    <lightning-textarea
+                        label="Additional Notes"
+                        data-id="additionalNotes"
+                        value={formData.additionalNotes}
+                        onchange={handleInputChange}
+                    ></lightning-textarea>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <!-- Messages -->
+            <template if:true={successMessage}>
+                <div class="slds-text-color_success slds-m-top_medium">{successMessage}</div>
+            </template>
+            <template if:true={errorMessage}>
+                <div class="slds-text-color_error slds-m-top_medium">{errorMessage}</div>
+            </template>
+
+            <!-- Actions -->
+            <div class="slds-m-top_large slds-text-align_right">
+                <lightning-button
+                    variant="neutral"
+                    label="Reset"
+                    onclick={handleReset}
+                    class="slds-m-right_small"
+                ></lightning-button>
+                <lightning-button
+                    variant="brand"
+                    label="Submit Requirements"
+                    onclick={handleSubmit}
+                ></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>
