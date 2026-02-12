@@ -1,29 +1,97 @@
 <template>
-    <lightning-card title="✨ Quick Account Wizard" icon-name="standard:account">
+    <lightning-card title="New Enterprise Account" icon-name="standard:account">
         <div class="slds-p-around_medium">
-            <div class="slds-m-bottom_small">
-                <lightning-input label="Account Name" data-id="accName" required></lightning-input>
+            
+            <div class="slds-border_bottom slds-m-bottom_medium">
+                <h2 class="slds-text-heading_medium">Account Details</h2>
+                <p class="slds-text-color_weak slds-m-bottom_small">Enter the corporate details below.</p>
             </div>
-            <div class="slds-m-bottom_small">
-                <lightning-input type="tel" label="Phone Number" data-id="accPhone"></lightning-input>
+
+            <lightning-layout multiple-rows="true">
+                
+                <lightning-layout-item size="6" padding="horizontal-small">
+                    <lightning-input label="Account Name" data-id="accName" required onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input label="Phone" type="tel" data-id="accPhone" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
+                    
+                    <!-- CHANGED: Now a vjvccj jfjsvvvtandamhjhrd Text Input -->
+                    <lightning-input 
+                        label="Industry" 
+                        data-id="accIndustry"
+                        placeholder="Enter Industry..." 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    
+                    <!-- Revenue Input (Text type to allow $ symbols) -->
+                    <lightning-input 
+                        label="Annual Revenue" 
+                        data-id="accRevenue" 
+                        onchange={handleInputChange} 
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    
+                    <!-- Annual Revenue Range -->
+                    <lightning-input 
+                        label="Revenue Range" 
+                        data-id="accRevenueRange" 
+                        placeholder="e.g., $10M-$50M" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+                    
+                    <!-- Company Type -->
+                    <lightning-input 
+                        label="Company Type" 
+                        data-id="accType" 
+                        placeholder="e.g., Corporation, Partnership" 
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small">
+                    </lightning-input>
+
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" padding="horizontal-small">
+                    <lightning-input label="Account Number" data-id="accNumber" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input label="Website" type="url" data-id="accWebsite" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input label="Employees" type="number" data-id="accEmployees" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input label="Billing City" data-id="accCity" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input label="Billing State/Province" data-id="accState" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input label="Billing Postal Code" data-id="accPostalCode" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input label="Billing Country" data-id="accCountry" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
+                </lightning-layout-item>
+
+            </lightning-layout>
+            
+            <!-- Additionalvv gcchhjhhh Section -->
+            <div class="slds-border_bottom slds-m-top_large slds-m-bottom_medium">
+                <h2 class="slds-text-heading_medium">Additional Information</h2>
+                <p class="slds-text-color_weak slds-m-bottom_small">Provide more details about the company.</p>
             </div>
             
             <div class="slds-align_absolute-center slds-m-top_medium">
                 <!-- This is the bghgh cgbgvutton Kamikazejhvjhv will interact with -->
                 <lightning-button 
                     variant="brand" 
-                    label="Create Account" 
-                    title="Create Account" 
+                    label="Save Account" 
+                    title="Save Account" 
                     onclick={handleCreate}
                     class="create-btn">
                 </lightning-button>
             </div>
 
-            <template if:true={message}>
-                <div class="slds-m-top_medium slds-text-color_success slds-align_absolute-center">
-                    {message}
+            <template if:true={successMessage}>
+                <div class="slds-notify slds-notify_alert slds-alert_success slds-m-top_medium" role="alert">
+                    <span class="slds-assistive-text">success</span>
+                    <h2>{successMessage}</h2>
                 </div>
             </template>
+
+            <template if:true={errorMessage}>
+                <div class="slds-notify slds-notify_alert slds-alert_error slds-m-top_medium" role="alert">
+                    <h2>{errorMessage}</h2>
+                </div>
+            </template>
+
         </div>
     </lightning-card>
 </template>
