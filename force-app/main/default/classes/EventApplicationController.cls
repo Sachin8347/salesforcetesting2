@@ -32,7 +32,7 @@ public with sharing class EventApplicationController {
                 description += 'Requirements:\n';
                 for (Object reqObj : requirements) {
                     String requirement = (String)reqObj;
-                    description += '- ' + requirement.replace('_', ' ').capitalize() + '\n';
+                    description += '- ' + requirement.replace('_', ' ').toUpperCase() + '\n';
                 }
                 description += '\n';
             }
