@@ -1,0 +1,178 @@
+<template>
+    <lightning-card title="Event Application Form" icon-name="standard:event">
+        <div class="slds-p-around_medium">
+            <!-- Personal Information Section -->
+            <div class="slds-section slds-is-open">
+                <h3 class="slds-section__title slds-theme_shade">
+                    <span class="slds-truncate slds-p-horizontal_small" title="Personal Information">Personal Information</span>
+                </h3>
+                <div class="slds-section__content">
+                    <lightning-layout>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <lightning-input
+                                label="First Name"
+                                data-id="firstName"
+                                type="text"
+                                required
+                                onchange={handleInputChange}>
+                            </lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <lightning-input
+                                label="Last Name"
+                                data-id="lastName"
+                                type="text"
+                                required
+                                onchange={handleInputChange}>
+                            </lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <lightning-input
+                                label="Email"
+                                data-id="email"
+                                type="email"
+                                required
+                                onchange={handleInputChange}>
+                            </lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <lightning-input
+                                label="Phone"
+                                data-id="phone"
+                                type="tel"
+                                onchange={handleInputChange}>
+                            </lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <lightning-layout-item size="12" padding="around-small">
+                            <lightning-input
+                                label="Company/Organization"
+                                data-id="company"
+                                type="text"
+                                onchange={handleInputChange}>
+                            </lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </div>
+
+            <!-- Event Details Section -->
+            <div class="slds-section slds-is-open">
+                <h3 class="slds-section__title slds-theme_shade">
+                    <span class="slds-truncate slds-p-horizontal_small" title="Event Details">Event Details</span>
+                </h3>
+                <div class="slds-section__content">
+                    <lightning-layout>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <lightning-combobox
+                                label="Event Type"
+                                data-id="eventType"
+                                options={eventTypeOptions}
+                                onchange={handleEventTypeChange}
+                                required>
+                            </lightning-combobox>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <lightning-input
+                                label="Event Name"
+                                data-id="eventName"
+                                type="text"
+                                required
+                                onchange={handleInputChange}>
+                            </lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <lightning-input
+                                label="Event Date"
+                                data-id="eventDate"
+                                type="date"
+                                required
+                                onchange={handleInputChange}>
+                            </lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <lightning-input
+                                label="Expected Attendees"
+                                data-id="expectedAttendees"
+                                type="number"
+                                min="1"
+                                onchange={handleInputChange}>
+                            </lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <lightning-layout-item size="12" padding="around-small">
+                            <lightning-textarea
+                                label="Event Description"
+                                data-id="eventDescription"
+                                maxlength="1000"
+                                onchange={handleInputChange}>
+                            </lightning-textarea>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </div>
+
+            <!-- Requirements Section -->
+            <div class="slds-section slds-is-open">
+                <h3 class="slds-section__title slds-theme_shade">
+                    <span class="slds-truncate slds-p-horizontal_small" title="Requirements">Requirements</span>
+                </h3>
+                <div class="slds-section__content">
+                    <lightning-layout>
+                        <lightning-layout-item size="12" padding="around-small">
+                            <lightning-checkbox-group
+                                label="What do you need for this event?"
+                                options={requirementOptions}
+                                onchange={handleRequirementsChange}>
+                            </lightning-checkbox-group>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <lightning-layout-item size="12" padding="around-small">
+                            <lightning-textarea
+                                label="Additional Requirements"
+                                data-id="additionalRequirements"
+                                maxlength="1000"
+                                placeholder="Please describe any additional requirements or special accommodations..."
+                                onchange={handleInputChange}>
+                            </lightning-textarea>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </div>
+
+            <!-- Status Message -->
+            <template if:true={message}>
+                <div class="slds-m-top_medium">
+                    <lightning-icon 
+                        icon-name={messageIcon} 
+                        variant={messageType}
+                        class="slds-m-right_x-small">
+                    </lightning-icon>
+                    <span class={messageClass}>{message}</span>
+                </div>
+            </template>
+
+            <!-- Action Buttons -->
+            <div class="slds-m-top_large slds-text-align_center">
+                <lightning-button
+                    variant="brand"
+                    label="Submit Application"
+                    onclick={handleSubmitApplication}
+                    class="slds-m-right_small">
+                </lightning-button>
+                <lightning-button
+                    variant="neutral"
+                    label="Clear Form"
+                    onclick={handleClearForm}>
+                </lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>

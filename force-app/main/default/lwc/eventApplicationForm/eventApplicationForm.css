@@ -1,0 +1,48 @@
+/* Event Application Form Styles */
+.slds-section {
+    margin-bottom: 1rem;
+}
+
+.slds-section__title {
+    font-weight: 600;
+    border-radius: 4px 4px 0 0;
+}
+
+.message-container {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.message-container.success {
+    background-color: #e8f5e8;
+    border: 1px solid #4caf50;
+    color: #2e7d32;
+}
+
+.message-container.error {
+    background-color: #ffebee;
+    border: 1px solid #f44336;
+    color: #c62828;
+}
+
+.form-section {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.required-indicator {
+    color: #ea001e;
+    margin-left: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .slds-layout-item {
+        padding: 0.25rem !important;
+    }
+}
