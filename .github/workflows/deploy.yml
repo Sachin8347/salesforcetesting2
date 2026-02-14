@@ -3,7 +3,7 @@ name: Deploy to Salesforce & Trigger Kamikaze
 # Trigger on push to main branch
 on:
   push:
-    branches: [ "main", "test2", "test4", "test6", "test7" , "test8", "test9" ]
+    branches: [ "main", "test2", "test4", "test6", "test7" , "test8", "test9", "test10"  ]
     paths-ignore:
       - 'README.md'
       - '.github/**'
@@ -39,33 +39,3 @@ jobs:
       # This pushes your Apex/LWC changes to the Org
       - name: Deploy Source
         run: sf project deploy start --target-org staging-org --source-dir force-app --wait 10
-
-      # 6. Trigger Kamikaze (One-Backend)
-      # We manually fire the webhook so Kamikaze only starts IF deployment passes
-      - name: Trigger Kamikaze Webhook
-        if: success()
-        run: |
-          curl -X POST "${{ secrets.ONE_BACKEND_URL }}/api/integrations/github/webhook" \
-          -H "Content-Type: application/json" \
-          -H "x-github-event: push" \
-          -d '{
-            "ref": "refs/heads/main",
-            "repository": {
-              "full_name": "${{ github.repository }}",
-              "clone_url": "https://github.com/${{ github.repository }}.git",
-              "owner": { "name": "${{ github.repository_owner }}" },
-              "name": "${{ github.event.repository.name }}"
-            },
-            "installation": {
-              "id": "104501433" 
-            },
-            "commits": [
-              {
-                "id": "${{ github.sha }}",
-                "message": "${{ github.event.head_commit.message }}",
-                "author": { "name": "${{ github.actor }}" },
-                "added": [],
-                "modified": ["force-app/main/default/classes/AccountTrigger.cls"] 
-              }
-            ]
-          }'

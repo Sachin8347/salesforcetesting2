@@ -1,0 +1,90 @@
+<template>
+    <lightning-card title={title} icon-name="standard:product">
+        <div class="slds-p-around_medium">
+            <!-- Company Information-->
+            <div class="slds-m-bottom_small">
+                <lightning-input label="Company Name" data-id="companyName" required></lightning-input>
+            </div>
+            <div class="slds-m-bottom_small">
+                <lightning-input label="Department" data-id="department"></lightning-input>
+            </div>
+            <div class="slds-m-bottom_small">
+                <lightning-input type="email" label="Contact Email" data-id="contactEmail" ></lightning-input>
+            </div>
+            
+            <!-- Device Selection tested-->
+            <div class="slds-m-bottom_medium">
+                <h3 class="slds-text-heading_small slds-m-bottom_small">Select Devices</h3>
+                
+                <!-- Mac Devices -->
+                <div class="slds-m-bottom_small">
+                    <lightning-checkbox-group
+                        label="Mac Devices"
+                        options={macOptions}
+                        value={selectedMacDevices}
+                        onchange={handleMacChange}>
+                    </lightning-checkbox-group>
+                </div>
+                
+                <!-- Windows Devices testing -->
+                <div class="slds-m-bottom_small">
+                    <lightning-checkbox-group
+                        label="Windows Devices"
+                        options={windowsOptions}
+                        value={selectedWindowsDevices}
+                        onchange={handleWindowsChange}>
+                    </lightning-checkbox-group>
+                </div>
+            </div>
+            
+            <!-- Quantity Selection thingsssss -->
+            <template if:true={showQuantitySection}>
+                <div class="slds-m-bottom_medium">
+                    <h3 class="slds-text-heading_small slds-m-bottom_small">Quantities</h3>
+                    <template for:each={deviceQuantities} for:item="device">
+                        <div key={device.key} class="slds-m-bottom_small">
+                            <lightning-input
+                                type="number"
+                                label={device.label}
+                                value={device.quantity}
+                                min="1"
+                                onchange={handleQuantityChange}
+                                data-device={device.key}>
+                            </lightning-input>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            
+            <!-- Additional Rcfvequirements -->
+            <div class="slds-m-bottom_small">
+                <lightning-textarea
+                    label="Additional Requirements"
+                    placeholder="Please specify any special requirements..."
+                    data-id="additionalRequirements">
+                </lightning-textarea>
+            </div>
+            
+            <!-- Submit Butfton hjgadded-->
+            <div class="slds-align_absolute-center slds-m-top_medium">
+                <lightning-button 
+                    variant="brand" 
+                    label="Place Order" 
+                    title="Place Order" 
+                    onclick={handlePlaceOrder}
+                    class="place-order-btn"
+                    data-id="submitOrder">
+                </lightning-button>
+            </div>
+
+            <!-- Success/Error Message -->
+            <template if:true={message}>
+                <div class="slds-m-top_medium slds-align_absolute-center">
+                    <div class={messageClass}>
+                        {message}
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

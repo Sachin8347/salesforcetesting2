@@ -6,5 +6,11 @@
         <target>lightning__AppPage</target>
         <target>lightning__RecordPage</target>
         <target>lightning__HomePage</target>
+        <target>lightning__Tab</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage">
+            <property name="title" type="String" default="PC Order Wizard" label="Title" description="Title of the component"/>
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>
