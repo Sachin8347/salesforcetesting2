@@ -2,70 +2,39 @@ name: Deploy to Salesforce & Trigger Kamikaze
 
 # Trigger on push to main branch
 on:
-  push:
-    branches: [ "main", "test2", "test4", "test6", "test7" , "test8" ]
-    paths-ignore:
-      - 'README.md'
-      - '.github/**'
+  push:
+    branches: [ "main", "test2", "test4", "test6", "test7" , "test8" ,"KAN-9","test", "neww"]
+    paths-ignore:
+      - '.github/**'
 
 jobs:
-  deploy-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      # 1. Checkout the code
-      - name: Checkout Code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  deploy-and-test:
+    runs-on: ubuntu-latestgit 
+    steps:
+      # 1. Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # 2. Install Node.js (Required for Salesforce CLI)
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+      # 2. Install Node.js (Required for Salesforce CLI)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-      # 3. Install Salesforce CLI
-      - name: Install Salesforce CLI
-        run: npm install --global @salesforce/cli
+      # 3. Install Salesforce CLI
+      - name: Install Salesforce CLI
+        run: npm install --global @salesforce/cli
 
-      # 4. Authenticate to Salesforce (Using the Secret)
-      - name: Authenticate to Salesforce
-        run: |
-          echo "${{ secrets.SFDX_AUTH_URL }}" > auth_url.txt
-          sf org login sfdx-url --sfdx-url-file auth_url.txt --set-default --alias staging-org
-          rm auth_url.txt
+      # 4. Authenticate to Salesforce (Using the Secret)
+      - name: Authenticate to Salesforce
+        run: |
+          echo "${{ secrets.SFDX_AUTH_URL }}" > auth_url.txt
+          sf org login sfdx-url --sfdx-url-file auth_url.txt --set-default --alias staging-org
+          rm auth_url.txt
 
-      # 5. Deploy Code to Salesforce
-      # This pushes your Apex/LWC changes to the Org
-      - name: Deploy Source
-        run: sf project deploy start --target-org staging-org --source-dir force-app --wait 10
-
-      # 6. Trigger Kamikaze (One-Backend)
-      # We manually fire the webhook so Kamikaze only starts IF deployment passes
-      - name: Trigger Kamikaze Webhook
-        if: success()
-        run: |
-          curl -X POST "${{ secrets.ONE_BACKEND_URL }}/api/integrations/github/webhook" \
-          -H "Content-Type: application/json" \
-          -H "x-github-event: push" \
-          -d '{
-            "ref": "refs/heads/main",
-            "repository": {
-              "full_name": "${{ github.repository }}",
-              "clone_url": "https://github.com/${{ github.repository }}.git",
-              "owner": { "name": "${{ github.repository_owner }}" },
-              "name": "${{ github.event.repository.name }}"
-            },
-            "installation": {
-              "id": "104501433" 
-            },
-            "commits": [
-              {
-                "id": "${{ github.sha }}",
-                "message": "${{ github.event.head_commit.message }}",
-                "author": { "name": "${{ github.actor }}" },
-                "added": [],
-                "modified": ["force-app/main/default/classes/AccountTrigger.cls"] 
-              }
-            ]
-          }'
+      # 5. Deploy Code to Salesforce
+      # This pushes your Apex/LWC changes to the Org
+      - name: Deploy Source
+        run: sf project deploy start --target-org staging-org --source-dir force-app --wait 10
