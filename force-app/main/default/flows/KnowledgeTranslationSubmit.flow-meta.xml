@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <description>L2/L3 fixture: when a Spanish draft translation is saved, assign Spanish Translation Group queue and keep status in Draft until Submit for Review.</description>
+    <environments>Default</environments>
+    <interviewLabel>Knowledge Translation Submit {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Knowledge Translation Submit</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Assign_Spanish_Queue</name>
+        <label>Assign Spanish Queue</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <inputAssignments>
+            <field>Assigned_Queue__c</field>
+            <value>
+                <stringValue>Spanish Translation Group</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Assign_Spanish_Queue</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Language_Code__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>es</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Translation_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Draft</stringValue>
+            </value>
+        </filters>
+        <object>Knowledge_Translation_Request__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

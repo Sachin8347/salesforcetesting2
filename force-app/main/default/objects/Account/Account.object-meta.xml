@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <validationRules>
+        <fullName>Block_Test_Account_Names</fullName>
+        <active>true</active>
+        <description>L2 scenario: declarative guard blocks names containing BLOCKED.</description>
+        <errorConditionFormula>CONTAINS(UPPER(Name), &quot;BLOCKED&quot;)</errorConditionFormula>
+        <errorDisplayField>Name</errorDisplayField>
+        <errorMessage>Account names cannot contain BLOCKED.</errorMessage>
+    </validationRules>
+</CustomObject>

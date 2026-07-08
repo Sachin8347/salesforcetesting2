@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Language_Code__c</fullName>
+    <description>Knowledge language channel (e.g. en_US, es). Publishing rights are isolated per language channel.</description>
+    <externalId>false</externalId>
+    <label>Language Code</label>
+    <required>true</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>en_US</fullName>
+                <default>true</default>
+                <label>English (US)</label>
+            </value>
+            <value>
+                <fullName>es</fullName>
+                <default>false</default>
+                <label>Spanish</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
