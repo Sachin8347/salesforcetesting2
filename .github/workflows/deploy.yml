@@ -1,46 +1,74 @@
 name: Deploy to Salesforce & Trigger Kamikaze
-# Trigger on push to main branch
+
 on:
   push:
-    branches: [ "main", "test2", "test4", "test6", "test7" , "test8", "testing","tester","neww/KAN-4","KAN-7","KAN-8" ]
+    branches:
+      - main
+      - test2
+      - test4
+      - test6
+      - test7
+      - test8
+      - testing
+      - tester
+      - neww/KAN-4
+      - KAN-7
+      - KAN-8
     paths-ignore:
-      - 'README.md'
-      - '.github/**'
+      - README.md
+      - .github/**
+
 jobs:
   deploy-and-test:
     runs-on: ubuntu-latest
+
     steps:
       # 1. Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      # 2. Install Node.js (Required for Salesforce CLI)
+
+      # 2. Install Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
+
       # 3. Install Salesforce CLI
       - name: Install Salesforce CLI
         run: npm install --global @salesforce/cli
-      # 4. Authenticate to Salesforce (Using the Secret)
+
+      # 4. Authenticate to Salesforce
       - name: Authenticate to Salesforce
         run: |
           echo "${{ secrets.SFDX_AUTH_URL }}" > auth_url.txt
-          sf org login sfdx-url --sfdx-url-file auth_url.txt --set-default --alias staging-org
+          sf org login sfdx-url \
+            --sfdx-url-file auth_url.txt \
+            --set-default \
+            --alias staging-org
           rm auth_url.txt
-      # 5. Deploy Code to Salesforce
-      # This pushes your Apex/LWC changes to the Org
+
+      # 5. Deploy Source
       - name: Deploy Source
-        run: sf project deploy start --target-org staging-org --source-dir force-app --wait 10
+        run: |
+          sf project deploy start \
+            --target-org staging-org \
+            --source-dir force-app \
+            --wait 10
 
-
-
-
-
-
-
-
-
-
-
+      # 6. Trigger Jataka AI UI Tests
+      - name: Trigger Jataka AI UI Tests
+        run: |
+          curl -X POST "${{ secrets.JATAKA_API_URL }}/api/integrations/github/trigger" \
+            -H "Authorization: Bearer ${{ secrets.JATAKA_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "installation_id": 117065163,
+              "repo_full_name": "${{ github.repository }}",
+              "branch": "${{ github.ref_name }}",
+              "pr_number": null,
+              "test_mode": "${{ vars.JATAKA_TEST_MODE || 'auto' }}",
+              "action": "${{ github.event.action }}",
+              "before_sha": "${{ github.event.before }}"
+            }'
