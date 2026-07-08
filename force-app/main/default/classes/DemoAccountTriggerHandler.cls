@@ -1,8 +1,10 @@
 public with sharing class DemoAccountTriggerHandler {
     public static void handleBeforeInsert(List<Account> newAccounts) {
+        AccountStatusService.applyDefaultStatus(newAccounts);
+        AccountStatusService.markActiveWhenPhonePresent(newAccounts);
+
         for (Account acc : newAccounts) {
-            // Logic to be executed before insert
-            System.debug('Processing Account: ' + acc.Name);
+            System.debug('Processing Account: ' + acc.Name + ' status=' + acc.AccountStatus__c);
         }
     }
 }
