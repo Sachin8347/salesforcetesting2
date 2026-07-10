@@ -92,7 +92,7 @@ public with sharing class KnowledgeTranslationPublishService {
 
         if (request.Translation_Status__c != STATUS_DRAFT
             && request.Translation_Status__c != STATUS_IN_QUEUE) {
-            throw new IllegalStateException(
+            throw new IllegalArgumentException(
                 'Only draft translations can be submitted. Current status: '
                 + request.Translation_Status__c
             );
@@ -120,7 +120,7 @@ public with sharing class KnowledgeTranslationPublishService {
         ];
 
         if (request.Translation_Status__c != STATUS_PENDING_REVIEW) {
-            throw new IllegalStateException(
+            throw new IllegalArgumentException(
                 'Publication requires Pending Review status. Current status: '
                 + request.Translation_Status__c
             );
