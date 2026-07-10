@@ -6,6 +6,7 @@ Demo Salesforce project used to **test Jataka MCP consumer support** at L1, L2, 
 
 - **Apex:** `QuickAccountController`, `DemoAccountService`, `AccountStatusService`, `AccountStatusReportController`, trigger handler
 - **Knowledge (L1 consumer support):** `KnowledgeTranslationPublishService`, `KnowledgeTranslationQueueHelper`, `KnowledgeTranslationPublishController`
+- **Knowledge + Case (L1 consumer support):** `KnowledgeCaseResolutionService`, `KnowledgeCaseResolutionController`
 - **Trigger:** `AccountBeforeInsert` on Account
 - **Metadata:** `AccountStatus__c` picklist, Account validation rule, `Knowledge_Translation_Request__c`, `AccountOnboarding` + `KnowledgeTranslationSubmit` flows
 - **LWC:** `quickAccountWizard` (UI smoke test; not in default GitHub backfill)
@@ -20,10 +21,13 @@ Quick reference:
 |-------|------------------|
 | L1 | What does `QuickAccountController` do? |
 | L1-K | Spanish Knowledge draft Publish greyed out — how do I release it? |
+| L1-KC | How do I attach a Knowledge article to a Case and email its content from the console? |
 | L2 | Why does `DemoAccountService` fail on demo accounts? |
 | L2-K | Why doesn't Knowledge Manager rights enable Publish on Spanish drafts? |
+| L2-KC | Why can't I insert an internal Knowledge article into the customer email? |
 | L3 | What depends on `AccountStatus__c`? |
 | L3-K | What depends on `KnowledgeTranslationPublishService`? |
+| L3-KC | What depends on `KnowledgeCaseResolutionService`? |
 
 ## Setup
 

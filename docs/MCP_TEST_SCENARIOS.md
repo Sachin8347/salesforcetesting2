@@ -45,6 +45,14 @@ This repo is a **fixture for validating Jataka MCP tools** at three consumer sup
 | L1-K4 | What picklist values exist on `Knowledge_Translation_Request__c.Translation_Status__c`? | `fetch_linked_metadata` (`sub_component_type: fields`) | Draft (default), In Translation Queue, Pending Review, Published |
 | L1-K5 | Which flow assigns the Spanish Translation Group queue on draft saves? | `brum_search` | `KnowledgeTranslationSubmit` |
 
+### Knowledge Case article fixtures (consumer support)
+
+| # | Ask this | Expected MCP tool | Expected answer (ground truth) |
+|---|----------|-------------------|--------------------------------|
+| L1-KC1 | I found an internal Knowledge Article that explains the resolution. How do I attach it to the active Case so it is tracked in resolution metrics, and send its text content to the customer's email via the console? | `brum_search` or `brum_qa` | Attach via Knowledge/Articles component or **Case Articles** related list (CaseArticle → metrics). Open console **Email**, use **Insert Knowledge** / Share Article (or paste customer-visible body), then send. Internal-only articles cannot be emailed until customer-visible. See `KnowledgeCaseResolutionService`. |
+| L1-KC2 | Which class defines Case article attachment and console email guidance? | `brum_search` | `KnowledgeCaseResolutionService` |
+| L1-KC3 | What related list tracks Knowledge articles on a Case for resolution metrics? | `brum_search` | **Case Articles** (`RELATED_LIST_CASE_ARTICLES`) |
+
 **Pass criteria:** Answer cites the correct class/field/ rule without hallucinating extra components.
 
 ---
@@ -70,6 +78,13 @@ This repo is a **fixture for validating Jataka MCP tools** at three consumer sup
 | L2-K3 | Why does `authorizePublication` throw for a Knowledge Manager? | `brum_qa` | `KnowledgeTranslationQueueHelper.isCurrentUserQueueMember('es')` is false — Spanish publish requires queue membership, not profile alone. |
 | L2-K4 | What runs when a Spanish draft `Knowledge_Translation_Request__c` is saved? | `brum_qa` | `KnowledgeTranslationSubmit` flow sets `Assigned_Queue__c = Spanish Translation Group` when `Language_Code__c = es` and status is Draft. |
 
+### Knowledge Case article fixtures
+
+| # | Ask this | Expected MCP tool | Expected answer (ground truth) |
+|---|----------|-------------------|--------------------------------|
+| L2-KC1 | Why is the Knowledge article not available to insert into the customer email from the Case console? | `brum_qa` | Article channel is Internal App only (`BLOCK_INTERNAL_ONLY`), or article is not yet attached to the Case. `diagnoseEmailUnavailable` / `describeAttachAndEmailSteps` in `KnowledgeCaseResolutionService`. |
+| L2-KC2 | What happens if I try to email an InternalApp Knowledge article to a customer? | `brum_qa` | `canEmailToCustomer = false`; recommended action is publish/share to a customer-visible channel first; Case attach for metrics is still allowed. |
+
 **Pass criteria:** Identifies the correct layer (Apex vs validation rule vs flow) and the specific line/rule causing behavior.
 
 ---
@@ -94,6 +109,13 @@ This repo is a **fixture for validating Jataka MCP tools** at three consumer sup
 | L3-K2 | Impact of changing `Translation_Status__c` on `Knowledge_Translation_Request__c` | `get_impact_analysis` on `Translation_Status__c` | `KnowledgeTranslationPublishService`, `KnowledgeTranslationSubmit` flow |
 | L3-K3 | Impact of modifying `KnowledgeTranslationSubmit` flow | `get_impact_analysis` on `KnowledgeTranslationSubmit` | Spanish draft records; `Assigned_Queue__c` assignment path |
 | L3-K4 | Before editing Spanish queue logic, what should I check? | `get_impact_analysis` + `brum_qa` | `KnowledgeTranslationQueueHelper`, `authorizePublication`, `KnowledgeTranslationPublishController.publishAfterQueueApproval` |
+
+### Knowledge Case article fixtures
+
+| # | Ask this | Expected MCP tool | Expected dependents (minimum) |
+|---|----------|-------------------|-------------------------------|
+| L3-KC1 | What depends on `KnowledgeCaseResolutionService`? | `get_impact_analysis` on `KnowledgeCaseResolutionService` | `KnowledgeCaseResolutionController` |
+| L3-KC2 | Before changing Case article email visibility rules, what should I check? | `get_impact_analysis` + `brum_qa` | `KnowledgeCaseResolutionController`, `diagnoseEmailUnavailable`, `BLOCK_INTERNAL_ONLY` |
 
 **Pass criteria:** Lists real dependents from the knowledge graph; does not proceed with code changes when dependencies exist without a plan.
 
@@ -127,9 +149,17 @@ Knowledge_Translation_Request__c (custom object — L1 consumer support fixture)
 │   └── KnowledgeTranslationQueueHelper (GroupMember check per language)
 │
 └── KnowledgeTranslationPublishController (@AuraEnabled MCP entry points)
+
+KnowledgeCaseResolutionService (L1 Case article attach + console email fixture)
+├── RELATED_LIST_CASE_ARTICLES / Insert Knowledge / Share Article constants
+├── CHANNEL_INTERNAL vs CHANNEL_CUSTOMER visibility guardrail
+├── describeAttachAndEmailSteps / diagnoseEmailUnavailable
+└── KnowledgeCaseResolutionController (@AuraEnabled MCP entry points)
 ```
 
-See also: [KNOWLEDGE_TRANSLATION_RUNBOOK.md](KNOWLEDGE_TRANSLATION_RUNBOOK.md)
+See also:
+- [KNOWLEDGE_TRANSLATION_RUNBOOK.md](KNOWLEDGE_TRANSLATION_RUNBOOK.md)
+- [KNOWLEDGE_CASE_ARTICLE_RUNBOOK.md](KNOWLEDGE_CASE_ARTICLE_RUNBOOK.md)
 
 ---
 
@@ -150,6 +180,10 @@ L3: Run impact analysis on AccountStatus__c before we rename it.
 L1-K: Spanish Knowledge draft Publish is greyed out — I have Knowledge Manager rights. How do I release it?
 L2-K: Why does authorizePublication fail for a Knowledge Manager on Spanish articles?
 L3-K: Run impact analysis on KnowledgeTranslationPublishService before we change queue rules.
+
+L1-KC: How do I attach a Knowledge article to a Case for metrics and email its content from the console?
+L2-KC: Why can't I insert an internal Knowledge article into the customer email?
+L3-KC: Run impact analysis on KnowledgeCaseResolutionService.
 ```
 
 ---
@@ -165,3 +199,5 @@ L3-K: Run impact analysis on KnowledgeTranslationPublishService before we change
 | `KnowledgeTranslationPublishService` + Spanish draft scenario | L1 consumer Knowledge publish troubleshooting |
 | `KnowledgeTranslationQueueHelper` | L2 profile vs queue membership distinction |
 | `Knowledge_Translation_Request__c` + `KnowledgeTranslationSubmit` flow | L3 translation workflow dependency graph |
+| `KnowledgeCaseResolutionService` + Case Articles / Insert Knowledge | L1 Case attach + console email how-to |
+| InternalApp email block (`BLOCK_INTERNAL_ONLY`) | L2 visibility / channel diagnosis |
