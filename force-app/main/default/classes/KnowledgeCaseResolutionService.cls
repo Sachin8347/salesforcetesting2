@@ -154,3 +154,4 @@ public with sharing class KnowledgeCaseResolutionService {
             || lower.contains('how can i');
     }
 }
+
