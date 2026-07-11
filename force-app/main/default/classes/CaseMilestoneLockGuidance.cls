@@ -114,3 +114,4 @@ public with sharing class CaseMilestoneLockGuidance {
             && (lower.contains('locked') || lower.contains('open system transaction'));
     }
 }
+
