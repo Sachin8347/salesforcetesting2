@@ -16,7 +16,6 @@ on:
       - KAN-8
     paths-ignore:
       - README.md
-      - .github/**
 
 jobs:
   deploy-and-test:
@@ -29,11 +28,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2. Install Node.js
+      # 2. Install Node.js (SF CLI / jsforce undici requires Node >=22)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       # 3. Install Salesforce CLI
       - name: Install Salesforce CLI
