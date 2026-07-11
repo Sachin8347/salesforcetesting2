@@ -85,7 +85,15 @@ This repo is a **fixture for validating Jataka MCP tools** at three consumer sup
 | L2-KC1 | Why is the Knowledge article not available to insert into the customer email from the Case console? | `brum_qa` | Article channel is Internal App only (`BLOCK_INTERNAL_ONLY`), or article is not yet attached to the Case. `diagnoseEmailUnavailable` / `describeAttachAndEmailSteps` in `KnowledgeCaseResolutionService`. |
 | L2-KC2 | What happens if I try to email an InternalApp Knowledge article to a customer? | `brum_qa` | `canEmailToCustomer = false`; recommended action is publish/share to a customer-visible channel first; Case attach for metrics is still allowed. |
 
-**Pass criteria:** Identifies the correct layer (Apex vs validation rule vs flow) and the specific line/rule causing behavior.
+### Case Entitlement Milestone fixtures
+
+| # | Ask this | Expected MCP tool | Expected answer (ground truth) |
+|---|----------|-------------------|--------------------------------|
+| L2-CM1 | I am trying to resolve a case before the 1-hour critical response milestone expires. I added a case comment and changed the status to 'Waiting on Customer'. When I hit save, I get an error: 'Validation error on Case: Cannot modify case status because the underlying Entitlement Milestone is locked by an open system transaction.' How do I override this? | `brum_qa` | There is **no supported override**. The Case Status change is blocked because an Entitlement Milestone is locked by an open system transaction. Wait/retry after the platform transaction completes, verify Entitlement / Case Milestone state in Service Console, and escalate to a Salesforce admin only if the lock persists. Do **not** edit CaseMilestone rows directly. See `CaseMilestoneLockGuidance.diagnoseStatusChangeBlocked` (`overrideAllowed = false`, `BLOCK_NO_OVERRIDE`). |
+| L2-CM2 | Which class encodes Case Entitlement Milestone lock recovery guidance? | `brum_search` | `CaseMilestoneLockGuidance` |
+| L2-CM3 | What does `CaseMilestoneLockGuidance.diagnoseStatusChangeBlocked` recommend when the milestone lock error is present? | `brum_qa` | `overrideAllowed = false`; wait and retry; verify milestone/entitlement state; admin repair if lock persists; never force-unlock. |
+
+**Pass criteria:** Identifies the correct layer (Apex vs validation rule vs flow) and the specific line/rule causing behavior. Does **not** invent an entitlement override.
 
 ---
 
@@ -155,6 +163,11 @@ KnowledgeCaseResolutionService (L1 Case article attach + console email fixture)
 ├── CHANNEL_INTERNAL vs CHANNEL_CUSTOMER visibility guardrail
 ├── describeAttachAndEmailSteps / diagnoseEmailUnavailable
 └── KnowledgeCaseResolutionController (@AuraEnabled MCP entry points)
+
+CaseMilestoneLockGuidance (L2 Case Entitlement Milestone lock fixture)
+├── ERROR_MILESTONE_LOCKED / BLOCK_NO_OVERRIDE constants
+├── diagnoseStatusChangeBlocked (overrideAllowed = false)
+└── matchesMilestoneLockIssue (support-question detector)
 ```
 
 See also:
@@ -184,6 +197,8 @@ L3-K: Run impact analysis on KnowledgeTranslationPublishService before we change
 L1-KC: How do I attach a Knowledge article to a Case for metrics and email its content from the console?
 L2-KC: Why can't I insert an internal Knowledge article into the customer email?
 L3-KC: Run impact analysis on KnowledgeCaseResolutionService.
+
+L2-CM: Case Status change to Waiting on Customer fails with Entitlement Milestone locked by an open system transaction — how do I override this?
 ```
 
 ---
@@ -201,3 +216,4 @@ L3-KC: Run impact analysis on KnowledgeCaseResolutionService.
 | `Knowledge_Translation_Request__c` + `KnowledgeTranslationSubmit` flow | L3 translation workflow dependency graph |
 | `KnowledgeCaseResolutionService` + Case Articles / Insert Knowledge | L1 Case attach + console email how-to |
 | InternalApp email block (`BLOCK_INTERNAL_ONLY`) | L2 visibility / channel diagnosis |
+| `CaseMilestoneLockGuidance` milestone lock diagnosis | L2 Entitlement Milestone lock — no supported override |

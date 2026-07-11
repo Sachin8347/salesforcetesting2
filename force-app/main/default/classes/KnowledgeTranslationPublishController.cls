@@ -7,7 +7,7 @@ public with sharing class KnowledgeTranslationPublishController {
         Id translationRequestId
     ) {
         Knowledge_Translation_Request__c request = [
-            SELECT Id, Language_Code__c, Translation_Status__c, Assigned_Queue__c
+            SELECT Id, Language_Code__c, Translation_Status__c
             FROM Knowledge_Translation_Request__c
             WHERE Id = :translationRequestId
             LIMIT 1

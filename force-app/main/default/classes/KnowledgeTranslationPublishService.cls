@@ -12,6 +12,9 @@
  * 2. Open Knowledge Articles tab and switch list view to "Draft Translations".
  * 3. Select the Spanish draft and use "Submit for Publication" or "Submit for Review".
  * 4. If the user is not in the Spanish translation group, a queue member must authorize publication.
+ *
+ * Note: Queue assignment is modeled via Language_Code__c + QUEUE_SPANISH constant.
+ * Assigned_Queue__c is optional metadata and is not required for submit/publish DML.
  */
 public with sharing class KnowledgeTranslationPublishService {
     public static final String STATUS_DRAFT = 'Draft';
@@ -65,7 +68,7 @@ public with sharing class KnowledgeTranslationPublishService {
             if (request.Language_Code__c == LANG_SPANISH && !userIsSpanishQueueMember) {
                 result.blockingReason =
                     'Spanish translation pending review. User is not a member of '
-                    + String.valueOf(request.Assigned_Queue__c) + '.';
+                    + QUEUE_SPANISH + '.';
                 result.recommendedAction =
                     'A designated member of the Spanish translation group must authorize publication.';
                 return result;
@@ -84,7 +87,7 @@ public with sharing class KnowledgeTranslationPublishService {
 
     public static Knowledge_Translation_Request__c submitForReview(Id requestId) {
         Knowledge_Translation_Request__c request = [
-            SELECT Id, Language_Code__c, Translation_Status__c, Assigned_Queue__c
+            SELECT Id, Language_Code__c, Translation_Status__c
             FROM Knowledge_Translation_Request__c
             WHERE Id = :requestId
             LIMIT 1
@@ -99,11 +102,6 @@ public with sharing class KnowledgeTranslationPublishService {
         }
 
         request.Translation_Status__c = STATUS_PENDING_REVIEW;
-        if (String.isBlank(request.Assigned_Queue__c)
-            && request.Language_Code__c == LANG_SPANISH) {
-            request.Assigned_Queue__c = QUEUE_SPANISH;
-        }
-
         update request;
         return request;
     }
@@ -113,7 +111,7 @@ public with sharing class KnowledgeTranslationPublishService {
         Boolean authorizerIsQueueMember
     ) {
         Knowledge_Translation_Request__c request = [
-            SELECT Id, Language_Code__c, Translation_Status__c, Assigned_Queue__c
+            SELECT Id, Language_Code__c, Translation_Status__c
             FROM Knowledge_Translation_Request__c
             WHERE Id = :requestId
             LIMIT 1
@@ -129,7 +127,7 @@ public with sharing class KnowledgeTranslationPublishService {
         if (request.Language_Code__c == LANG_SPANISH && !authorizerIsQueueMember) {
             throw new IllegalArgumentException(
                 'User is not authorized to publish Spanish translations. '
-                + 'A member of ' + request.Assigned_Queue__c + ' must approve.'
+                + 'A member of ' + QUEUE_SPANISH + ' must approve.'
             );
         }
 
@@ -139,9 +137,9 @@ public with sharing class KnowledgeTranslationPublishService {
     }
 
     private static String buildQueueBlockReason(Knowledge_Translation_Request__c request) {
-        String queueName = String.isBlank(request.Assigned_Queue__c)
-            ? 'an explicit Translation Queue'
-            : request.Assigned_Queue__c;
+        String queueName = request.Language_Code__c == LANG_SPANISH
+            ? QUEUE_SPANISH
+            : 'an explicit Translation Queue';
 
         return 'Publish is disabled: Salesforce Knowledge isolates publishing rights per language '
             + 'channel and article status. This ' + request.Language_Code__c
