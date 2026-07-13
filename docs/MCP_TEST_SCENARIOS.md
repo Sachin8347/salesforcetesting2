@@ -206,6 +206,23 @@ Backend eval entry points (no Salesforce Case writeback):
 
 Use end-user phrasing from the CSV `issueText` as variants of the MCP questions — same ground truth, richer natural language.
 
+### CEO demo scenarios
+
+Curated CEO walkthrough scenarios live in [`tickets/ceo-demo-scenarios.json`](tickets/ceo-demo-scenarios.json):
+
+| Scenario id | Ticket | Mode |
+|-------------|--------|------|
+| `knowledge-publish-blocked` | `TSE-003` | safe eval + optional translation mutation |
+| `attach-article-to-case` | `TSE-001` | safe eval + optional live Case answer |
+| `milestone-lock-guardrail` | `TSE-009` | diagnosis-only (no override) |
+| `sales-lead-assignment` | `TS-006` | procedural Sales how-to |
+| `missing-entitlement-timer` | `TSE-002` | safe eval + optional live Case answer |
+| `parent-child-cases` | `TSE-007` | safe eval + parent/child Case fixtures |
+| `case-clone-assignment` | `TSE-013` | safe eval + optional live Case answer |
+
+Org situations are seeded by `JatakaDemoFixtureService` / REST `/jataka/v1/demo-fixtures`.
+Dashboard page: `/auto-resolution-demo`.
+
 ---
 
 ## How to run a test pass

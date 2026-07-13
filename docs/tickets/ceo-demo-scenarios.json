@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "name": "ceo-auto-resolution-demo",
+  "description": "Curated CEO demo scenarios grounded in salesforcetesting2 tickets and fixtures.",
+  "curriculumId": "salesforcetesting2-local-kb",
+  "linkedRepo": "salesforcetesting2",
+  "scenarios": [
+    {
+      "id": "knowledge-publish-blocked",
+      "ticketId": "TSE-003",
+      "label": "Knowledge publish blocked",
+      "businessProblem": "A Spanish Knowledge translation draft is stuck and Publish is greyed out even for a Knowledge Manager.",
+      "whatSystemShouldDo": "Explain Draft Translations list view, Submit for Review, and Spanish queue authorization from repo guidance.",
+      "safetyLevel": "auto-answer",
+      "mode": "safe_eval",
+      "liveMode": "translation_mutation",
+      "requiredRecords": [
+        "Knowledge_Translation_Request__c"
+      ],
+      "linkedArtifacts": [
+        "force-app/main/default/classes/KnowledgeTranslationPublishService.cls",
+        "force-app/main/default/classes/KnowledgeTranslationQueueHelper.cls"
+      ],
+      "linkedScenarioIds": [
+        "L1-K1",
+        "L1-K2",
+        "L1-K3",
+        "L2-K1"
+      ],
+      "expectedOutcome": "ANSWER_ONLY with Draft Translations / Submit for Review guidance; optional approved mutation can submit for review."
+    },
+    {
+      "id": "attach-article-to-case",
+      "ticketId": "TSE-001",
+      "label": "Attach article to Case",
+      "businessProblem": "An agent found an internal Knowledge article and needs it attached to a Case for metrics and emailed from the console.",
+      "whatSystemShouldDo": "Guide attach via Case Articles / Insert Knowledge and optionally post the answer onto a seeded Case Feed.",
+      "safetyLevel": "auto-answer",
+      "mode": "safe_eval",
+      "liveMode": "live_case_answer",
+      "requiredRecords": [
+        "Case"
+      ],
+      "linkedArtifacts": [
+        "force-app/main/default/classes/KnowledgeCaseResolutionService.cls",
+        "force-app/main/default/classes/KnowledgeCaseResolutionController.cls"
+      ],
+      "linkedScenarioIds": [
+        "L1-KC1",
+        "L1-KC2",
+        "L1-KC3"
+      ],
+      "expectedOutcome": "ANSWER_ONLY with Case Articles / Insert Knowledge guidance; live mode can write to Case Feed."
+    },
+    {
+      "id": "milestone-lock-guardrail",
+      "ticketId": "TSE-009",
+      "label": "Milestone lock guardrail",
+      "businessProblem": "Case Status cannot change because an Entitlement Milestone is locked by an open system transaction — agents ask how to override.",
+      "whatSystemShouldDo": "Diagnose the lock and refuse unsafe overrides; wait/retry, verify milestones, escalate to admin only.",
+      "safetyLevel": "diagnosis-only",
+      "mode": "diagnosis_only",
+      "liveMode": "diagnosis_only",
+      "requiredRecords": [
+        "Case"
+      ],
+      "linkedArtifacts": [
+        "force-app/main/default/classes/CaseMilestoneLockGuidance.cls"
+      ],
+      "linkedScenarioIds": [
+        "L2-CM1",
+        "L2-CM2",
+        "L2-CM3"
+      ],
+      "expectedOutcome": "No-override diagnosis from CaseMilestoneLockGuidance; no Salesforce mutation."
+    },
+    {
+      "id": "sales-lead-assignment",
+      "ticketId": "TS-006",
+      "label": "Sales Cloud how-to",
+      "businessProblem": "A lead lands in the wrong queue even though postal-code assignment rules exist.",
+      "whatSystemShouldDo": "Explain the Assign using active assignment rules checkbox on Lead edit — procedural Sales Cloud guidance.",
+      "safetyLevel": "auto-answer",
+      "mode": "safe_eval",
+      "liveMode": "safe_eval",
+      "requiredRecords": [
+        "Account"
+      ],
+      "linkedArtifacts": [],
+      "linkedScenarioIds": [],
+      "expectedOutcome": "ANSWER_ONLY procedural guidance; optional demo Account for Sales breadth, no mutation."
+    },
+    {
+      "id": "missing-entitlement-timer",
+      "ticketId": "TSE-002",
+      "label": "Missing Entitlement timer",
+      "businessProblem": "An enterprise Case has an active Contract, but the SLA Milestone countdown timer never appears in the console.",
+      "whatSystemShouldDo": "Explain that Entitlement must be linked on the Case itself — Contract alone is not enough.",
+      "safetyLevel": "auto-answer",
+      "mode": "safe_eval",
+      "liveMode": "live_case_answer",
+      "requiredRecords": [
+        "Case"
+      ],
+      "linkedArtifacts": [],
+      "linkedScenarioIds": [],
+      "expectedOutcome": "ANSWER_ONLY: set Entitlement Name lookup on the Case; optional live Case Feed writeback."
+    },
+    {
+      "id": "parent-child-cases",
+      "ticketId": "TSE-007",
+      "label": "Parent-Child Case structure",
+      "businessProblem": "A large implementation Case needs IT, Finance, and Shipping sub-tasks while keeping one umbrella Case open.",
+      "whatSystemShouldDo": "Guide creating Child Cases from the Parent Case related list and keep ownership/status clear.",
+      "safetyLevel": "auto-answer",
+      "mode": "safe_eval",
+      "liveMode": "live_case_answer",
+      "requiredRecords": [
+        "Case"
+      ],
+      "linkedArtifacts": [],
+      "linkedScenarioIds": [],
+      "expectedOutcome": "ANSWER_ONLY Parent/Child Case how-to; seeded parent + child Cases in org for walkthrough."
+    },
+    {
+      "id": "case-clone-assignment",
+      "ticketId": "TSE-013",
+      "label": "Case clone skips assignment rules",
+      "businessProblem": "Cloning a resolved Case keeps ownership on the agent instead of routing to the Tier 1 Queue.",
+      "whatSystemShouldDo": "Explain the Assign using active assignment rules checkbox on the Clone edit screen.",
+      "safetyLevel": "auto-answer",
+      "mode": "safe_eval",
+      "liveMode": "live_case_answer",
+      "requiredRecords": [
+        "Case"
+      ],
+      "linkedArtifacts": [],
+      "linkedScenarioIds": [],
+      "expectedOutcome": "ANSWER_ONLY clone assignment guidance; seeded Case available for live answer writeback."
+    }
+  ]
+}

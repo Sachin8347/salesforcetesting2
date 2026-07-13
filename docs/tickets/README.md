@@ -51,15 +51,37 @@ Each manifest entry has `repoGrounded`:
 | `TSE-003` | `L1-K1`, `L1-K2`, `L1-K3`, `L2-K1` |
 | `TSE-009` | `L2-CM1`, `L2-CM2`, `L2-CM3` |
 
+### CEO demo scenarios
+
+Curated subset for the CEO Auto Resolution Demo page:
+
+- Manifest: [`ceo-demo-scenarios.json`](ceo-demo-scenarios.json)
+- Suite id: `ceo_demo` (`TSE-003`, `TSE-001`, `TSE-009`, `TS-006`, `TSE-002`, `TSE-007`, `TSE-013`)
+
+| Scenario | Ticket |
+|----------|--------|
+| Knowledge publish blocked | TSE-003 |
+| Attach article to Case | TSE-001 |
+| Milestone lock guardrail | TSE-009 |
+| Sales Cloud how-to | TS-006 |
+| Missing Entitlement timer | TSE-002 |
+| Parent-Child Case structure | TSE-007 |
+| Case clone skips assignment | TSE-013 |
+
 ### API
 
 - `GET /auto-resolution/ticket-eval/suites`
 - `GET /auto-resolution/ticket-eval/tickets?suite=repo_grounded`
+- `GET /auto-resolution/ticket-eval/tickets?suite=ceo_demo`
 - `POST /auto-resolution/ticket-eval/tickets/:ticketId/run`
 - `POST /auto-resolution/ticket-eval/suites/:suiteId/run`
+- `GET /auto-resolution/demo/scenarios`
+- `POST /auto-resolution/demo/provision/:scenarioId`
+- `POST /auto-resolution/demo/run/:scenarioId`
 
 ## Related docs
 
+- [CEO_DEMO_SETUP.md](CEO_DEMO_SETUP.md)
 - [MCP_TEST_SCENARIOS.md](../MCP_TEST_SCENARIOS.md)
 - [KNOWLEDGE_CASE_ARTICLE_RUNBOOK.md](../KNOWLEDGE_CASE_ARTICLE_RUNBOOK.md)
 - [KNOWLEDGE_TRANSLATION_RUNBOOK.md](../KNOWLEDGE_TRANSLATION_RUNBOOK.md)

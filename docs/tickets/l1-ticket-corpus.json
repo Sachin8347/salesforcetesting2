@@ -30,6 +30,29 @@
     "all_l1": {
       "label": "All L1",
       "filter": {}
+    },
+    "ceo_demo": {
+      "label": "CEO Demo",
+      "filter": {
+        "ids": [
+          "TSE-003",
+          "TSE-001",
+          "TSE-009",
+          "TS-006",
+          "TSE-002",
+          "TSE-007",
+          "TSE-013"
+        ]
+      },
+      "ticketIds": [
+        "TSE-003",
+        "TSE-001",
+        "TSE-009",
+        "TS-006",
+        "TSE-002",
+        "TSE-007",
+        "TSE-013"
+      ]
     }
   },
   "tickets": [
@@ -589,7 +612,7 @@
       "status": "Assigned",
       "subject": "Entitlement process milestone error: 'Case field update failed due to locked status'",
       "issueText": "Entitlement process milestone error: 'Case field update failed due to locked status'\n\nI am trying to resolve a case before the 1-hour critical response milestone expires. I added a case comment and changed the status to 'Waiting on Customer'. When I hit save, I get an error: 'Validation error on Case: Cannot modify case status because the underlying Entitlement Milestone is locked by an open system transaction.' How do I override this?",
-      "expectedL1Answer": "This happens when an automated milestone trigger rule is firing concurrently to mark a milestone as 'Compliant' or 'Violated' right as you are manually altering the case. 1. Refresh your browser window to clear the transaction cache. 2. Check the Milestone tracker component to see if the milestone status has already changed asynchronously. 3. If the record remains locked, edit the 'Status' field again without modifying other custom fields simultaneously. This allows the background entitlement script to execute its updates independently without field validation collisions.",
+      "expectedL1Answer": "There is no supported override. The Case Status change is blocked because an Entitlement Milestone is locked by an open system transaction. 1) Wait for the open system transaction to complete, then retry saving the Case Comment and Status (for example Waiting on Customer). 2) Verify Entitlement and Case Milestone state in Service Console (open milestones, completion, violation timers). 3) If the lock persists after retries, escalate to a Salesforce admin to repair stuck milestone/entitlement state. Do not edit CaseMilestone records directly via unsupported tooling. See CaseMilestoneLockGuidance (overrideAllowed = false, BLOCK_NO_OVERRIDE).",
       "supportLevel": "L1",
       "curriculumId": "salesforcetesting2-local-kb",
       "linkedRepo": "salesforcetesting2",
