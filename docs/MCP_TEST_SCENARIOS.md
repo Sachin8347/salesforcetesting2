@@ -173,6 +173,38 @@ CaseMilestoneLockGuidance (L2 Case Entitlement Milestone lock fixture)
 See also:
 - [KNOWLEDGE_TRANSLATION_RUNBOOK.md](KNOWLEDGE_TRANSLATION_RUNBOOK.md)
 - [KNOWLEDGE_CASE_ARTICLE_RUNBOOK.md](KNOWLEDGE_CASE_ARTICLE_RUNBOOK.md)
+- [tickets/README.md](tickets/README.md) — golden L1 Sales/Service ticket eval corpus
+
+---
+
+## L1 ticket corpus ↔ MCP scenario cross-links
+
+Golden helpdesk tickets live in [`docs/tickets/`](tickets/) (`l1-ticket-corpus.json`).
+They are **eval fixtures** (not live Salesforce Cases). Repo-grounded tickets map to the MCP matrix above:
+
+| Eval ticket | Cloud / area | Linked MCP scenarios | Repo artifacts |
+|-------------|--------------|----------------------|----------------|
+| `TSE-001` | Service / Knowledge Management | `L1-KC1`, `L1-KC2`, `L1-KC3` | `KnowledgeCaseResolutionService`, `KnowledgeCaseResolutionController` |
+| `TSE-003` | Service / Knowledge Management | `L1-K1`, `L1-K2`, `L1-K3`, `L2-K1` | `KnowledgeTranslationPublishService`, `KnowledgeTranslationQueueHelper` |
+| `TSE-009` | Service / Contracts & Entitlements | `L2-CM1`, `L2-CM2`, `L2-CM3` | `CaseMilestoneLockGuidance` |
+
+**Suites** (see corpus `suites` block):
+
+| Suite id | Meaning |
+|----------|---------|
+| `sales_l1` | All 20 Sales Cloud L1 tickets (mostly procedural Salesforce UI/process) |
+| `service_l1` | All 20 Service Cloud L1 tickets |
+| `repo_grounded` | Only the three tickets above (must cite this repo) |
+| `all_l1` | Full 40-ticket corpus |
+
+Backend eval entry points (no Salesforce Case writeback):
+
+- `GET /auto-resolution/ticket-eval/suites`
+- `GET /auto-resolution/ticket-eval/tickets?suite=repo_grounded`
+- `POST /auto-resolution/ticket-eval/tickets/:ticketId/run`
+- `POST /auto-resolution/ticket-eval/suites/:suiteId/run`
+
+Use end-user phrasing from the CSV `issueText` as variants of the MCP questions — same ground truth, richer natural language.
 
 ---
 
