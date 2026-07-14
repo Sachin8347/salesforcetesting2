@@ -8,9 +8,9 @@ private class JatakaDemoFixtureServiceTest {
         Test.stopTest();
 
         System.assertEquals(true, first.success, first.message);
-        System.assertEquals(8, first.records.size());
+        System.assertEquals(11, first.records.size());
         System.assertEquals(true, second.success, second.message);
-        System.assertEquals(8, second.records.size());
+        System.assertEquals(11, second.records.size());
 
         Integer createdOnSecondPass = 0;
         for (JatakaDemoFixtureService.FixtureRecord row : second.records) {
@@ -40,7 +40,7 @@ private class JatakaDemoFixtureServiceTest {
             FROM Case
             WHERE Subject LIKE 'JATAKA_DEMO_%'
         ];
-        System.assertEquals(6, cases.size());
+        System.assertEquals(9, cases.size());
 
         List<Account> accounts = [
             SELECT Id
@@ -144,6 +144,42 @@ private class JatakaDemoFixtureServiceTest {
             JatakaDemoFixtureService.seed('case-clone-assignment');
         System.assertEquals(true, cloneCase.success);
         System.assertEquals(1, cloneCase.records.size());
+    }
+
+    @IsTest
+    static void seed_threeNewLiveCaseScenarios() {
+        JatakaDemoFixtureService.SeedResult pricebook =
+            JatakaDemoFixtureService.seed('pricebook-entry-missing');
+        System.assertEquals(true, pricebook.success);
+        System.assertEquals(1, pricebook.records.size());
+        System.assertEquals('Case', pricebook.records[0].objectApiName);
+        System.assertEquals(
+            JatakaDemoFixtureService.CASE_SUBJECT_PRICEBOOK,
+            pricebook.records[0].label
+        );
+
+        JatakaDemoFixtureService.SeedResult addProducts =
+            JatakaDemoFixtureService.seed('opportunity-add-products-missing');
+        System.assertEquals(true, addProducts.success);
+        System.assertEquals(1, addProducts.records.size());
+        System.assertEquals(
+            JatakaDemoFixtureService.CASE_SUBJECT_ADD_PRODUCTS,
+            addProducts.records[0].label
+        );
+
+        JatakaDemoFixtureService.SeedResult quotePdf =
+            JatakaDemoFixtureService.seed('quote-pdf-logo-missing');
+        System.assertEquals(true, quotePdf.success);
+        System.assertEquals(1, quotePdf.records.size());
+        System.assertEquals(
+            JatakaDemoFixtureService.CASE_SUBJECT_QUOTE_PDF,
+            quotePdf.records[0].label
+        );
+
+        JatakaDemoFixtureService.SeedResult status =
+            JatakaDemoFixtureService.status('pricebook-entry-missing');
+        System.assertEquals(true, status.success);
+        System.assertEquals(1, status.records.size());
     }
 
     @IsTest

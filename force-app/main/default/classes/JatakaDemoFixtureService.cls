@@ -20,6 +20,9 @@ public with sharing class JatakaDemoFixtureService {
     public static final String CASE_SUBJECT_PARENT = 'JATAKA_DEMO_Parent_Implementation_Case';
     public static final String CASE_SUBJECT_CHILD = 'JATAKA_DEMO_Child_IT_Subtask_Case';
     public static final String CASE_SUBJECT_CLONE = 'JATAKA_DEMO_Clone_Assignment_Case';
+    public static final String CASE_SUBJECT_PRICEBOOK = 'JATAKA_DEMO_Pricebook_Entry_Missing_Case';
+    public static final String CASE_SUBJECT_ADD_PRODUCTS = 'JATAKA_DEMO_Add_Products_Button_Case';
+    public static final String CASE_SUBJECT_QUOTE_PDF = 'JATAKA_DEMO_Quote_PDF_Logo_Case';
     public static final String ACCOUNT_NAME = 'JATAKA_DEMO_Sales_Account';
 
     public class FixtureRecord {
@@ -49,8 +52,94 @@ public with sharing class JatakaDemoFixtureService {
      * - missing-entitlement-timer
      * - parent-child-cases
      * - case-clone-assignment
+     * - pricebook-entry-missing
+     * - opportunity-add-products-missing
+     * - quote-pdf-logo-missing
      * - all (default)
      */
+    private class CaseFixtureSpec {
+        public String scenarioId;
+        public String subject;
+        public String description;
+        public CaseFixtureSpec(String scenarioId, String subject, String description) {
+            this.scenarioId = scenarioId;
+            this.subject = subject;
+            this.description = description;
+        }
+    }
+
+    /**
+     * Data-driven Case fixtures. Adding a new live Case scenario = one entry here
+     * (plus matching CEO demo JSON). Special fixtures (translation / account /
+     * parent-child) stay as dedicated helpers below.
+     */
+    private static List<CaseFixtureSpec> caseFixtureSpecs() {
+        return new List<CaseFixtureSpec>{
+            new CaseFixtureSpec(
+                'attach-article-to-case',
+                CASE_SUBJECT_ATTACH,
+                'CEO demo Case for Knowledge article attach/email how-to.\n\n'
+                    + 'I found an internal Knowledge Article that explains the resolution. '
+                    + 'How do I attach this article directly to the active Case record layout '
+                    + 'so it is tracked in our resolution metrics, and how can I send its text '
+                    + 'content straight to the customer email via the console?'
+            ),
+            new CaseFixtureSpec(
+                'milestone-lock-guardrail',
+                CASE_SUBJECT_MILESTONE,
+                'CEO demo Case for Entitlement Milestone lock diagnosis.\n\n'
+                    + CaseMilestoneLockGuidance.ERROR_MILESTONE_LOCKED
+                    + '\nI am trying to change Status to Waiting on Customer. How do I override this?'
+            ),
+            new CaseFixtureSpec(
+                'missing-entitlement-timer',
+                CASE_SUBJECT_ENTITLEMENT,
+                'CEO demo Case for missing SLA Milestone timer.\n\n'
+                    + 'I just opened a high-priority incident for an enterprise account. '
+                    + 'They have an active service Contract, but the standard SLA Milestone '
+                    + 'Countdown Timer widget is completely missing from the console sidebar. '
+                    + 'How do I apply their contractual entitlement terms to this case record?'
+            ),
+            new CaseFixtureSpec(
+                'case-clone-assignment',
+                CASE_SUBJECT_CLONE,
+                'CEO demo Case for Clone assignment-rule bypass.\n\n'
+                    + 'When I take an old resolved case and click the standard Clone button '
+                    + 'to open a new related ticket, the new case stays assigned to me instead '
+                    + 'of automatically routing to the Tier 1 Queue. How do I make Clone honor '
+                    + 'assignment rules?'
+            ),
+            new CaseFixtureSpec(
+                'pricebook-entry-missing',
+                CASE_SUBJECT_PRICEBOOK,
+                'Lead conversion error: Missing pricebook entry on automatic line item mapping\n\n'
+                    + 'I am trying to convert a qualified lead. Our system is configured to auto-create '
+                    + 'an opportunity and map standard product lines from the lead custom fields. However, '
+                    + 'when I click \'Convert\', I get an error: \'System.DmlException: Insert failed. '
+                    + 'First exception on row 0; Standard Price Book has no price defined for product '
+                    + 'B2B-Enterprise\'. I can\'t proceed with creating the opportunity. How do I fix this?'
+            ),
+            new CaseFixtureSpec(
+                'opportunity-add-products-missing',
+                CASE_SUBJECT_ADD_PRODUCTS,
+                'Missing \'Add Products\' button on an Opportunity record layout\n\n'
+                    + 'I need to build out a pipeline projection for a client, but when I navigate to the '
+                    + 'Products related list on my newly created Opportunity, the \'Add Products\' and '
+                    + '\'Choose Price Book\' buttons are entirely missing. My colleague can see them on '
+                    + 'her opportunities. What steps do I need to follow to make them appear?'
+            ),
+            new CaseFixtureSpec(
+                'quote-pdf-logo-missing',
+                CASE_SUBJECT_QUOTE_PDF,
+                'PDF Generation fails on Quote: Image asset broken or missing access rights\n\n'
+                    + 'When I try to use the standard \'Create Quote PDF\' feature on my quote record, '
+                    + 'the system generates a document but it completely leaves out our corporate logo, '
+                    + 'displaying a broken image icon instead. The rest of the table looks fine. How do I '
+                    + 'fix the template layout so our logo loads correctly for customers?'
+            )
+        };
+    }
+
     public static SeedResult seed(String scenarioId) {
         String key = String.isBlank(scenarioId) ? 'all' : scenarioId.trim();
         SeedResult result = new SeedResult();
@@ -60,28 +149,6 @@ public with sharing class JatakaDemoFixtureService {
 
         if (key == 'all' || key == 'knowledge-publish-blocked') {
             result.records.add(upsertTranslationDraft());
-        }
-        if (key == 'all' || key == 'attach-article-to-case') {
-            result.records.add(
-                upsertDemoCase(
-                    CASE_SUBJECT_ATTACH,
-                    'CEO demo Case for Knowledge article attach/email how-to.\n\n'
-                        + 'I found an internal Knowledge Article that explains the resolution. '
-                        + 'How do I attach this article directly to the active Case record layout '
-                        + 'so it is tracked in our resolution metrics, and how can I send its text '
-                        + 'content straight to the customer email via the console?'
-                )
-            );
-        }
-        if (key == 'all' || key == 'milestone-lock-guardrail') {
-            result.records.add(
-                upsertDemoCase(
-                    CASE_SUBJECT_MILESTONE,
-                    'CEO demo Case for Entitlement Milestone lock diagnosis.\n\n'
-                        + CaseMilestoneLockGuidance.ERROR_MILESTONE_LOCKED
-                        + '\nI am trying to change Status to Waiting on Customer. How do I override this?'
-                )
-            );
         }
         if (key == 'all' || key == 'sales-lead-assignment') {
             try {
@@ -100,32 +167,14 @@ public with sharing class JatakaDemoFixtureService {
                     + e.getMessage();
             }
         }
-        if (key == 'all' || key == 'missing-entitlement-timer') {
-            result.records.add(
-                upsertDemoCase(
-                    CASE_SUBJECT_ENTITLEMENT,
-                    'CEO demo Case for missing SLA Milestone timer.\n\n'
-                        + 'I just opened a high-priority incident for an enterprise account. '
-                        + 'They have an active service Contract, but the standard SLA Milestone '
-                        + 'Countdown Timer widget is completely missing from the console sidebar. '
-                        + 'How do I apply their contractual entitlement terms to this case record?'
-                )
-            );
-        }
         if (key == 'all' || key == 'parent-child-cases') {
             result.records.addAll(upsertParentChildCases());
         }
-        if (key == 'all' || key == 'case-clone-assignment') {
-            result.records.add(
-                upsertDemoCase(
-                    CASE_SUBJECT_CLONE,
-                    'CEO demo Case for Clone assignment-rule bypass.\n\n'
-                        + 'When I take an old resolved case and click the standard Clone button '
-                        + 'to open a new related ticket, the new case stays assigned to me instead '
-                        + 'of automatically routing to the Tier 1 Queue. How do I make Clone honor '
-                        + 'assignment rules?'
-                )
-            );
+
+        for (CaseFixtureSpec spec : caseFixtureSpecs()) {
+            if (key == 'all' || key == spec.scenarioId) {
+                result.records.add(upsertDemoCase(spec.subject, spec.description));
+            }
         }
 
         if (result.records.isEmpty()) {
@@ -152,28 +201,10 @@ public with sharing class JatakaDemoFixtureService {
                 result.records.add(tr);
             }
         }
-        if (key == 'all' || key == 'attach-article-to-case') {
-            FixtureRecord c = findDemoCase(CASE_SUBJECT_ATTACH);
-            if (c != null) {
-                result.records.add(c);
-            }
-        }
-        if (key == 'all' || key == 'milestone-lock-guardrail') {
-            FixtureRecord c = findDemoCase(CASE_SUBJECT_MILESTONE);
-            if (c != null) {
-                result.records.add(c);
-            }
-        }
         if (key == 'all' || key == 'sales-lead-assignment') {
             FixtureRecord a = findDemoAccount();
             if (a != null) {
                 result.records.add(a);
-            }
-        }
-        if (key == 'all' || key == 'missing-entitlement-timer') {
-            FixtureRecord c = findDemoCase(CASE_SUBJECT_ENTITLEMENT);
-            if (c != null) {
-                result.records.add(c);
             }
         }
         if (key == 'all' || key == 'parent-child-cases') {
@@ -186,10 +217,13 @@ public with sharing class JatakaDemoFixtureService {
                 result.records.add(childCase);
             }
         }
-        if (key == 'all' || key == 'case-clone-assignment') {
-            FixtureRecord c = findDemoCase(CASE_SUBJECT_CLONE);
-            if (c != null) {
-                result.records.add(c);
+
+        for (CaseFixtureSpec spec : caseFixtureSpecs()) {
+            if (key == 'all' || key == spec.scenarioId) {
+                FixtureRecord c = findDemoCase(spec.subject);
+                if (c != null) {
+                    result.records.add(c);
+                }
             }
         }
 

@@ -36,10 +36,10 @@ Creates / refreshes:
 
 Open `/auto-resolution-demo`:
 
-1. Pick a scenario card
-2. **Prepare situation** (seeds Salesforce via Apex REST)
-3. **Run auto-resolution** (safe eval, no Case writeback)
-4. Optionally **Run live Salesforce path** for Case answer / translation mutation prep
+1. Choose a ticket suite (default `all_l1`) — cards are CSV ticket rows (`subject` / `issueText`)
+2. **Prepare fixtures** (optional; seeds Salesforce via Apex REST for that ticket id)
+3. **Run auto-resolution** (safe eval on ticket text, no external writeback)
+4. Optionally **Run live writeback** when fixtures or an external record are available
 5. Use **Open approval queue** (`/support-ops`) when human approval is required
 
 Curriculum id: `salesforcetesting2-local-kb` (or the linked Brum brain for this repo).

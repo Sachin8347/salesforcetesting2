@@ -177,10 +177,10 @@ See also:
 
 ---
 
-## L1 ticket corpus ↔ MCP scenario cross-links
+## L1 ticket CSV ↔ MCP scenario cross-links
 
-Golden helpdesk tickets live in [`docs/tickets/`](tickets/) (`l1-ticket-corpus.json`).
-They are **eval fixtures** (not live Salesforce Cases). Repo-grounded tickets map to the MCP matrix above:
+Golden helpdesk tickets live in [`docs/tickets/`](tickets/) as Sales/Service CSV tables (loaded directly by the backend).
+They are **eval fixtures** (not live Salesforce Cases). Notable tickets map to the MCP matrix above:
 
 | Eval ticket | Cloud / area | Linked MCP scenarios | Repo artifacts |
 |-------------|--------------|----------------------|----------------|
@@ -188,39 +188,28 @@ They are **eval fixtures** (not live Salesforce Cases). Repo-grounded tickets ma
 | `TSE-003` | Service / Knowledge Management | `L1-K1`, `L1-K2`, `L1-K3`, `L2-K1` | `KnowledgeTranslationPublishService`, `KnowledgeTranslationQueueHelper` |
 | `TSE-009` | Service / Contracts & Entitlements | `L2-CM1`, `L2-CM2`, `L2-CM3` | `CaseMilestoneLockGuidance` |
 
-**Suites** (see corpus `suites` block):
+**Suites** (CSV cloud filters only — no curated id decks):
 
 | Suite id | Meaning |
 |----------|---------|
-| `sales_l1` | All 20 Sales Cloud L1 tickets (mostly procedural Salesforce UI/process) |
-| `service_l1` | All 20 Service Cloud L1 tickets |
-| `repo_grounded` | Only the three tickets above (must cite this repo) |
-| `all_l1` | Full 40-ticket corpus |
+| `sales_l1` | All Sales Cloud L1 CSV rows |
+| `service_l1` | All Service Cloud L1 CSV rows |
+| `all_l1` | Full CSV corpus (default) |
 
 Backend eval entry points (no Salesforce Case writeback):
 
 - `GET /auto-resolution/ticket-eval/suites`
-- `GET /auto-resolution/ticket-eval/tickets?suite=repo_grounded`
+- `GET /auto-resolution/ticket-eval/tickets?suite=all_l1`
 - `POST /auto-resolution/ticket-eval/tickets/:ticketId/run`
 - `POST /auto-resolution/ticket-eval/suites/:suiteId/run`
 
-Use end-user phrasing from the CSV `issueText` as variants of the MCP questions — same ground truth, richer natural language.
+Use end-user phrasing from the CSV problem column as variants of the MCP questions — same ground truth, richer natural language.
 
-### CEO demo scenarios
+### Demo situations
 
-Curated CEO walkthrough scenarios live in [`tickets/ceo-demo-scenarios.json`](tickets/ceo-demo-scenarios.json):
+Auto Resolution Demo lists tickets from the CSV suites (`all_l1` by default). The situation text is the ticket `issueText` / `subject`.
 
-| Scenario id | Ticket | Mode |
-|-------------|--------|------|
-| `knowledge-publish-blocked` | `TSE-003` | safe eval + optional translation mutation |
-| `attach-article-to-case` | `TSE-001` | safe eval + optional live Case answer |
-| `milestone-lock-guardrail` | `TSE-009` | diagnosis-only (no override) |
-| `sales-lead-assignment` | `TS-006` | procedural Sales how-to |
-| `missing-entitlement-timer` | `TSE-002` | safe eval + optional live Case answer |
-| `parent-child-cases` | `TSE-007` | safe eval + parent/child Case fixtures |
-| `case-clone-assignment` | `TSE-013` | safe eval + optional live Case answer |
-
-Org situations are seeded by `JatakaDemoFixtureService` / REST `/jataka/v1/demo-fixtures`.
+Org fixtures (optional live writeback) are seeded by `JatakaDemoFixtureService` / REST `/jataka/v1/demo-fixtures` when the Salesforce connector supports it for that ticket id.
 Dashboard page: `/auto-resolution-demo`.
 
 ---
