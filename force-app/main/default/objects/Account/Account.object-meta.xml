@@ -8,4 +8,12 @@
         <errorDisplayField>Name</errorDisplayField>
         <errorMessage>Account names cannot contain BLOCKED.</errorMessage>
     </validationRules>
+    <validationRules>
+        <fullName>Block_Legacy_Updates</fullName>
+        <active>true</active>
+        <description>L3 demo trap: blocks edits to Acme Corp / Recipe Test Account for rich-approval demos. (Org Trailhead AccountTrigger blocks creating Name=Acme Corp, so Recipe Test Account is the live seed.)</description>
+        <errorConditionFormula>AND(NOT(ISNEW()), OR(Name = &quot;Acme Corp&quot;, Name = &quot;Recipe Test Account&quot;))</errorConditionFormula>
+        <errorDisplayField>Name</errorDisplayField>
+        <errorMessage>Updates to this legacy account are blocked by Block_Legacy_Updates. Contact a System Administrator.</errorMessage>
+    </validationRules>
 </CustomObject>
