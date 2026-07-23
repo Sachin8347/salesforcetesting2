@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jataka.io/schemas/salesforce-fidelity-manifest-v1.json",
+  "title": "Jataka Salesforce Fidelity Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "benchmark_id",
+    "title",
+    "case_count",
+    "release_gate",
+    "required_showcases",
+    "cases"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "benchmark_id": {"const": "salesforce-fidelity-v1"},
+    "title": {"type": "string", "minLength": 8},
+    "case_count": {"const": 20},
+    "release_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "blast_radius_accuracy",
+        "first_pass_compilation",
+        "sandbox_verification"
+      ],
+      "properties": {
+        "blast_radius_accuracy": {"type": "number", "minimum": 0.8, "maximum": 1},
+        "first_pass_compilation": {"type": "number", "minimum": 0.8, "maximum": 1},
+        "sandbox_verification": {"type": "number", "minimum": 0.8, "maximum": 1}
+      }
+    },
+    "required_showcases": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "hidden_dependency_5_hop",
+          "zero_syntax_1000_line",
+          "hidden_interprocedural_o_n2",
+          "bitemporal_orphan_drift"
+        ]
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 20,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "path", "sha256"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^SF-FID-[0-9]{3}$"},
+          "path": {"type": "string", "pattern": "^cases/SF-FID-[0-9]{3}\\.json$"},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    }
+  }
+}
+

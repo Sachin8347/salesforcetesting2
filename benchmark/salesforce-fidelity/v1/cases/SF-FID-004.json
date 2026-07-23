@@ -1,0 +1,150 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-004/FidelityRecursiveAccountHandler.cls",
+          "needle": "public static void afterUpdate"
+        },
+        "from": "AccountAfterUpdate",
+        "kind": "CALLS",
+        "to": "FidelityRecursiveAccountHandler.afterUpdate"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-004/FidelityRecursiveAccountHandler.cls",
+          "needle": "update pending"
+        },
+        "from": "FidelityRecursiveAccountHandler.afterUpdate",
+        "kind": "REENTERS_TRIGGER",
+        "to": "Account"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "AccountAfterUpdate",
+        "type": "ApexTrigger"
+      },
+      {
+        "id": "FidelityRecursiveAccountHandler.afterUpdate",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Account",
+        "type": "Object"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "AccountAfterUpdate",
+      "type": "ApexTrigger"
+    }
+  },
+  "category": "automation",
+  "description": "An after-update handler writes the triggering Accounts again without a transaction guard, recursively re-entering automation.",
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-004",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "key": "FidelityRecursiveAccountHandler.afterUpdate",
+          "on_reentry": {
+            "type": "ReturnStatement"
+          },
+          "type": "TransactionGuard"
+        },
+        "operation": "insert_before",
+        "target": {
+          "node_type": "MethodBody",
+          "selector": "first_statement",
+          "symbol": "FidelityRecursiveAccountHandler.afterUpdate"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityRecursiveAccountHandler",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-004/FidelityRecursiveAccountHandler.cls",
+        "sha256": "7b7ddb1cd5f13ba5c6ff70852810a4510146c503aa9128f09355b9359c56a95f"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-004/FidelityRecursiveAccountHandler.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "Recursive account trigger handler",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "One update executes the handler once and preserves the intended normalized description.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Recursive account trigger handler with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "Saving an Account completes once without a maximum trigger depth error.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, Description FROM Account WHERE Id = :accountId"
+      ],
+      "assertions": [
+        "Description is Normalized and one audit event was emitted."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

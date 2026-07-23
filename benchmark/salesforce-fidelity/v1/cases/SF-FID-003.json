@@ -1,0 +1,183 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-003/FidelityHiddenQuadraticService.cls",
+          "needle": "return dispatch(accounts, contacts)"
+        },
+        "from": "FidelityHiddenQuadraticService.scoreAccounts",
+        "kind": "CALLS",
+        "to": "FidelityHiddenQuadraticService.dispatch"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-003/FidelityHiddenQuadraticService.cls",
+          "needle": "return calculate(accounts, contacts)"
+        },
+        "from": "FidelityHiddenQuadraticService.dispatch",
+        "kind": "CALLS",
+        "to": "FidelityHiddenQuadraticService.calculate"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-003/FidelityHiddenQuadraticService.cls",
+          "needle": "countMatches(accountRecord.Id, contacts)"
+        },
+        "from": "FidelityHiddenQuadraticService.calculate",
+        "kind": "CALLS_IN_LOOP",
+        "to": "FidelityHiddenQuadraticService.countMatches"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-003/FidelityHiddenQuadraticService.cls",
+          "needle": "contactRecord.AccountId == accountId"
+        },
+        "from": "FidelityHiddenQuadraticService.countMatches",
+        "kind": "READS_IN_LOOP",
+        "to": "Contact.AccountId"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityHiddenQuadraticService.scoreAccounts",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "FidelityHiddenQuadraticService.dispatch",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "FidelityHiddenQuadraticService.calculate",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "FidelityHiddenQuadraticService.countMatches",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Contact.AccountId",
+        "type": "CustomField"
+      }
+    ],
+    "required_hops": 4,
+    "root": {
+      "id": "FidelityHiddenQuadraticService.scoreAccounts",
+      "type": "ApexMethod"
+    }
+  },
+  "category": "governor_limits",
+  "description": "A trigger-facing method calls through three helpers before a nested scan, hiding O(n^2) work from basic loop linters.",
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-003",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "index": {
+            "input": "contacts",
+            "key_field": "Contact.AccountId",
+            "type": "MapAccumulator",
+            "value": "COUNT"
+          },
+          "lookup": {
+            "default": 0,
+            "key_field": "Account.Id",
+            "map": "contactCountsByAccount"
+          },
+          "type": "LinearIndexPlan"
+        },
+        "operation": "replace_node",
+        "target": {
+          "node_type": "ForStatement",
+          "selector": "loop:accounts",
+          "symbol": "FidelityHiddenQuadraticService.calculate"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "hidden_interprocedural_o_n2",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityHiddenQuadraticService",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-003/FidelityHiddenQuadraticService.cls",
+        "sha256": "0fb4adc090aae25e71eebe1a8a60c0f8f7aaa049a0131d440a78eb6b02d6a52e"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-003/FidelityHiddenQuadraticService.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 20,
+    "prerequisites": []
+  },
+  "title": "Hidden interprocedural quadratic CPU path",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "Ten thousand Accounts and Contacts finish under the configured CPU ceiling with linear operation growth.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Hidden interprocedural quadratic CPU path with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "The profile run displays projected complexity O(n) and permits the pull request.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT AccountId, COUNT(Id) total FROM Contact WHERE AccountId IN :accountIds GROUP BY AccountId"
+      ],
+      "assertions": [
+        "Grouped database counts equal all indexed Apex counts."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-006/FidelityRevenueController.cls",
+          "needle": "AnnualRevenue"
+        },
+        "from": "FidelityRevenueController.loadRevenue",
+        "kind": "READS_FIELD",
+        "to": "Account.AnnualRevenue"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-006/FidelityRevenueController.cls",
+          "needle": "public static List<Account> loadRevenue"
+        },
+        "from": "Account.AnnualRevenue",
+        "kind": "GOVERNED_BY_FLS",
+        "to": "Standard User"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityRevenueController.loadRevenue",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Account.AnnualRevenue",
+        "type": "CustomField"
+      },
+      {
+        "id": "Standard User",
+        "type": "Profile"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "FidelityRevenueController.loadRevenue",
+      "type": "ApexMethod"
+    }
+  },
+  "category": "security",
+  "description": "A cacheable controller returns annual revenue without checking field readability for the current user.",
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-006",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "access_level": "USER_MODE",
+          "fields": [
+            "Id",
+            "Name",
+            "AnnualRevenue"
+          ],
+          "predicate": {
+            "binding": "accountIds",
+            "field": "Id",
+            "operator": "IN"
+          },
+          "security_enforced": true,
+          "sobject": "Account",
+          "type": "SoqlQuery"
+        },
+        "operation": "replace_node",
+        "target": {
+          "node_type": "SoqlQuery",
+          "selector": "query:Account",
+          "symbol": "FidelityRevenueController.loadRevenue"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityRevenueController",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-006/FidelityRevenueController.cls",
+        "sha256": "1e3cd875b2df9acb447b46435557974853de4cb1574f08b861f7c4b1396aa1ae"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-006/FidelityRevenueController.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "Missing field-level security enforcement",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "A user without AnnualRevenue read access cannot retrieve the field; authorized users still can.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Missing field-level security enforcement with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "The revenue column is absent for the Standard User and visible for the finance persona.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, Name, AnnualRevenue FROM Account WITH USER_MODE"
+      ],
+      "assertions": [
+        "The query respects the executing user's field permissions."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

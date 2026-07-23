@@ -1,0 +1,119 @@
+{
+  "benchmark_id": "salesforce-fidelity-v1",
+  "case_count": 20,
+  "cases": [
+    {
+      "id": "SF-FID-001",
+      "path": "cases/SF-FID-001.json",
+      "sha256": "0781ca8b110a3a31a4e53d902ff499b925c87c411381d6d9b4147db4153d44ce"
+    },
+    {
+      "id": "SF-FID-002",
+      "path": "cases/SF-FID-002.json",
+      "sha256": "454f8160986a9c93e8959544e910d3d4daa0fef7160631315a48e3807365e284"
+    },
+    {
+      "id": "SF-FID-003",
+      "path": "cases/SF-FID-003.json",
+      "sha256": "e04f19234025086a79578112b2501b83c74499b2ae90fdbe296eb8e7f43ca398"
+    },
+    {
+      "id": "SF-FID-004",
+      "path": "cases/SF-FID-004.json",
+      "sha256": "ea289784da08575b6266c0ce2cd55ec827845152779488d91d775fc7cc5d0c14"
+    },
+    {
+      "id": "SF-FID-005",
+      "path": "cases/SF-FID-005.json",
+      "sha256": "f20d678f844b1ba268475e60a169b6473eae344992c536e1e127ec73f2fec357"
+    },
+    {
+      "id": "SF-FID-006",
+      "path": "cases/SF-FID-006.json",
+      "sha256": "ad5c17c2d5c9db27076f4b5edb5cee83e7232d76b3a4215e3f8c111b9ae4a7a1"
+    },
+    {
+      "id": "SF-FID-007",
+      "path": "cases/SF-FID-007.json",
+      "sha256": "02beb482a8e1b5e9e0e7e768898c212f8850e8803cd7fd2b6b8c65cdfcede091"
+    },
+    {
+      "id": "SF-FID-008",
+      "path": "cases/SF-FID-008.json",
+      "sha256": "e79a83b59ef4151d4ca375d77016289b8426f1b137bef2dbeb6523e6d218fcd2"
+    },
+    {
+      "id": "SF-FID-009",
+      "path": "cases/SF-FID-009.json",
+      "sha256": "78aba91d6c3991f91269d7a6e98cc09a58721e6416919cad08052b145c9ffc17"
+    },
+    {
+      "id": "SF-FID-010",
+      "path": "cases/SF-FID-010.json",
+      "sha256": "93b8066cfa2d1a899c651450f60422a17d8ab5901f18532a4a33faa785978886"
+    },
+    {
+      "id": "SF-FID-011",
+      "path": "cases/SF-FID-011.json",
+      "sha256": "66ce1af0bab6fadc38e4ab53373b83a1ed38dd45c9e74804f73dcaa5e85e55d8"
+    },
+    {
+      "id": "SF-FID-012",
+      "path": "cases/SF-FID-012.json",
+      "sha256": "d648fcd7be7dec5b58c4146f98ad56ae116fb30cfe837c1f0b48b0bb881835e9"
+    },
+    {
+      "id": "SF-FID-013",
+      "path": "cases/SF-FID-013.json",
+      "sha256": "4230fb6e79d132b937ecec2ad66fe29384bcd549dc7ac5abe828299ae3bce24d"
+    },
+    {
+      "id": "SF-FID-014",
+      "path": "cases/SF-FID-014.json",
+      "sha256": "a1e9062aa673b021bb0d88adc3cc9d3b8406670ad6a91186d099bf77f5dd4001"
+    },
+    {
+      "id": "SF-FID-015",
+      "path": "cases/SF-FID-015.json",
+      "sha256": "d87b24f30b2c2a47b200a61e2ef43678fb969685c47a9bd6626436963828393c"
+    },
+    {
+      "id": "SF-FID-016",
+      "path": "cases/SF-FID-016.json",
+      "sha256": "9b9902ce67b5b8b7907ea72a2d8ab1022400b58d27f6e5c502425bc1d711f354"
+    },
+    {
+      "id": "SF-FID-017",
+      "path": "cases/SF-FID-017.json",
+      "sha256": "a59c0eb8b7565b60d7fb495e4a3b09fba399beb21942a5e2be919cca622af6f9"
+    },
+    {
+      "id": "SF-FID-018",
+      "path": "cases/SF-FID-018.json",
+      "sha256": "29df5a28c681db9d1d5242c2f11f796310316a18df28f425aee4d3d1c2a95fbc"
+    },
+    {
+      "id": "SF-FID-019",
+      "path": "cases/SF-FID-019.json",
+      "sha256": "9a7e37d10d3a7898ef8636528ae19c295c81c2ca456c196a4b1c03adb6a4eda8"
+    },
+    {
+      "id": "SF-FID-020",
+      "path": "cases/SF-FID-020.json",
+      "sha256": "c48468de35af75409893b5af68350dedb0ba265e67f32264f993baf072257543"
+    }
+  ],
+  "release_gate": {
+    "blast_radius_accuracy": 0.8,
+    "first_pass_compilation": 0.8,
+    "sandbox_verification": 0.8
+  },
+  "required_showcases": [
+    "hidden_dependency_5_hop",
+    "zero_syntax_1000_line",
+    "hidden_interprocedural_o_n2",
+    "bitemporal_orphan_drift"
+  ],
+  "schema_version": "1.0.0",
+  "title": "Jataka Internal Salesforce Fidelity Benchmark"
+}

@@ -1,0 +1,152 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-019/FidelityRenewalDateService.cls",
+          "needle": "contractEnd.date()"
+        },
+        "from": "FidelityRenewalDateService.renewalDate",
+        "kind": "IMPLICIT_TIMEZONE",
+        "to": "User.TimeZoneSidKey"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-019/FidelityRenewalDateService.cls",
+          "needle": "return contractEnd.date()"
+        },
+        "from": "User.TimeZoneSidKey",
+        "kind": "SHIFTS_DATE",
+        "to": "Contract.EndDate"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityRenewalDateService.renewalDate",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "User.TimeZoneSidKey",
+        "type": "CustomField"
+      },
+      {
+        "id": "Contract.EndDate",
+        "type": "CustomField"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "FidelityRenewalDateService.renewalDate",
+      "type": "ApexMethod"
+    }
+  },
+  "category": "data_integrity",
+  "description": "A renewal scheduler converts DateTime through the running user's timezone, shifting boundary-date renewals for global users.",
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-019",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "arguments": [],
+          "method": "dateGmt",
+          "receiver": {
+            "name": "contractEnd",
+            "type": "Identifier"
+          },
+          "type": "MethodCall"
+        },
+        "operation": "replace_node",
+        "target": {
+          "node_type": "MethodCall",
+          "selector": "contractEnd.date",
+          "symbol": "FidelityRenewalDateService.renewalDate"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityRenewalDateService",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-019/FidelityRenewalDateService.cls",
+        "sha256": "4173376730e4297ed0d927c786b24a575ea6e3f2be71cf127aa9b505b9838ea8"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-019/FidelityRenewalDateService.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "User-timezone renewal date drift",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "Users in UTC-8 and UTC+10 receive the same contractual date for the same instant.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for User-timezone renewal date drift with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "The renewal date displayed in both personas matches the UTC contractual date.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, EndDate FROM Contract WHERE Id = :contractId"
+      ],
+      "assertions": [
+        "EndDate equals the dateGmt-derived expected date."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-010/FidelityInvoiceCalloutService.cls",
+          "needle": "update opportunityRecord"
+        },
+        "from": "FidelityInvoiceCalloutService.sendInvoice",
+        "kind": "UPDATES",
+        "to": "Opportunity"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-010/FidelityInvoiceCalloutService.cls",
+          "needle": "callout:InvoiceGateway/invoices"
+        },
+        "from": "Opportunity",
+        "kind": "CALLOUT_AFTER_DML",
+        "to": "InvoiceGateway"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityInvoiceCalloutService.sendInvoice",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Opportunity",
+        "type": "Object"
+      },
+      {
+        "id": "InvoiceGateway",
+        "type": "ManagedPackageBoundary"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "FidelityInvoiceCalloutService.sendInvoice",
+      "type": "ApexMethod"
+    }
+  },
+  "category": "async",
+  "description": "An invoice method updates Opportunity before making an HTTP callout, causing uncommitted-work failure.",
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-010",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "steps": [
+            {
+              "arguments": [
+                {
+                  "name": "opportunityRecord.Id",
+                  "type": "Identifier"
+                }
+              ],
+              "method": "send",
+              "receiver": {
+                "name": "InvoiceGatewayClient",
+                "type": "Identifier"
+              },
+              "type": "MethodCall"
+            },
+            {
+              "operand": "opportunityRecord",
+              "operation": "UPDATE",
+              "type": "DmlStatement"
+            }
+          ],
+          "type": "TransactionSequence"
+        },
+        "operation": "replace_node",
+        "target": {
+          "node_type": "MethodBody",
+          "selector": "entire_body",
+          "symbol": "FidelityInvoiceCalloutService.sendInvoice"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityInvoiceCalloutService",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-010/FidelityInvoiceCalloutService.cls",
+        "sha256": "63e9c65d5718e139ab83afeb5af527fc903998b590c3d7c8cbe23ef144423e83"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-010/FidelityInvoiceCalloutService.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "Callout attempted after database update",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "The callout executes before DML and the mocked 202 response is retained.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Callout attempted after database update with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "Send Invoice completes and status changes to Invoice queued.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, Description FROM Opportunity WHERE Id = :opportunityId"
+      ],
+      "assertions": [
+        "Description changes only after the gateway returns success."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

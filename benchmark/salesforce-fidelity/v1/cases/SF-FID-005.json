@@ -1,0 +1,167 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-005/FidelityNullGuardController.cls",
+          "needle": "FROM Account"
+        },
+        "from": "FidelityNullGuardController.loadAccount",
+        "kind": "QUERIES",
+        "to": "Account"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-005/FidelityNullGuardController.cls",
+          "needle": "SELECT Id, Name"
+        },
+        "from": "Account",
+        "kind": "READS_FIELD",
+        "to": "Account.Name"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityNullGuardController.loadAccount",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Account",
+        "type": "Object"
+      },
+      {
+        "id": "Account.Name",
+        "type": "CustomField"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "FidelityNullGuardController.loadAccount",
+      "type": "ApexMethod"
+    }
+  },
+  "category": "data_integrity",
+  "description": "An Aura controller queries with a missing record identifier, returning a misleading query exception instead of a deterministic client error.",
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-005",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "condition": {
+            "left": {
+              "name": "accountId",
+              "type": "Identifier"
+            },
+            "operator": "==",
+            "right": {
+              "type": "NullLiteral"
+            },
+            "type": "BinaryExpression"
+          },
+          "then": {
+            "arguments": [
+              {
+                "type": "StringLiteral",
+                "value": "Account id is required."
+              }
+            ],
+            "exception": "AuraHandledException",
+            "type": "ThrowStatement"
+          },
+          "type": "IfStatement"
+        },
+        "operation": "insert_before",
+        "target": {
+          "node_type": "SoqlQuery",
+          "selector": "query:Account",
+          "symbol": "FidelityNullGuardController.loadAccount"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityNullGuardController",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-005/FidelityNullGuardController.cls",
+        "sha256": "92136e3f02920b2cd9e030e02bd8c4e4fbe2bd8b7ee15f8eb98e93bdeb2aa537"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-005/FidelityNullGuardController.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "Null identifier queried by controller",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "A null identifier throws AuraHandledException before Limits.getQueries changes.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Null identifier queried by controller with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "Opening the component without record context shows Account id is required and no generic error.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, Name FROM Account WHERE Id = :accountId"
+      ],
+      "assertions": [
+        "A valid identifier still returns exactly one Account."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

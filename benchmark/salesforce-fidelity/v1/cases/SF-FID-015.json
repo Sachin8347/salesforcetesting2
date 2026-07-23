@@ -1,0 +1,232 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-015/flows/FidelityCreditReview.flow-meta.xml",
+          "needle": "<field>Jataka_Credit_Score__c</field>"
+        },
+        "from": "Account.Jataka_Credit_Score__c",
+        "kind": "STARTS_FLOW",
+        "to": "FidelityCreditReview"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-015/flows/FidelityCreditReview.flow-meta.xml",
+          "needle": "<actionName>FidelityCreditAction.evaluate</actionName>"
+        },
+        "from": "FidelityCreditReview",
+        "kind": "INVOKES_APEX",
+        "to": "FidelityCreditAction"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-015/classes/FidelityCreditAction.cls",
+          "needle": "public static void evaluate"
+        },
+        "from": "FidelityCreditAction",
+        "kind": "DECLARES",
+        "to": "FidelityCreditAction.evaluate"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-015/classes/FidelityCreditAction.cls",
+          "needle": "Type.forName('ncino', 'CreditDecisionService')"
+        },
+        "from": "FidelityCreditAction.evaluate",
+        "kind": "RESOLVES_NAMESPACE",
+        "to": "ncino.CreditDecisionService"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-015/managed-boundary.json",
+          "needle": "Account.Fidelity_Credit_Gate"
+        },
+        "from": "ncino.CreditDecisionService",
+        "kind": "TRIGGERS_VALIDATION",
+        "to": "Account.Fidelity_Credit_Gate"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "Account.Jataka_Credit_Score__c",
+        "type": "CustomField"
+      },
+      {
+        "id": "FidelityCreditReview",
+        "type": "Flow"
+      },
+      {
+        "id": "FidelityCreditAction",
+        "type": "ApexClass"
+      },
+      {
+        "id": "FidelityCreditAction.evaluate",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "ncino.CreditDecisionService",
+        "type": "ManagedPackageBoundary"
+      },
+      {
+        "id": "Account.Fidelity_Credit_Gate",
+        "type": "ValidationRule"
+      }
+    ],
+    "required_hops": 5,
+    "root": {
+      "id": "Account.Jataka_Credit_Score__c",
+      "type": "CustomField"
+    }
+  },
+  "category": "dependency_graph",
+  "description": "A custom field starts a Flow, invokes Apex, crosses a managed-package namespace, and reaches a validation rule through the same transaction.",
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-015",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "condition": {
+            "left": {
+              "field": "Jataka_Credit_Score__c",
+              "receiver": "accountRecord",
+              "type": "FieldAccess"
+            },
+            "operator": "<",
+            "right": {
+              "type": "IntegerLiteral",
+              "value": 600
+            },
+            "type": "BinaryExpression"
+          },
+          "then": {
+            "target": {
+              "field": "Rating",
+              "receiver": "accountRecord",
+              "type": "FieldAccess"
+            },
+            "type": "Assignment",
+            "value": {
+              "type": "StringLiteral",
+              "value": "Warm"
+            }
+          },
+          "type": "IfStatement"
+        },
+        "operation": "insert_before",
+        "target": {
+          "node_type": "DmlStatement",
+          "selector": "update:accountRecord",
+          "symbol": "FidelityCreditAction.evaluate"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "hidden_dependency_5_hop",
+  "source": {
+    "deployability": "requires_managed_package_stub",
+    "entry_symbol": "Account.Jataka_Credit_Score__c",
+    "fixtures": [
+      {
+        "kind": "object_metadata",
+        "path": "fixtures/SF-FID-015/objects/Account/fields/Jataka_Credit_Score__c.field-meta.xml",
+        "sha256": "80a3b2fc6339cadf99a757704337d762672d746eaae8bd115be2d92d225b2544"
+      },
+      {
+        "kind": "flow_metadata",
+        "path": "fixtures/SF-FID-015/flows/FidelityCreditReview.flow-meta.xml",
+        "sha256": "3147490e6b263d4d94d1d46a39cc253b08f892e3f3ff561ac7ef3c905f72e331"
+      },
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-015/classes/FidelityCreditAction.cls",
+        "sha256": "f34a413cc042be9b2f16da108f250815426798524522d07c1cb78dac32835ed2"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-015/classes/FidelityCreditAction.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "kind": "boundary_contract",
+        "path": "fixtures/SF-FID-015/managed-boundary.json",
+        "sha256": "5ae440a8745ea930ef09e936a44411e468dafb14c0d570f93ab8fa8eb4652ed4"
+      },
+      {
+        "kind": "validation_rule_metadata",
+        "path": "fixtures/SF-FID-015/objects/Account/validationRules/Fidelity_Credit_Gate.validationRule-meta.xml",
+        "sha256": "029415d1f2858b022c6dba322c8ede0bda975aa7f6f8b94400da39a0516bc7f2"
+      }
+    ],
+    "minimum_lines": 50,
+    "prerequisites": [
+      "A benchmark stub or licensed ncino.CreditDecisionService implementation"
+    ]
+  },
+  "title": "Five-hop managed-package dependency chain",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "Scores below 600 remain Warm and the complete five-hop dependency path is attached to the test result.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Five-hop managed-package dependency chain with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "Credit review saves successfully and displays the package decision with its validation rationale.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, Jataka_Credit_Score__c, Rating FROM Account WHERE Id = :accountId"
+      ],
+      "assertions": [
+        "A score below 600 never persists Rating=Hot."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "downstream_validation_rule": "Account.Fidelity_Credit_Gate",
+  "entry_method": "evaluate",
+  "namespace": "ncino",
+  "symbol": "CreditDecisionService",
+  "transaction_effect": "Account.Rating becomes Hot"
+}

@@ -1,0 +1,165 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-001/FidelityDirectQueryService.cls",
+          "needle": "for (Account accountRecord : accounts)"
+        },
+        "from": "FidelityDirectQueryService.contactCounts",
+        "kind": "ITERATES",
+        "to": "Account"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-001/FidelityDirectQueryService.cls",
+          "needle": "WHERE AccountId = :accountRecord.Id"
+        },
+        "from": "Account",
+        "kind": "QUERIES_BY",
+        "to": "Contact.AccountId"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityDirectQueryService.contactCounts",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Account",
+        "type": "Object"
+      },
+      {
+        "id": "Contact.AccountId",
+        "type": "CustomField"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "FidelityDirectQueryService.contactCounts",
+      "type": "ApexMethod"
+    }
+  },
+  "category": "governor_limits",
+  "description": "A publication-scale Account batch issues one Contact query per record and exceeds the synchronous query governor limit.",
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-001",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "collect": {
+            "field": "Id",
+            "sobject": "Account",
+            "type": "SetExpression"
+          },
+          "group_by": "AccountId",
+          "query": {
+            "fields": [
+              "Id",
+              "AccountId"
+            ],
+            "predicate": {
+              "binding": "accountIds",
+              "field": "AccountId",
+              "operator": "IN"
+            },
+            "sobject": "Contact",
+            "type": "SoqlQuery"
+          },
+          "type": "BulkQueryPlan"
+        },
+        "operation": "replace_node",
+        "target": {
+          "node_type": "ForStatement",
+          "selector": "loop:accountRecord",
+          "symbol": "FidelityDirectQueryService.contactCounts"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityDirectQueryService",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-001/FidelityDirectQueryService.cls",
+        "sha256": "9b5628b22208553b54ae2fb9650bfdb663300c61d8ce1fd11171f4ebf4c3f98f"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-001/FidelityDirectQueryService.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "SOQL query inside account loop",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "Two hundred Accounts complete with one Contact query and correct zero counts.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for SOQL query inside account loop with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "The Account contact-count panel renders the expected count without a save error.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT AccountId, COUNT(Id) total FROM Contact WHERE AccountId IN :accountIds GROUP BY AccountId"
+      ],
+      "assertions": [
+        "Returned grouped counts equal the Apex result for every seeded Account."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <errorConditionFormula>AND(Rating = "Hot", Jataka_Credit_Score__c &lt; 600)</errorConditionFormula>
+    <errorMessage>Hot credit decisions require a score of at least 600.</errorMessage>
+</ValidationRule>
