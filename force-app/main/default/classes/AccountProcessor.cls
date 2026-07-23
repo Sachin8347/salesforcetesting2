@@ -1,4 +1,5 @@
 public with sharing class AccountProcessor {
+    // Jataka branch synchronization probe.
     public static Map<Id, Integer> countContacts(List<Account> accounts) {
         Map<Id, Integer> contactCounts = new Map<Id, Integer>();
 
