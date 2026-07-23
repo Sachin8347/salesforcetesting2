@@ -1,0 +1,22 @@
+{
+  "algorithm": "sha256",
+  "bundle_sha256": "8c3ab0e518ad982fb6eeda720829307883a321ea9b51bb53f013ab7ccfdee0a4",
+  "files": {
+    "config/project-scratch-def.json": "d6fd35dde52c8feb5cd9c8963fbd0c2fd8d1dda2f4631897ef2a58c1f6429937",
+    "execution.json": "116c3c688f275383c81455ed22c4b6c0478f178c28b1c887bb1cf6f2532c2357",
+    "package/main/default/classes/FidelityBenchmark020Test.cls": "2fa1773741290839038be53a0ae7be9c69610fc06b838463f116c3b5e640f723",
+    "package/main/default/classes/FidelityBenchmark020Test.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityBenchmarkHarnessController.cls": "d9b9a05be6ac73735de9e5ed3c18694055eb4b06cb6d131a3d78a1d859aa79c7",
+    "package/main/default/classes/FidelityBenchmarkHarnessController.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityBenchmarkScenario.cls": "0a4779ada453f73368ff0c2a9463d2d67a41e056ec7de8937cbd4698cca715ed",
+    "package/main/default/classes/FidelityBenchmarkScenario.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityEventConsumer.cls": "9d78b2667b53a67f41f1c61318b57502dbed03de1de5d864b0d445070e73ec8c",
+    "package/main/default/classes/FidelityEventConsumer.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/objects/Case/fields/External_Event_Id__c.field-meta.xml": "21b4301836bb906f760a9d8e34dcffb6d7c09db35dd6e72330f617c5b199b1eb",
+    "package/main/default/pages/FidelityBenchmark.page": "80df93bec1cda66e1e7b402de5b6e2b5c74bbf67a305897f658822fed5c787f5",
+    "package/main/default/pages/FidelityBenchmark.page-meta.xml": "6541db68f73bc28f93ccccd1dba5dd5be8501dfddee9304feda06d836baf3f20",
+    "scripts/seed.apex": "a3ba26302f72b1cd7f08f2e287642bca116971650e6966f20c45bfad9f11b1d1",
+    "sfdx-project.json": "a316e5091d2166597ffaf805264db123bb675d98f05b91c4e16c34f45ec86f59"
+  },
+  "schema_version": "1.0.0"
+}

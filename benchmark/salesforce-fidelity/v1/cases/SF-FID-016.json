@@ -42,6 +42,14 @@
   },
   "category": "compiler",
   "description": "A 1,000-plus-line Apex service contains one unsafe query loop; the benchmark requires a localized AST transformation without regenerating the class.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark016Test",
+    "bundle_lock": "execution/SF-FID-016/bundle.lock.json",
+    "bundle_sha256": "005b85d20fe3a3299c9c0792a326963931df200a4a194a7be7c4fc935d01a048",
+    "descriptor": "execution/SF-FID-016/execution.json",
+    "descriptor_sha256": "5d3e992ac732e404b169c0781f315a0c530a6a6b01e63132ee83d4ba44d4e7db",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

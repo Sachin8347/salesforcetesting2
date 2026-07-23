@@ -42,6 +42,14 @@
   },
   "category": "async",
   "description": "An invoice method updates Opportunity before making an HTTP callout, causing uncommitted-work failure.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark010Test",
+    "bundle_lock": "execution/SF-FID-010/bundle.lock.json",
+    "bundle_sha256": "ffc4c06f2de143221c4b2b5d3f3acca5c68b669cb260d1e6b7fa1e4503c07330",
+    "descriptor": "execution/SF-FID-010/execution.json",
+    "descriptor_sha256": "4597a353cdb9596bb2a17b68dc6b5ce78a31ed29e345c6e65b67339f4a9a44e1",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

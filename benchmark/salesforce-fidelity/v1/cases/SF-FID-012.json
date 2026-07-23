@@ -42,6 +42,14 @@
   },
   "category": "security",
   "description": "A search controller concatenates untrusted text into dynamic SOQL, allowing predicate injection and data overexposure.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark012Test",
+    "bundle_lock": "execution/SF-FID-012/bundle.lock.json",
+    "bundle_sha256": "a734dd0683c44e92b9087abe17fbf7738370b87ab432b9078df19196413ea1a8",
+    "descriptor": "execution/SF-FID-012/execution.json",
+    "descriptor_sha256": "0188d58d3c23ec28de40c0a116257f3a28ecb260f0881f1f891eb000901b0509",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

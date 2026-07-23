@@ -15,6 +15,7 @@
     "blast_radius",
     "patch_contract",
     "verification",
+    "execution",
     "expected_cleanup"
   ],
   "properties": {
@@ -134,6 +135,7 @@
         "soql": {"$ref": "#/$defs/verificationMode"}
       }
     },
+    "execution": {"$ref": "#/$defs/executionSummary"},
     "expected_cleanup": {
       "type": "object",
       "additionalProperties": false,
@@ -253,6 +255,43 @@
           "type": "array",
           "minItems": 1,
           "items": {"type": "string"}
+        }
+      }
+    },
+    "executionSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "descriptor",
+        "descriptor_sha256",
+        "bundle_lock",
+        "bundle_sha256",
+        "mode",
+        "apex_test_class"
+      ],
+      "properties": {
+        "descriptor": {
+          "type": "string",
+          "pattern": "^execution/SF-FID-[0-9]{3}/execution\\.json$"
+        },
+        "descriptor_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "bundle_lock": {
+          "type": "string",
+          "pattern": "^execution/SF-FID-[0-9]{3}/bundle\\.lock\\.json$"
+        },
+        "bundle_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "mode": {
+          "enum": ["deploy_and_test", "metadata_probe", "event_replay_adapter"]
+        },
+        "apex_test_class": {
+          "type": ["string", "null"],
+          "pattern": "^FidelityBenchmark[0-9]{3}Test$"
         }
       }
     }

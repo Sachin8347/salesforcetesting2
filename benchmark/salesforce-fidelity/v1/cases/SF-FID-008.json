@@ -42,6 +42,14 @@
   },
   "category": "automation",
   "description": "An after-save approval Flow updates a protected field without satisfying the opportunity validation rule's approval context.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark008Test",
+    "bundle_lock": "execution/SF-FID-008/bundle.lock.json",
+    "bundle_sha256": "095f789f1de04b986e3b7ea20c4b7deb135d6c585c01ad3463f6829c4854098d",
+    "descriptor": "execution/SF-FID-008/execution.json",
+    "descriptor_sha256": "22227816c3c02f84976f3aa531ffb186f946433024baf815536fd5ad7505a23d",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,
@@ -79,7 +87,7 @@
       {
         "kind": "flow_metadata",
         "path": "fixtures/SF-FID-008/FidelityDiscountApproval.flow-meta.xml",
-        "sha256": "208ce6de9396f4d5e20f7bff1280b94955e092e15b4fa309cc57638c2e763033"
+        "sha256": "cc30bf290d9788f8c0abd6930b53f6dc6a8423a7db45f1e79cef10d0e64d7846"
       }
     ],
     "minimum_lines": 15,

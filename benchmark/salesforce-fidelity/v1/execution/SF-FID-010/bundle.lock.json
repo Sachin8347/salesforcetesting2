@@ -1,0 +1,23 @@
+{
+  "algorithm": "sha256",
+  "bundle_sha256": "ffc4c06f2de143221c4b2b5d3f3acca5c68b669cb260d1e6b7fa1e4503c07330",
+  "files": {
+    "config/project-scratch-def.json": "790ef088a6ae2d81e041224406fe4533e3d382a66f061a6c9534643d4456da3f",
+    "execution.json": "4597a353cdb9596bb2a17b68dc6b5ce78a31ed29e345c6e65b67339f4a9a44e1",
+    "package/main/default/classes/FidelityBenchmark010Test.cls": "4d2ab814f508e62039014f47ca5ba75cbf8093d8ce7f790da50b4aff389c9816",
+    "package/main/default/classes/FidelityBenchmark010Test.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityBenchmarkHarnessController.cls": "d9b9a05be6ac73735de9e5ed3c18694055eb4b06cb6d131a3d78a1d859aa79c7",
+    "package/main/default/classes/FidelityBenchmarkHarnessController.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityBenchmarkScenario.cls": "56eaa6355d47b33819f9a999f7bf5c51d2b005f8144414bc517b8f28beb37803",
+    "package/main/default/classes/FidelityBenchmarkScenario.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityInvoiceCalloutService.cls": "63e9c65d5718e139ab83afeb5af527fc903998b590c3d7c8cbe23ef144423e83",
+    "package/main/default/classes/FidelityInvoiceCalloutService.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/InvoiceGatewayClient.cls": "0cc23aa3a6cc2b1f28b80c8717f55470e0adfc5d2010ef1efe7fc0d4146c03f2",
+    "package/main/default/classes/InvoiceGatewayClient.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/pages/FidelityBenchmark.page": "a95608cd8e9fce04b4a3a29e8c88dc50c2d391109fef276fa881898290d9e09c",
+    "package/main/default/pages/FidelityBenchmark.page-meta.xml": "6541db68f73bc28f93ccccd1dba5dd5be8501dfddee9304feda06d836baf3f20",
+    "scripts/seed.apex": "a3ba26302f72b1cd7f08f2e287642bca116971650e6966f20c45bfad9f11b1d1",
+    "sfdx-project.json": "4daa721bfe5345a472ae6ca866928f6b39f5f66f0b2e1c1d3d4694c54b9c88b5"
+  },
+  "schema_version": "1.0.0"
+}

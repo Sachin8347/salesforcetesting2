@@ -8,6 +8,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from execution_bundles import build_execution_bundles
+
 
 ROOT = Path(__file__).resolve().parents[1]
 API_VERSION = "60.0"
@@ -689,6 +691,11 @@ def build_cases() -> list[dict[str, Any]]:
     </recordUpdates>
     <start>
         <connector><targetReference>Approve_Discount</targetReference></connector>
+        <filters>
+            <field>Discount_Approved__c</field>
+            <operator>EqualTo</operator>
+            <value><booleanValue>false</booleanValue></value>
+        </filters>
         <object>Opportunity</object>
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
@@ -1110,7 +1117,7 @@ def build_cases() -> list[dict[str, Any]]:
     write_text(rule_path, """<?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <active>true</active>
-    <errorConditionFormula>AND(Rating = "Hot", Jataka_Credit_Score__c &lt; 600)</errorConditionFormula>
+    <errorConditionFormula>AND(ISPICKVAL(Rating, "Hot"), Jataka_Credit_Score__c &lt; 600)</errorConditionFormula>
     <errorMessage>Hot credit decisions require a score of at least 600.</errorMessage>
 </ValidationRule>""")
     fixture15 = [
@@ -1229,6 +1236,10 @@ def build_cases() -> list[dict[str, Any]]:
 
     audit_path = source_path(17, "salesforce-setup-audit-event.json")
     github_path = source_path(17, "github-profile-state.json")
+    profile17_path = source_path(17, "Finance Analyst.profile-meta.xml")
+    dashboard17_path = source_path(
+        17, "objects/Financial_Dashboard__c/Financial_Dashboard__c.object-meta.xml"
+    )
     write_json(audit_path, {
         "event_id": "0YmFidelity000017",
         "event_type": "ProfilePermissionChanged",
@@ -1247,6 +1258,30 @@ def build_cases() -> list[dict[str, Any]]:
         "value": True,
         "transaction_time": "2026-07-23T07:55:00Z",
     })
+    write_text(profile17_path, """<?xml version="1.0" encoding="UTF-8"?>
+<Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <custom>true</custom>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Financial_Dashboard__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+</Profile>""")
+    write_text(dashboard17_path, """<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <label>Financial Dashboard</label>
+    <nameField>
+        <label>Financial Dashboard Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Financial Dashboards</pluralLabel>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>""")
     cases.append({
         "schema_version": "1.0.0",
         "id": "SF-FID-017",
@@ -1258,6 +1293,8 @@ def build_cases() -> list[dict[str, Any]]:
             "fixtures": [
                 {"path": audit_path, "sha256": sha256_file(ROOT / audit_path), "kind": "audit_event"},
                 {"path": github_path, "sha256": sha256_file(ROOT / github_path), "kind": "github_state"},
+                {"path": profile17_path, "sha256": sha256_file(ROOT / profile17_path), "kind": "profile_metadata"},
+                {"path": dashboard17_path, "sha256": sha256_file(ROOT / dashboard17_path), "kind": "object_metadata"},
             ],
             "deployability": "event_replay_only",
             "prerequisites": ["Kafka audit topic", "Temporal Salesforce audit workflow", "Neo4j bitemporal projection"],
@@ -1416,6 +1453,7 @@ def build_cases() -> list[dict[str, Any]]:
                             "key": "eventUuid",
                         },
                         "lookup_field": "Case.External_Event_Id__c",
+                        "write_key_to_field": "Case.External_Event_Id__c",
                         "on_duplicate": "SKIP",
                     },
                 )
@@ -1433,14 +1471,21 @@ def build_cases() -> list[dict[str, Any]]:
 
 
 def freeze(cases: list[dict[str, Any]]) -> None:
+    execution = build_execution_bundles(ROOT, cases)
     for case in cases:
+        case["execution"] = execution[case["id"]]
         write_json(f"cases/{case['id']}.json", case)
 
     case_entries = []
     for case in cases:
         relative = f"cases/{case['id']}.json"
         case_entries.append(
-            {"id": case["id"], "path": relative, "sha256": sha256_file(ROOT / relative)}
+            {
+                "id": case["id"],
+                "path": relative,
+                "sha256": sha256_file(ROOT / relative),
+                "execution": execution[case["id"]],
+            }
         )
     manifest = {
         "schema_version": "1.0.0",
@@ -1451,6 +1496,12 @@ def freeze(cases: list[dict[str, Any]]) -> None:
             "blast_radius_accuracy": 0.8,
             "first_pass_compilation": 0.8,
             "sandbox_verification": 0.8,
+        },
+        "execution_contract": {
+            "bundle_count": 20,
+            "local_source_conversion_required": True,
+            "runtime_evidence_must_be_observed": True,
+            "synthetic_pass_results_forbidden": True,
         },
         "required_showcases": [
             "hidden_dependency_5_hop",
@@ -1467,6 +1518,7 @@ def freeze(cases: list[dict[str, Any]]) -> None:
         for path in ROOT.rglob("*")
         if path.is_file()
         and path.name != "corpus.lock.json"
+        and "node_modules" not in path.parts
         and "__pycache__" not in path.parts
         and not path.name.endswith(".pyc")
     )

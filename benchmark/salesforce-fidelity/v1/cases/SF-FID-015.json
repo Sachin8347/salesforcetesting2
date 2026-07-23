@@ -81,6 +81,14 @@
   },
   "category": "dependency_graph",
   "description": "A custom field starts a Flow, invokes Apex, crosses a managed-package namespace, and reaches a validation rule through the same transaction.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark015Test",
+    "bundle_lock": "execution/SF-FID-015/bundle.lock.json",
+    "bundle_sha256": "a1ab37802e28981e36964a2c338d345713b388d345cffaee200c90b7531f106a",
+    "descriptor": "execution/SF-FID-015/execution.json",
+    "descriptor_sha256": "87eeec09855af6a1cb04f5c494daa9b85cfa86df68ce70f2fc3faa8edbd67e5f",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,
@@ -164,7 +172,7 @@
       {
         "kind": "validation_rule_metadata",
         "path": "fixtures/SF-FID-015/objects/Account/validationRules/Fidelity_Credit_Gate.validationRule-meta.xml",
-        "sha256": "029415d1f2858b022c6dba322c8ede0bda975aa7f6f8b94400da39a0516bc7f2"
+        "sha256": "e0974cddb1e9e1c6849fe1376cc14da79e1e0aaa87407281b73941934e577d2f"
       }
     ],
     "minimum_lines": 50,

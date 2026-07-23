@@ -42,6 +42,14 @@
   },
   "category": "security",
   "description": "A cacheable controller returns annual revenue without checking field readability for the current user.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark006Test",
+    "bundle_lock": "execution/SF-FID-006/bundle.lock.json",
+    "bundle_sha256": "cfe6e8ad610f63d7cd12f38163578b69180730f4de35cedcc3ff09757f3f46a2",
+    "descriptor": "execution/SF-FID-006/execution.json",
+    "descriptor_sha256": "8a1a251bc2a3ba010055ba2f8c69a5f74f8885eeb93d5717909fbab018c30a4b",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

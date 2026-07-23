@@ -42,6 +42,14 @@
   },
   "category": "async",
   "description": "A platform-event consumer creates a Case on every delivery without an idempotency key, duplicating incidents after replay.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark020Test",
+    "bundle_lock": "execution/SF-FID-020/bundle.lock.json",
+    "bundle_sha256": "8c3ab0e518ad982fb6eeda720829307883a321ea9b51bb53f013ab7ccfdee0a4",
+    "descriptor": "execution/SF-FID-020/execution.json",
+    "descriptor_sha256": "116c3c688f275383c81455ed22c4b6c0478f178c28b1c887bb1cf6f2532c2357",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,
@@ -60,7 +68,8 @@
           },
           "lookup_field": "Case.External_Event_Id__c",
           "on_duplicate": "SKIP",
-          "type": "IdempotencyFilter"
+          "type": "IdempotencyFilter",
+          "write_key_to_field": "Case.External_Event_Id__c"
         },
         "operation": "insert_before",
         "target": {

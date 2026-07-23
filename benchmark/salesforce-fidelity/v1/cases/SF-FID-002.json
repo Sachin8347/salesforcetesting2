@@ -42,6 +42,14 @@
   },
   "category": "governor_limits",
   "description": "An opportunity stage update performs one database update per row and exceeds the DML statement governor limit.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark002Test",
+    "bundle_lock": "execution/SF-FID-002/bundle.lock.json",
+    "bundle_sha256": "69b4d0f629f6ab35594a21a513a25c4d2af8248d3ae65538f324fcd43f62859f",
+    "descriptor": "execution/SF-FID-002/execution.json",
+    "descriptor_sha256": "3d63beb26443337376f7b396147c8081d75bed8f064807beaf927fc2f16e7536",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

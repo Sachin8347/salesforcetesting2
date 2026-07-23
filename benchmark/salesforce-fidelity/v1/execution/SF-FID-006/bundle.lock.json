@@ -1,0 +1,21 @@
+{
+  "algorithm": "sha256",
+  "bundle_sha256": "cfe6e8ad610f63d7cd12f38163578b69180730f4de35cedcc3ff09757f3f46a2",
+  "files": {
+    "config/project-scratch-def.json": "407c61115042ac9bd560517e91a5e1c6a5f8c0b9889a5265d268ce609855af89",
+    "execution.json": "8a1a251bc2a3ba010055ba2f8c69a5f74f8885eeb93d5717909fbab018c30a4b",
+    "package/main/default/classes/FidelityBenchmark006Test.cls": "608290844570a331c138d5d22b14aa89f450ab91a9336ffc43043484cbc3b961",
+    "package/main/default/classes/FidelityBenchmark006Test.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityBenchmarkHarnessController.cls": "d9b9a05be6ac73735de9e5ed3c18694055eb4b06cb6d131a3d78a1d859aa79c7",
+    "package/main/default/classes/FidelityBenchmarkHarnessController.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityBenchmarkScenario.cls": "b49584d0012ebfed69ec8029ce379e5f3191a84d11034bedd738bb6b417ec8d3",
+    "package/main/default/classes/FidelityBenchmarkScenario.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityRevenueController.cls": "1e3cd875b2df9acb447b46435557974853de4cb1574f08b861f7c4b1396aa1ae",
+    "package/main/default/classes/FidelityRevenueController.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/pages/FidelityBenchmark.page": "a5a8a7b7f8f0c5de30d3b709342042b462807f8fe2a0c1c012ef71bfac815ca3",
+    "package/main/default/pages/FidelityBenchmark.page-meta.xml": "6541db68f73bc28f93ccccd1dba5dd5be8501dfddee9304feda06d836baf3f20",
+    "scripts/seed.apex": "a3ba26302f72b1cd7f08f2e287642bca116971650e6966f20c45bfad9f11b1d1",
+    "sfdx-project.json": "f014dacbe2e0dffed5d8051d8c07e43e309ccbd2aff14b4835d75a84c2bc428b"
+  },
+  "schema_version": "1.0.0"
+}

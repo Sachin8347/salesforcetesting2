@@ -42,6 +42,14 @@
   },
   "category": "security",
   "description": "A guest profile grants read access to an SSN field that is rendered by a public Experience Cloud component.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark007Test",
+    "bundle_lock": "execution/SF-FID-007/bundle.lock.json",
+    "bundle_sha256": "cd52dc988b088ab1ad28e2652b0c62586b28d41dab0c3bc4b1f2cd9556344d07",
+    "descriptor": "execution/SF-FID-007/execution.json",
+    "descriptor_sha256": "1e8ddf8aeb96c08c81aa56008ac89d7336117d86ab7c2fd99e85a920e6d12919",
+    "mode": "metadata_probe"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

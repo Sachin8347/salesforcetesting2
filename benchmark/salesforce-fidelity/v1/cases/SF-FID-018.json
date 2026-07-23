@@ -42,6 +42,14 @@
   },
   "category": "data_integrity",
   "description": "A bulk integration uses all-or-none DML, so one malformed Account rolls back hundreds of valid records without record-level evidence.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark018Test",
+    "bundle_lock": "execution/SF-FID-018/bundle.lock.json",
+    "bundle_sha256": "58df36614def529fd8ddd44cae7387da46213cf2727ecc39a313a6d95fef739e",
+    "descriptor": "execution/SF-FID-018/execution.json",
+    "descriptor_sha256": "b64f8d75f10bd068e5b7ec3d5129290484a65a73d2efda7e850826cdb5d615b7",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

@@ -1,0 +1,23 @@
+{
+  "algorithm": "sha256",
+  "bundle_sha256": "4cdf9ceadd552720fc7c555145c99adce62cf0d87868187a5b08cd5c61908c41",
+  "files": {
+    "config/project-scratch-def.json": "295cd223985a857e5a32c168a9ca6a70a06c71a490e1393d452035bf121daba6",
+    "execution.json": "0ec33be2330bdcf5107206a14f6f5245c34edb87f1ff46f4d04c8b2fd391fa75",
+    "package/main/default/classes/FidelityBenchmark009Test.cls": "a4f94707906b4c36aefefc09a5e0197bef02bd8523cd4782725ee43c00d0bb65",
+    "package/main/default/classes/FidelityBenchmark009Test.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityBenchmarkHarnessController.cls": "d9b9a05be6ac73735de9e5ed3c18694055eb4b06cb6d131a3d78a1d859aa79c7",
+    "package/main/default/classes/FidelityBenchmarkHarnessController.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityBenchmarkScenario.cls": "a9b28594ad1e888138dd616fe846858ce22d63ca346872dac3baf89ee45ae9df",
+    "package/main/default/classes/FidelityBenchmarkScenario.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityMixedDmlService.cls": "044aaa6bd61c99c19be237a32eb54da18bc6414c84995cae4282ce5db9d9a185",
+    "package/main/default/classes/FidelityMixedDmlService.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityOwnerAssignmentJob.cls": "61a296a1b7885f9649d8ba649c5f80e126e95561156074a8a7156170bccd816c",
+    "package/main/default/classes/FidelityOwnerAssignmentJob.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/pages/FidelityBenchmark.page": "2b49d5b24c1bd261701403fcd51e4dbad4fc48e8a939386a992aedaa624e0831",
+    "package/main/default/pages/FidelityBenchmark.page-meta.xml": "6541db68f73bc28f93ccccd1dba5dd5be8501dfddee9304feda06d836baf3f20",
+    "scripts/seed.apex": "a3ba26302f72b1cd7f08f2e287642bca116971650e6966f20c45bfad9f11b1d1",
+    "sfdx-project.json": "dfdad6669cfaf7906d4068ca8313b30f8ef43d55485ded3cd7728885f16d5ceb"
+  },
+  "schema_version": "1.0.0"
+}

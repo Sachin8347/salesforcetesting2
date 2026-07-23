@@ -42,6 +42,14 @@
   },
   "category": "governor_limits",
   "description": "A timeline controller loads every Task field and body for an Account without a selective cap or pagination.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark011Test",
+    "bundle_lock": "execution/SF-FID-011/bundle.lock.json",
+    "bundle_sha256": "4e4f80da3ccfb19406aa725856a5973250fadd2cffb21b2e36ac838ed463f1aa",
+    "descriptor": "execution/SF-FID-011/execution.json",
+    "descriptor_sha256": "656ca1a5c67869f8e09efaf179789a90aea00f08327e9ec5a165ec21f9e07cbb",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

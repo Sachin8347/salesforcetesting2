@@ -3,106 +3,272 @@
   "case_count": 20,
   "cases": [
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark001Test",
+        "bundle_lock": "execution/SF-FID-001/bundle.lock.json",
+        "bundle_sha256": "86e039b6e90ea8fc4325a5e4394a36923028f6580d3e57c92f1a797e4963b1eb",
+        "descriptor": "execution/SF-FID-001/execution.json",
+        "descriptor_sha256": "c5edcd4df78884f9deaf72d18898f0f374cb170404ee43a2352635f8bce26433",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-001",
       "path": "cases/SF-FID-001.json",
-      "sha256": "0781ca8b110a3a31a4e53d902ff499b925c87c411381d6d9b4147db4153d44ce"
+      "sha256": "961b8f2289d520933447d624e28545d8be24ad80aaf39fc9a1a23bb6349870ce"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark002Test",
+        "bundle_lock": "execution/SF-FID-002/bundle.lock.json",
+        "bundle_sha256": "69b4d0f629f6ab35594a21a513a25c4d2af8248d3ae65538f324fcd43f62859f",
+        "descriptor": "execution/SF-FID-002/execution.json",
+        "descriptor_sha256": "3d63beb26443337376f7b396147c8081d75bed8f064807beaf927fc2f16e7536",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-002",
       "path": "cases/SF-FID-002.json",
-      "sha256": "454f8160986a9c93e8959544e910d3d4daa0fef7160631315a48e3807365e284"
+      "sha256": "d6a0945380c1ee92a9951e9741a9ac18f4dabfde851cf46b425eafda306780a0"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark003Test",
+        "bundle_lock": "execution/SF-FID-003/bundle.lock.json",
+        "bundle_sha256": "37e13c744f664a94c38bb610a7aac8067560ed7ee68d3461cfbaa4c9c8c53c97",
+        "descriptor": "execution/SF-FID-003/execution.json",
+        "descriptor_sha256": "c624b3648589fc7def46681e853d23935470a15e3fcfc34db6be3a0ca9989d3c",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-003",
       "path": "cases/SF-FID-003.json",
-      "sha256": "e04f19234025086a79578112b2501b83c74499b2ae90fdbe296eb8e7f43ca398"
+      "sha256": "1ab2a12d4c6264213f2ab9c53f08b278bf8edb0d45e895661bda32022e7fc9f4"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark004Test",
+        "bundle_lock": "execution/SF-FID-004/bundle.lock.json",
+        "bundle_sha256": "10722c4701958dcb4fd2347fc20f6714bdb8ac0d70bb967145ca693fbf32c261",
+        "descriptor": "execution/SF-FID-004/execution.json",
+        "descriptor_sha256": "0ea63f6c475bb901022244366319866fd71c56cd4f31e8b2e2c4335ccfef80a5",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-004",
       "path": "cases/SF-FID-004.json",
-      "sha256": "ea289784da08575b6266c0ce2cd55ec827845152779488d91d775fc7cc5d0c14"
+      "sha256": "1ee9c8797735a1a4c0207f00d72c09e1272fdd04fe86ab8a481db8f515e9ec8f"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark005Test",
+        "bundle_lock": "execution/SF-FID-005/bundle.lock.json",
+        "bundle_sha256": "08b5f233ddd046958eab8f24a4bf5b5d11e7955faf7d089ad5706b2ef994bd27",
+        "descriptor": "execution/SF-FID-005/execution.json",
+        "descriptor_sha256": "23e439760ac77b99eee2672da913acc4c67ae74f82d955a1a2fad27f27ae6828",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-005",
       "path": "cases/SF-FID-005.json",
-      "sha256": "f20d678f844b1ba268475e60a169b6473eae344992c536e1e127ec73f2fec357"
+      "sha256": "7b1d446bd94a7f4a11eb7fa82502e6bedc4c6c42220f556b5c02ca266e8535cf"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark006Test",
+        "bundle_lock": "execution/SF-FID-006/bundle.lock.json",
+        "bundle_sha256": "cfe6e8ad610f63d7cd12f38163578b69180730f4de35cedcc3ff09757f3f46a2",
+        "descriptor": "execution/SF-FID-006/execution.json",
+        "descriptor_sha256": "8a1a251bc2a3ba010055ba2f8c69a5f74f8885eeb93d5717909fbab018c30a4b",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-006",
       "path": "cases/SF-FID-006.json",
-      "sha256": "ad5c17c2d5c9db27076f4b5edb5cee83e7232d76b3a4215e3f8c111b9ae4a7a1"
+      "sha256": "c559324c681d205bf3a92e86efd39814e66748d53c7201bd80c9a27e2cf93567"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark007Test",
+        "bundle_lock": "execution/SF-FID-007/bundle.lock.json",
+        "bundle_sha256": "cd52dc988b088ab1ad28e2652b0c62586b28d41dab0c3bc4b1f2cd9556344d07",
+        "descriptor": "execution/SF-FID-007/execution.json",
+        "descriptor_sha256": "1e8ddf8aeb96c08c81aa56008ac89d7336117d86ab7c2fd99e85a920e6d12919",
+        "mode": "metadata_probe"
+      },
       "id": "SF-FID-007",
       "path": "cases/SF-FID-007.json",
-      "sha256": "02beb482a8e1b5e9e0e7e768898c212f8850e8803cd7fd2b6b8c65cdfcede091"
+      "sha256": "5f9ce0fb9a8ef643ab8d1d6fee63f56d0beb263f3a6970f7ff6c3d7f7793d474"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark008Test",
+        "bundle_lock": "execution/SF-FID-008/bundle.lock.json",
+        "bundle_sha256": "095f789f1de04b986e3b7ea20c4b7deb135d6c585c01ad3463f6829c4854098d",
+        "descriptor": "execution/SF-FID-008/execution.json",
+        "descriptor_sha256": "22227816c3c02f84976f3aa531ffb186f946433024baf815536fd5ad7505a23d",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-008",
       "path": "cases/SF-FID-008.json",
-      "sha256": "e79a83b59ef4151d4ca375d77016289b8426f1b137bef2dbeb6523e6d218fcd2"
+      "sha256": "e60ec7da841ad91bf071a4625ab83c51ba45f355aacdf0fc83d2db491917b2a2"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark009Test",
+        "bundle_lock": "execution/SF-FID-009/bundle.lock.json",
+        "bundle_sha256": "4cdf9ceadd552720fc7c555145c99adce62cf0d87868187a5b08cd5c61908c41",
+        "descriptor": "execution/SF-FID-009/execution.json",
+        "descriptor_sha256": "0ec33be2330bdcf5107206a14f6f5245c34edb87f1ff46f4d04c8b2fd391fa75",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-009",
       "path": "cases/SF-FID-009.json",
-      "sha256": "78aba91d6c3991f91269d7a6e98cc09a58721e6416919cad08052b145c9ffc17"
+      "sha256": "9a41c2075f99154ccfc17899d5abacab35c7f49cce55a156fc5143fbf976adea"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark010Test",
+        "bundle_lock": "execution/SF-FID-010/bundle.lock.json",
+        "bundle_sha256": "ffc4c06f2de143221c4b2b5d3f3acca5c68b669cb260d1e6b7fa1e4503c07330",
+        "descriptor": "execution/SF-FID-010/execution.json",
+        "descriptor_sha256": "4597a353cdb9596bb2a17b68dc6b5ce78a31ed29e345c6e65b67339f4a9a44e1",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-010",
       "path": "cases/SF-FID-010.json",
-      "sha256": "93b8066cfa2d1a899c651450f60422a17d8ab5901f18532a4a33faa785978886"
+      "sha256": "014fd3eab23606ea7669b7971d485e264529f96cf774e675bdf1c4ac94bcddef"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark011Test",
+        "bundle_lock": "execution/SF-FID-011/bundle.lock.json",
+        "bundle_sha256": "4e4f80da3ccfb19406aa725856a5973250fadd2cffb21b2e36ac838ed463f1aa",
+        "descriptor": "execution/SF-FID-011/execution.json",
+        "descriptor_sha256": "656ca1a5c67869f8e09efaf179789a90aea00f08327e9ec5a165ec21f9e07cbb",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-011",
       "path": "cases/SF-FID-011.json",
-      "sha256": "66ce1af0bab6fadc38e4ab53373b83a1ed38dd45c9e74804f73dcaa5e85e55d8"
+      "sha256": "44f689a4d08143ebd46f1271f4965af36d288996ada4dea8416e803c952a4d93"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark012Test",
+        "bundle_lock": "execution/SF-FID-012/bundle.lock.json",
+        "bundle_sha256": "a734dd0683c44e92b9087abe17fbf7738370b87ab432b9078df19196413ea1a8",
+        "descriptor": "execution/SF-FID-012/execution.json",
+        "descriptor_sha256": "0188d58d3c23ec28de40c0a116257f3a28ecb260f0881f1f891eb000901b0509",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-012",
       "path": "cases/SF-FID-012.json",
-      "sha256": "d648fcd7be7dec5b58c4146f98ad56ae116fb30cfe837c1f0b48b0bb881835e9"
+      "sha256": "beb96111ad472da8a4ae1e4af3e2d0951f10f1ac11a67db72c40d595260a25c7"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark013Test",
+        "bundle_lock": "execution/SF-FID-013/bundle.lock.json",
+        "bundle_sha256": "9cb8b5265290c67a791e62cfe38e10ae273b6ae8ee9af2ae9ebdfd0ae86098c0",
+        "descriptor": "execution/SF-FID-013/execution.json",
+        "descriptor_sha256": "991fc796093a60094f262e3aaeb57b654f1e7037c0ff159d87a7cac53b249d92",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-013",
       "path": "cases/SF-FID-013.json",
-      "sha256": "4230fb6e79d132b937ecec2ad66fe29384bcd549dc7ac5abe828299ae3bce24d"
+      "sha256": "e44a9d498a1f6faf5bbf30c9e8eba02de149584f2b1926305eb77c24f5d7da1c"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark014Test",
+        "bundle_lock": "execution/SF-FID-014/bundle.lock.json",
+        "bundle_sha256": "17afa2635cdfc60927c44408eb7832a02a460a3603503fe453e456caaef069bd",
+        "descriptor": "execution/SF-FID-014/execution.json",
+        "descriptor_sha256": "8227675a861e5a7619b0597fa3c1a21d2ccb80a211580270cfed1e659ce08201",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-014",
       "path": "cases/SF-FID-014.json",
-      "sha256": "a1e9062aa673b021bb0d88adc3cc9d3b8406670ad6a91186d099bf77f5dd4001"
+      "sha256": "0745d52e1a5936cff6205822b03b4f512c5f1eac0bb045b6bbe68b4d784c9856"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark015Test",
+        "bundle_lock": "execution/SF-FID-015/bundle.lock.json",
+        "bundle_sha256": "a1ab37802e28981e36964a2c338d345713b388d345cffaee200c90b7531f106a",
+        "descriptor": "execution/SF-FID-015/execution.json",
+        "descriptor_sha256": "87eeec09855af6a1cb04f5c494daa9b85cfa86df68ce70f2fc3faa8edbd67e5f",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-015",
       "path": "cases/SF-FID-015.json",
-      "sha256": "d87b24f30b2c2a47b200a61e2ef43678fb969685c47a9bd6626436963828393c"
+      "sha256": "b2a33738a56dd9e0ca715de52791d5ee20a5fdc1528fd2c2ffe1575ab75cb4fd"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark016Test",
+        "bundle_lock": "execution/SF-FID-016/bundle.lock.json",
+        "bundle_sha256": "005b85d20fe3a3299c9c0792a326963931df200a4a194a7be7c4fc935d01a048",
+        "descriptor": "execution/SF-FID-016/execution.json",
+        "descriptor_sha256": "5d3e992ac732e404b169c0781f315a0c530a6a6b01e63132ee83d4ba44d4e7db",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-016",
       "path": "cases/SF-FID-016.json",
-      "sha256": "9b9902ce67b5b8b7907ea72a2d8ab1022400b58d27f6e5c502425bc1d711f354"
+      "sha256": "25d1d53c3de32e80a50fd63a06709c8bb18ac253a21293af108a102d702a28b2"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark017Test",
+        "bundle_lock": "execution/SF-FID-017/bundle.lock.json",
+        "bundle_sha256": "df7db26c1369b2eac58ebb175898fccd69ea72a9623a7547ed7f9aafb2da4be3",
+        "descriptor": "execution/SF-FID-017/execution.json",
+        "descriptor_sha256": "50a109e9b1cacb55c2efb84242ba172b28750eedad0a7c4f6e096cc6aa5a37de",
+        "mode": "event_replay_adapter"
+      },
       "id": "SF-FID-017",
       "path": "cases/SF-FID-017.json",
-      "sha256": "a59c0eb8b7565b60d7fb495e4a3b09fba399beb21942a5e2be919cca622af6f9"
+      "sha256": "9a656dba4c4262187741120ae6d554a804c14f104b42a5adb6d146ad2c72faf0"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark018Test",
+        "bundle_lock": "execution/SF-FID-018/bundle.lock.json",
+        "bundle_sha256": "58df36614def529fd8ddd44cae7387da46213cf2727ecc39a313a6d95fef739e",
+        "descriptor": "execution/SF-FID-018/execution.json",
+        "descriptor_sha256": "b64f8d75f10bd068e5b7ec3d5129290484a65a73d2efda7e850826cdb5d615b7",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-018",
       "path": "cases/SF-FID-018.json",
-      "sha256": "29df5a28c681db9d1d5242c2f11f796310316a18df28f425aee4d3d1c2a95fbc"
+      "sha256": "04f519f03aa072130f702904dab093b413b663391640733c8231b33545db3bfd"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark019Test",
+        "bundle_lock": "execution/SF-FID-019/bundle.lock.json",
+        "bundle_sha256": "091a809b8964357c060ad08ccd25191e876194a816718d33fbcf0f4c5325abc3",
+        "descriptor": "execution/SF-FID-019/execution.json",
+        "descriptor_sha256": "cb7ef17928201cc39f47d8351f35793cfdf67f1debb9c4e38a10f94735dcc572",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-019",
       "path": "cases/SF-FID-019.json",
-      "sha256": "9a7e37d10d3a7898ef8636528ae19c295c81c2ca456c196a4b1c03adb6a4eda8"
+      "sha256": "3f8c723fbf00c416cf8f0ce298bee9a7e78609395d587924238c126a27f0de6f"
     },
     {
+      "execution": {
+        "apex_test_class": "FidelityBenchmark020Test",
+        "bundle_lock": "execution/SF-FID-020/bundle.lock.json",
+        "bundle_sha256": "8c3ab0e518ad982fb6eeda720829307883a321ea9b51bb53f013ab7ccfdee0a4",
+        "descriptor": "execution/SF-FID-020/execution.json",
+        "descriptor_sha256": "116c3c688f275383c81455ed22c4b6c0478f178c28b1c887bb1cf6f2532c2357",
+        "mode": "deploy_and_test"
+      },
       "id": "SF-FID-020",
       "path": "cases/SF-FID-020.json",
-      "sha256": "c48468de35af75409893b5af68350dedb0ba265e67f32264f993baf072257543"
+      "sha256": "0e7369555753180bfeebaee1c1e22f5eb6a723789c872b9d6887c5b73a0ab0de"
     }
   ],
+  "execution_contract": {
+    "bundle_count": 20,
+    "local_source_conversion_required": true,
+    "runtime_evidence_must_be_observed": true,
+    "synthetic_pass_results_forbidden": true
+  },
   "release_gate": {
     "blast_radius_accuracy": 0.8,
     "first_pass_compilation": 0.8,

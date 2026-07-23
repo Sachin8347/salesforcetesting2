@@ -42,6 +42,14 @@
   },
   "category": "governor_limits",
   "description": "A publication-scale Account batch issues one Contact query per record and exceeds the synchronous query governor limit.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark001Test",
+    "bundle_lock": "execution/SF-FID-001/bundle.lock.json",
+    "bundle_sha256": "86e039b6e90ea8fc4325a5e4394a36923028f6580d3e57c92f1a797e4963b1eb",
+    "descriptor": "execution/SF-FID-001/execution.json",
+    "descriptor_sha256": "c5edcd4df78884f9deaf72d18898f0f374cb170404ee43a2352635f8bce26433",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

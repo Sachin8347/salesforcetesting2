@@ -42,6 +42,14 @@
   },
   "category": "data_integrity",
   "description": "A service updates a detached Account snapshot without checking SystemModstamp, silently overwriting a concurrent user's change.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark013Test",
+    "bundle_lock": "execution/SF-FID-013/bundle.lock.json",
+    "bundle_sha256": "9cb8b5265290c67a791e62cfe38e10ae273b6ae8ee9af2ae9ebdfd0ae86098c0",
+    "descriptor": "execution/SF-FID-013/execution.json",
+    "descriptor_sha256": "991fc796093a60094f262e3aaeb57b654f1e7037c0ff159d87a7cac53b249d92",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

@@ -42,6 +42,14 @@
   },
   "category": "security",
   "description": "An export controller runs without sharing and returns Cases outside the caller's row-level access.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark014Test",
+    "bundle_lock": "execution/SF-FID-014/bundle.lock.json",
+    "bundle_sha256": "17afa2635cdfc60927c44408eb7832a02a460a3603503fe453e456caaef069bd",
+    "descriptor": "execution/SF-FID-014/execution.json",
+    "descriptor_sha256": "8227675a861e5a7619b0597fa3c1a21d2ccb80a211580270cfed1e659ce08201",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

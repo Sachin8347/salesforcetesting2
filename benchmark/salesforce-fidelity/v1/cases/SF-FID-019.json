@@ -42,6 +42,14 @@
   },
   "category": "data_integrity",
   "description": "A renewal scheduler converts DateTime through the running user's timezone, shifting boundary-date renewals for global users.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark019Test",
+    "bundle_lock": "execution/SF-FID-019/bundle.lock.json",
+    "bundle_sha256": "091a809b8964357c060ad08ccd25191e876194a816718d33fbcf0f4c5325abc3",
+    "descriptor": "execution/SF-FID-019/execution.json",
+    "descriptor_sha256": "cb7ef17928201cc39f47d8351f35793cfdf67f1debb9c4e38a10f94735dcc572",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

@@ -55,6 +55,14 @@
   },
   "category": "data_integrity",
   "description": "One synchronous transaction updates a User and an Account, producing MIXED_DML_OPERATION in production onboarding.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark009Test",
+    "bundle_lock": "execution/SF-FID-009/bundle.lock.json",
+    "bundle_sha256": "4cdf9ceadd552720fc7c555145c99adce62cf0d87868187a5b08cd5c61908c41",
+    "descriptor": "execution/SF-FID-009/execution.json",
+    "descriptor_sha256": "0ec33be2330bdcf5107206a14f6f5245c34edb87f1ff46f4d04c8b2fd391fa75",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

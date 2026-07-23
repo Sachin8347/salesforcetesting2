@@ -42,6 +42,14 @@
   },
   "category": "data_integrity",
   "description": "An Aura controller queries with a missing record identifier, returning a misleading query exception instead of a deterministic client error.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark005Test",
+    "bundle_lock": "execution/SF-FID-005/bundle.lock.json",
+    "bundle_sha256": "08b5f233ddd046958eab8f24a4bf5b5d11e7955faf7d089ad5706b2ef994bd27",
+    "descriptor": "execution/SF-FID-005/execution.json",
+    "descriptor_sha256": "23e439760ac77b99eee2672da913acc4c67ae74f82d955a1a2fad27f27ae6828",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,

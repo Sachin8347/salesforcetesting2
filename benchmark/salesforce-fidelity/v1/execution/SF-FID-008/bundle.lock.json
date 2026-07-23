@@ -1,0 +1,23 @@
+{
+  "algorithm": "sha256",
+  "bundle_sha256": "095f789f1de04b986e3b7ea20c4b7deb135d6c585c01ad3463f6829c4854098d",
+  "files": {
+    "config/project-scratch-def.json": "263865543f09c0a02f0bc5c13501fe2942f238de2163bdb1f40632488f57ac58",
+    "execution.json": "22227816c3c02f84976f3aa531ffb186f946433024baf815536fd5ad7505a23d",
+    "package/main/default/classes/FidelityBenchmark008Test.cls": "87b99911a4d10b899d7d07b80b005c667e894b17ec8125684d8e87a18584f71d",
+    "package/main/default/classes/FidelityBenchmark008Test.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityBenchmarkHarnessController.cls": "d9b9a05be6ac73735de9e5ed3c18694055eb4b06cb6d131a3d78a1d859aa79c7",
+    "package/main/default/classes/FidelityBenchmarkHarnessController.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityBenchmarkScenario.cls": "18d715c47b4eac858d9e249cc5afbbc8a359c3bcc0bccbbd33642f202f01e3e6",
+    "package/main/default/classes/FidelityBenchmarkScenario.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/flows/FidelityDiscountApproval.flow-meta.xml": "cc30bf290d9788f8c0abd6930b53f6dc6a8423a7db45f1e79cef10d0e64d7846",
+    "package/main/default/objects/Opportunity/fields/Approval_Context__c.field-meta.xml": "c758f30bfaccf0e7ff72afb2a409d3252aa1e045473569d60907ea45911dc78b",
+    "package/main/default/objects/Opportunity/fields/Discount_Approved__c.field-meta.xml": "64c4ad77247f5113703e7b5edaa95ab59032e7dea6094dd9731545d6d6c760cd",
+    "package/main/default/objects/Opportunity/validationRules/Require_Approval_Context.validationRule-meta.xml": "cbe860668e8a8f1246e9da3aed1b5b0ec6246d0e99f644e4c9e6fec9b5ee02a6",
+    "package/main/default/pages/FidelityBenchmark.page": "e0bd48cea89487be3572208cf54a08ec59248da1623eb676a518aac45617b6ae",
+    "package/main/default/pages/FidelityBenchmark.page-meta.xml": "6541db68f73bc28f93ccccd1dba5dd5be8501dfddee9304feda06d836baf3f20",
+    "scripts/seed.apex": "a3ba26302f72b1cd7f08f2e287642bca116971650e6966f20c45bfad9f11b1d1",
+    "sfdx-project.json": "b8a8955993168430328be1eadc186e40cb02d1806dddea35e4eaf8d1ab9c102b"
+  },
+  "schema_version": "1.0.0"
+}

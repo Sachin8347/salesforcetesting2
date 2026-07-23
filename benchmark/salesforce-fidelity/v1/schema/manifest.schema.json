@@ -10,6 +10,7 @@
     "title",
     "case_count",
     "release_gate",
+    "execution_contract",
     "required_showcases",
     "cases"
   ],
@@ -32,6 +33,22 @@
         "sandbox_verification": {"type": "number", "minimum": 0.8, "maximum": 1}
       }
     },
+    "execution_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bundle_count",
+        "local_source_conversion_required",
+        "runtime_evidence_must_be_observed",
+        "synthetic_pass_results_forbidden"
+      ],
+      "properties": {
+        "bundle_count": {"const": 20},
+        "local_source_conversion_required": {"const": true},
+        "runtime_evidence_must_be_observed": {"const": true},
+        "synthetic_pass_results_forbidden": {"const": true}
+      }
+    },
     "required_showcases": {
       "type": "array",
       "minItems": 4,
@@ -52,14 +69,14 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "path", "sha256"],
+        "required": ["id", "path", "sha256", "execution"],
         "properties": {
           "id": {"type": "string", "pattern": "^SF-FID-[0-9]{3}$"},
           "path": {"type": "string", "pattern": "^cases/SF-FID-[0-9]{3}\\.json$"},
-          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "execution": {"$ref": "case.schema.json#/$defs/executionSummary"}
         }
       }
     }
   }
 }
-

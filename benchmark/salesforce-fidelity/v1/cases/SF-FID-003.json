@@ -68,6 +68,14 @@
   },
   "category": "governor_limits",
   "description": "A trigger-facing method calls through three helpers before a nested scan, hiding O(n^2) work from basic loop linters.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark003Test",
+    "bundle_lock": "execution/SF-FID-003/bundle.lock.json",
+    "bundle_sha256": "37e13c744f664a94c38bb610a7aac8067560ed7ee68d3461cfbaa4c9c8c53c97",
+    "descriptor": "execution/SF-FID-003/execution.json",
+    "descriptor_sha256": "c624b3648589fc7def46681e853d23935470a15e3fcfc34db6be3a0ca9989d3c",
+    "mode": "deploy_and_test"
+  },
   "expected_cleanup": {
     "active_sandbox_destroyed": true,
     "browser_context_closed": true,
