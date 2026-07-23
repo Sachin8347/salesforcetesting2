@@ -1,0 +1,24 @@
+<apex:page showHeader="true" sidebar="false">
+    <apex:pageMessages />
+    <h1>Jataka Salesforce Fidelity SF-FID-001</h1>
+    <button data-jataka-case="SF-FID-001" data-action="run"
+            type="button" onclick="runBenchmark()">Run benchmark</button>
+    <pre data-jataka-case="SF-FID-001" data-result="">Not run</pre>
+    <script>
+    function runBenchmark() {
+        var resultNode = document.querySelector(
+            '[data-jataka-case="SF-FID-001"][data-result]'
+        );
+        resultNode.textContent = 'RUNNING';
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.FidelityBenchmarkHarnessController.run}',
+            function(result, event) {
+                resultNode.textContent = event.status
+                    ? result
+                    : JSON.stringify({error: event.message});
+            },
+            {escape: true}
+        );
+    }
+    </script>
+</apex:page>

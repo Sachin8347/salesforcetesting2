@@ -1,0 +1,10 @@
+{
+  "edition": "Developer",
+  "features": [],
+  "orgName": "Jataka Fidelity SF-FID-009",
+  "settings": {
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    }
+  }
+}

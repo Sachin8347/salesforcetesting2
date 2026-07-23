@@ -1,0 +1,171 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-013/FidelityOptimisticLockService.cls",
+          "needle": "update detachedRecord"
+        },
+        "from": "FidelityOptimisticLockService.renameAccount",
+        "kind": "UPDATES_STALE",
+        "to": "Account"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-013/FidelityOptimisticLockService.cls",
+          "needle": "detachedRecord"
+        },
+        "from": "Account",
+        "kind": "REQUIRES_VERSION",
+        "to": "Account.SystemModstamp"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityOptimisticLockService.renameAccount",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Account",
+        "type": "Object"
+      },
+      {
+        "id": "Account.SystemModstamp",
+        "type": "CustomField"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "FidelityOptimisticLockService.renameAccount",
+      "type": "ApexMethod"
+    }
+  },
+  "category": "data_integrity",
+  "description": "A service updates a detached Account snapshot without checking SystemModstamp, silently overwriting a concurrent user's change.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark013Test",
+    "bundle_lock": "execution/SF-FID-013/bundle.lock.json",
+    "bundle_sha256": "9cb8b5265290c67a791e62cfe38e10ae273b6ae8ee9af2ae9ebdfd0ae86098c0",
+    "descriptor": "execution/SF-FID-013/execution.json",
+    "descriptor_sha256": "991fc796093a60094f262e3aaeb57b654f1e7037c0ff159d87a7cac53b249d92",
+    "mode": "deploy_and_test"
+  },
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-013",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "id_expression": {
+            "field": "Id",
+            "receiver": "detachedRecord",
+            "type": "FieldAccess"
+          },
+          "on_conflict": {
+            "arguments": [
+              {
+                "type": "StringLiteral",
+                "value": "Account changed; refresh before saving."
+              }
+            ],
+            "exception": "AuraHandledException",
+            "type": "ThrowStatement"
+          },
+          "sobject": "Account",
+          "type": "OptimisticLockCheck",
+          "version_field": "SystemModstamp"
+        },
+        "operation": "insert_before",
+        "target": {
+          "node_type": "DmlStatement",
+          "selector": "update:detachedRecord",
+          "symbol": "FidelityOptimisticLockService.renameAccount"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityOptimisticLockService",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-013/FidelityOptimisticLockService.cls",
+        "sha256": "631b9df39f1819492712079d7d321e5149dec292b3a8d6898f12031a925faa4e"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-013/FidelityOptimisticLockService.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "Stale account overwrite loses concurrent edit",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "A concurrent edit causes a deterministic conflict and preserves the newer database value.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Stale account overwrite loses concurrent edit with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "A stale editor sees a refresh-required message instead of a false success.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, Name, SystemModstamp FROM Account WHERE Id = :accountId"
+      ],
+      "assertions": [
+        "Name remains the value from the most recent committed editor."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

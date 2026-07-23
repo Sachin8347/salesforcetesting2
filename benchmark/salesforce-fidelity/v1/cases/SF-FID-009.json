@@ -1,0 +1,175 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-009/FidelityMixedDmlService.cls",
+          "needle": "update owner"
+        },
+        "from": "FidelityMixedDmlService.activateOwner",
+        "kind": "UPDATES_SETUP_OBJECT",
+        "to": "User"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-009/FidelityMixedDmlService.cls",
+          "needle": "update accountRecord"
+        },
+        "from": "User",
+        "kind": "MIXED_DML_WITH",
+        "to": "Account"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-009/FidelityMixedDmlService.cls",
+          "needle": "accountRecord.OwnerId"
+        },
+        "from": "Account",
+        "kind": "DEFERRED_TO",
+        "to": "FidelityOwnerAssignmentJob"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityMixedDmlService.activateOwner",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "User",
+        "type": "User"
+      },
+      {
+        "id": "Account",
+        "type": "Object"
+      },
+      {
+        "id": "FidelityOwnerAssignmentJob",
+        "type": "AsyncJob"
+      }
+    ],
+    "required_hops": 3,
+    "root": {
+      "id": "FidelityMixedDmlService.activateOwner",
+      "type": "ApexMethod"
+    }
+  },
+  "category": "data_integrity",
+  "description": "One synchronous transaction updates a User and an Account, producing MIXED_DML_OPERATION in production onboarding.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark009Test",
+    "bundle_lock": "execution/SF-FID-009/bundle.lock.json",
+    "bundle_sha256": "4cdf9ceadd552720fc7c555145c99adce62cf0d87868187a5b08cd5c61908c41",
+    "descriptor": "execution/SF-FID-009/execution.json",
+    "descriptor_sha256": "0ec33be2330bdcf5107206a14f6f5245c34edb87f1ff46f4d04c8b2fd391fa75",
+    "mode": "deploy_and_test"
+  },
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-009",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "arguments": [
+            {
+              "name": "accountRecord",
+              "type": "Identifier"
+            }
+          ],
+          "job_symbol": "FidelityOwnerAssignmentJob",
+          "job_type": "Queueable",
+          "type": "AsyncEnqueue"
+        },
+        "operation": "replace_node",
+        "target": {
+          "node_type": "DmlStatement",
+          "selector": "update:Account",
+          "symbol": "FidelityMixedDmlService.activateOwner"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityMixedDmlService",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-009/FidelityMixedDmlService.cls",
+        "sha256": "044aaa6bd61c99c19be237a32eb54da18bc6414c84995cae4282ce5db9d9a185"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-009/FidelityMixedDmlService.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "Mixed DML between user and account",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "The User update commits and the queueable assigns Account ownership in a separate transaction.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Mixed DML between user and account with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "Onboarding reaches Active without a mixed-DML error banner.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, OwnerId FROM Account WHERE Id = :accountId"
+      ],
+      "assertions": [
+        "OwnerId equals the activated user's Id after the queued job completes."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

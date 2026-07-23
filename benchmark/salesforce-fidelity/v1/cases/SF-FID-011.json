@@ -1,0 +1,176 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-011/FidelityActivityTimelineController.cls",
+          "needle": "FROM Task WHERE WhatId"
+        },
+        "from": "FidelityActivityTimelineController.loadTimeline",
+        "kind": "QUERIES_UNBOUNDED",
+        "to": "Task"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-011/FidelityActivityTimelineController.cls",
+          "needle": "WhatId = :accountId"
+        },
+        "from": "Task",
+        "kind": "RELATES_TO",
+        "to": "Account"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityActivityTimelineController.loadTimeline",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Task",
+        "type": "Object"
+      },
+      {
+        "id": "Account",
+        "type": "Object"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "FidelityActivityTimelineController.loadTimeline",
+      "type": "ApexMethod"
+    }
+  },
+  "category": "governor_limits",
+  "description": "A timeline controller loads every Task field and body for an Account without a selective cap or pagination.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark011Test",
+    "bundle_lock": "execution/SF-FID-011/bundle.lock.json",
+    "bundle_sha256": "4e4f80da3ccfb19406aa725856a5973250fadd2cffb21b2e36ac838ed463f1aa",
+    "descriptor": "execution/SF-FID-011/execution.json",
+    "descriptor_sha256": "656ca1a5c67869f8e09efaf179789a90aea00f08327e9ec5a165ec21f9e07cbb",
+    "mode": "deploy_and_test"
+  },
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-011",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "access_level": "USER_MODE",
+          "fields": [
+            "Id",
+            "Subject",
+            "ActivityDate",
+            "WhoId",
+            "WhatId",
+            "CreatedDate"
+          ],
+          "limit": 200,
+          "order_by": [
+            {
+              "direction": "DESC",
+              "field": "CreatedDate"
+            }
+          ],
+          "predicate": {
+            "binding": "accountId",
+            "field": "WhatId",
+            "operator": "="
+          },
+          "sobject": "Task",
+          "type": "SoqlQuery"
+        },
+        "operation": "replace_node",
+        "target": {
+          "node_type": "SoqlQuery",
+          "selector": "query:Task",
+          "symbol": "FidelityActivityTimelineController.loadTimeline"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityActivityTimelineController",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-011/FidelityActivityTimelineController.cls",
+        "sha256": "9987dd4d28946d05291e8f10e6a84636e20fdb7ed82536c6ec545c4805274036"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-011/FidelityActivityTimelineController.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "Unbounded activity query exhausts heap",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "Ten thousand Tasks return at most 200 lightweight rows without heap failure.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Unbounded activity query exhausts heap with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "Timeline renders the latest 200 activities and offers deterministic pagination.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT COUNT() FROM Task WHERE WhatId = :accountId"
+      ],
+      "assertions": [
+        "The total may exceed 200 while the controller result never does."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

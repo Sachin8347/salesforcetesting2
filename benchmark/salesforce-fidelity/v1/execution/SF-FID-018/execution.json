@@ -1,0 +1,169 @@
+{
+  "apex": {
+    "assertions": [
+      "Valid records commit, invalid rows return indexed errors, and no failure is silently dropped.",
+      "The deployment record reports compilation_attempt=1 and compile_success=true."
+    ],
+    "command": "sf apex run test --tests FidelityBenchmark018Test --result-format json --wait 20 --target-org ${TARGET_ORG}",
+    "required": true,
+    "test_class": "FidelityBenchmark018Test",
+    "test_level": "RunSpecifiedTests"
+  },
+  "browser": {
+    "artifacts": [
+      "playwright/trace.zip",
+      "playwright/video.webm",
+      "playwright/final-state.png"
+    ],
+    "authentication": "sf_frontdoor_url",
+    "base_url": "${SCRATCH_ORG_INSTANCE_URL}",
+    "command": "node ../../tools/run_browser_case.mjs --descriptor execution.json --artifacts ${EVIDENCE_DIR}/playwright",
+    "driver": "jataka.salesforce.case.v1",
+    "driver_path": "../../tools/run_browser_case.mjs",
+    "driver_sha256": "920ab62174bce82b177534b268d6ae7f00c2a149ef7b39e1178d659f748e64e4",
+    "entrypoint": "SF-FID-018",
+    "inputs": {
+      "case_id": "SF-FID-018",
+      "entry_symbol": "FidelityPartialSaveService",
+      "seed_source": "seed_command_stdout"
+    },
+    "required": true,
+    "route": "/apex/FidelityBenchmark",
+    "runner": "playwright",
+    "scenario": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "Bulk import shows independent success and error counts with downloadable row details.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "selectors": {
+      "action": "[data-jataka-case='SF-FID-018'][data-action='run']",
+      "result": "[data-jataka-case='SF-FID-018'][data-result]"
+    }
+  },
+  "case_id": "SF-FID-018",
+  "event_replay": null,
+  "evidence": {
+    "pass_source": "observed_runtime_only",
+    "precomputed_results": false,
+    "required": [
+      "deploy-result.json",
+      "apex-test-result.json",
+      "query-result.json",
+      "playwright/trace.zip",
+      "playwright/video.webm",
+      "playwright/final-state.png",
+      "cleanup-result.json",
+      "evidence-manifest.sha256"
+    ]
+  },
+  "metadata_probe": null,
+  "mode": "deploy_and_test",
+  "package": {
+    "api_version": "60.0",
+    "fixture_bindings": [
+      {
+        "fixture": "fixtures/SF-FID-018/FidelityPartialSaveService.cls",
+        "fixture_sha256": "a524e8b65ac63f519f422b911d85877ee380ef8c998d76261414c05c49ffdeca",
+        "package_member": "package/main/default/classes/FidelityPartialSaveService.cls",
+        "package_member_sha256": "a524e8b65ac63f519f422b911d85877ee380ef8c998d76261414c05c49ffdeca"
+      },
+      {
+        "fixture": "fixtures/SF-FID-018/FidelityPartialSaveService.cls-meta.xml",
+        "fixture_sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+        "package_member": "package/main/default/classes/FidelityPartialSaveService.cls-meta.xml",
+        "package_member_sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "generated_members": [
+      {
+        "path": "package/main/default/classes/FidelityBenchmark018Test.cls",
+        "sha256": "2c4cb60faf498611232e918bd56cbb573c2bbe2193f47a42dae27a53a9ce0aa0"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmark018Test.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkHarnessController.cls",
+        "sha256": "d9b9a05be6ac73735de9e5ed3c18694055eb4b06cb6d131a3d78a1d859aa79c7"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkHarnessController.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkScenario.cls",
+        "sha256": "1f21c54cace7a82e764fb7e13da13c228e020e4a2bcaeb2575b38e6ec0ee06b9"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkScenario.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/pages/FidelityBenchmark.page",
+        "sha256": "237c82f314584ae726e7750c740ffec9e021aa9e20b5017814fdb328f3865552"
+      },
+      {
+        "path": "package/main/default/pages/FidelityBenchmark.page-meta.xml",
+        "sha256": "6541db68f73bc28f93ccccd1dba5dd5be8501dfddee9304feda06d836baf3f20"
+      }
+    ],
+    "project_file": "sfdx-project.json",
+    "source_adapters": [],
+    "source_root": "package"
+  },
+  "patch_contract": {
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true,
+    "sha256": "129b55646f33b169417777f5dc49f6af8845626cc335fe50d42374327deffa93"
+  },
+  "prerequisites": [
+    "authenticated target scratch org",
+    "AST compiler output bound to the source fixture SHA-256",
+    "Jataka Playwright driver jataka.salesforce.case.v1"
+  ],
+  "queries": [
+    {
+      "assertions": [
+        "The count equals valid input rows, not zero and not total input rows."
+      ],
+      "bindings": {
+        "marker": "JATAKA_BINDINGS=",
+        "renderer": "salesforce_soql_literal_v1",
+        "source": "seed_command_stdout",
+        "syntax": "${bindingName}",
+        "variables": []
+      },
+      "engine": "soql",
+      "id": "sf-fid-018-postcondition",
+      "read_only": true,
+      "runner": {
+        "command": "python3 ../../tools/run_query.py --descriptor execution.json --seed-result ${EVIDENCE_DIR}/seed-result.json --target-org ${TARGET_ORG} --output ${EVIDENCE_DIR}/query-result.json",
+        "path": "../../tools/run_query.py",
+        "sha256": "96a3f66e9624fc9d511c68c4c00b8a70d3741a843b6dee13b7a9b68e41f9939f"
+      },
+      "statement": "SELECT Id, Name FROM Account WHERE Name LIKE 'Fidelity Partial %'"
+    }
+  ],
+  "schema_version": "1.0.0",
+  "seed": {
+    "command": "sf apex run --file scripts/seed.apex --json --target-org ${TARGET_ORG} > ${EVIDENCE_DIR}/seed-result.json",
+    "declared_bindings": [],
+    "idempotency": "fresh_scratch_org_once_per_case",
+    "output": {
+      "format": "salesforce_cli_json_log",
+      "marker": "JATAKA_BINDINGS=",
+      "value": "json_object"
+    },
+    "script": "scripts/seed.apex",
+    "script_sha256": "a3ba26302f72b1cd7f08f2e287642bca116971650e6966f20c45bfad9f11b1d1"
+  }
+}

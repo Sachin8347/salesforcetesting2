@@ -1,0 +1,156 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-008/FidelityDiscountApproval.flow-meta.xml",
+          "needle": "<field>Discount_Approved__c</field>"
+        },
+        "from": "Opportunity.Discount_Approved__c",
+        "kind": "WRITTEN_BY",
+        "to": "FidelityDiscountApproval"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-008/FidelityDiscountApproval.flow-meta.xml",
+          "needle": "<recordTriggerType>Update</recordTriggerType>"
+        },
+        "from": "FidelityDiscountApproval",
+        "kind": "TRIGGERS_VALIDATION",
+        "to": "Opportunity.Require_Approval_Context"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "Opportunity.Discount_Approved__c",
+        "type": "CustomField"
+      },
+      {
+        "id": "FidelityDiscountApproval",
+        "type": "Flow"
+      },
+      {
+        "id": "Opportunity.Require_Approval_Context",
+        "type": "ValidationRule"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "Opportunity.Discount_Approved__c",
+      "type": "CustomField"
+    }
+  },
+  "category": "automation",
+  "description": "An after-save approval Flow updates a protected field without satisfying the opportunity validation rule's approval context.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark008Test",
+    "bundle_lock": "execution/SF-FID-008/bundle.lock.json",
+    "bundle_sha256": "095f789f1de04b986e3b7ea20c4b7deb135d6c585c01ad3463f6829c4854098d",
+    "descriptor": "execution/SF-FID-008/execution.json",
+    "descriptor_sha256": "22227816c3c02f84976f3aa531ffb186f946433024baf815536fd5ad7505a23d",
+    "mode": "deploy_and_test"
+  },
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-008",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "member": "FidelityDiscountApproval",
+          "metadata_type": "Flow",
+          "path": "recordUpdates[Approve_Discount].inputAssignments[Approval_Context__c]",
+          "type": "MetadataMutation",
+          "value": "AutomatedFlow"
+        },
+        "operation": "update_metadata",
+        "target": {
+          "node_type": "MetadataNode",
+          "selector": "recordUpdate:Approve_Discount",
+          "symbol": "FidelityDiscountApproval"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "requires_fixture_metadata",
+    "entry_symbol": "FidelityDiscountApproval",
+    "fixtures": [
+      {
+        "kind": "flow_metadata",
+        "path": "fixtures/SF-FID-008/FidelityDiscountApproval.flow-meta.xml",
+        "sha256": "cc30bf290d9788f8c0abd6930b53f6dc6a8423a7db45f1e79cef10d0e64d7846"
+      }
+    ],
+    "minimum_lines": 15,
+    "prerequisites": [
+      "Opportunity.Discount_Approved__c",
+      "Opportunity.Require_Approval_Context validation rule"
+    ]
+  },
+  "title": "Flow update conflicts with validation rule",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "Updating an eligible Opportunity completes the Flow and leaves approval fields consistent.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Flow update conflicts with validation rule with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "Approve Discount completes without a flow interview error.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, Discount_Approved__c, Approval_Context__c FROM Opportunity WHERE Id = :opportunityId"
+      ],
+      "assertions": [
+        "Discount is approved and context equals AutomatedFlow."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

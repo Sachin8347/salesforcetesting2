@@ -1,0 +1,173 @@
+{
+  "apex": {
+    "assertions": [
+      "The deterministic output retains every helper and compiles on attempt one while totals remain exact.",
+      "The deployment record reports compilation_attempt=1 and compile_success=true."
+    ],
+    "command": "sf apex run test --tests FidelityBenchmark016Test --result-format json --wait 20 --target-org ${TARGET_ORG}",
+    "required": true,
+    "test_class": "FidelityBenchmark016Test",
+    "test_level": "RunSpecifiedTests"
+  },
+  "browser": {
+    "artifacts": [
+      "playwright/trace.zip",
+      "playwright/video.webm",
+      "playwright/final-state.png"
+    ],
+    "authentication": "sf_frontdoor_url",
+    "base_url": "${SCRATCH_ORG_INSTANCE_URL}",
+    "command": "node ../../tools/run_browser_case.mjs --descriptor execution.json --artifacts ${EVIDENCE_DIR}/playwright",
+    "driver": "jataka.salesforce.case.v1",
+    "driver_path": "../../tools/run_browser_case.mjs",
+    "driver_sha256": "920ab62174bce82b177534b268d6ae7f00c2a149ef7b39e1178d659f748e64e4",
+    "entrypoint": "SF-FID-016",
+    "inputs": {
+      "case_id": "SF-FID-016",
+      "entry_symbol": "FidelityLargeInvoiceService",
+      "seed_source": "seed_command_stdout"
+    },
+    "required": true,
+    "route": "/apex/FidelityBenchmark",
+    "runner": "playwright",
+    "scenario": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "The invoice totals panel renders accurate totals for 200 Accounts.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "selectors": {
+      "action": "[data-jataka-case='SF-FID-016'][data-action='run']",
+      "result": "[data-jataka-case='SF-FID-016'][data-result]"
+    }
+  },
+  "case_id": "SF-FID-016",
+  "event_replay": null,
+  "evidence": {
+    "pass_source": "observed_runtime_only",
+    "precomputed_results": false,
+    "required": [
+      "deploy-result.json",
+      "apex-test-result.json",
+      "query-result.json",
+      "playwright/trace.zip",
+      "playwright/video.webm",
+      "playwright/final-state.png",
+      "cleanup-result.json",
+      "evidence-manifest.sha256"
+    ]
+  },
+  "metadata_probe": null,
+  "mode": "deploy_and_test",
+  "package": {
+    "api_version": "60.0",
+    "fixture_bindings": [
+      {
+        "fixture": "fixtures/SF-FID-016/FidelityLargeInvoiceService.cls",
+        "fixture_sha256": "9903fce5a4219eef0d8fc900fc6ac31d347a70212dbd121651f32838b5d88a53",
+        "package_member": "package/main/default/classes/FidelityLargeInvoiceService.cls",
+        "package_member_sha256": "9903fce5a4219eef0d8fc900fc6ac31d347a70212dbd121651f32838b5d88a53"
+      },
+      {
+        "fixture": "fixtures/SF-FID-016/FidelityLargeInvoiceService.cls-meta.xml",
+        "fixture_sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+        "package_member": "package/main/default/classes/FidelityLargeInvoiceService.cls-meta.xml",
+        "package_member_sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "generated_members": [
+      {
+        "path": "package/main/default/classes/FidelityBenchmark016Test.cls",
+        "sha256": "29b57163297edf2eaa864902f5002e41d973c580d362eedba9d761e7542dacfb"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmark016Test.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkHarnessController.cls",
+        "sha256": "d9b9a05be6ac73735de9e5ed3c18694055eb4b06cb6d131a3d78a1d859aa79c7"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkHarnessController.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkScenario.cls",
+        "sha256": "5824c403ad5fd63bb587b64e2e90f783288ae36d4c0d88fcef146f2a8323d722"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkScenario.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/pages/FidelityBenchmark.page",
+        "sha256": "8fe06cb59f2a5610b1e5e47ed9096ffcb623eafea429408270c35e06c5bb62b8"
+      },
+      {
+        "path": "package/main/default/pages/FidelityBenchmark.page-meta.xml",
+        "sha256": "6541db68f73bc28f93ccccd1dba5dd5be8501dfddee9304feda06d836baf3f20"
+      }
+    ],
+    "project_file": "sfdx-project.json",
+    "source_adapters": [],
+    "source_root": "package"
+  },
+  "patch_contract": {
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true,
+    "sha256": "4b1de9bfeeaf8f32c9a1e4ee94abfbfe1b90e92f4664133ffc1ae678545e5cd9"
+  },
+  "prerequisites": [
+    "authenticated target scratch org",
+    "AST compiler output bound to the source fixture SHA-256",
+    "Jataka Playwright driver jataka.salesforce.case.v1"
+  ],
+  "queries": [
+    {
+      "assertions": [
+        "Aggregate values equal calculateTotals for every Account."
+      ],
+      "bindings": {
+        "marker": "JATAKA_BINDINGS=",
+        "renderer": "salesforce_soql_literal_v1",
+        "source": "seed_command_stdout",
+        "syntax": "${bindingName}",
+        "variables": [
+          "accountIds"
+        ]
+      },
+      "engine": "soql",
+      "id": "sf-fid-016-postcondition",
+      "read_only": true,
+      "runner": {
+        "command": "python3 ../../tools/run_query.py --descriptor execution.json --seed-result ${EVIDENCE_DIR}/seed-result.json --target-org ${TARGET_ORG} --output ${EVIDENCE_DIR}/query-result.json",
+        "path": "../../tools/run_query.py",
+        "sha256": "96a3f66e9624fc9d511c68c4c00b8a70d3741a843b6dee13b7a9b68e41f9939f"
+      },
+      "statement": "SELECT AccountId, SUM(Amount) total FROM Opportunity WHERE AccountId IN ${accountIds} GROUP BY AccountId"
+    }
+  ],
+  "schema_version": "1.0.0",
+  "seed": {
+    "command": "sf apex run --file scripts/seed.apex --json --target-org ${TARGET_ORG} > ${EVIDENCE_DIR}/seed-result.json",
+    "declared_bindings": [
+      "accountIds"
+    ],
+    "idempotency": "fresh_scratch_org_once_per_case",
+    "output": {
+      "format": "salesforce_cli_json_log",
+      "marker": "JATAKA_BINDINGS=",
+      "value": "json_object"
+    },
+    "script": "scripts/seed.apex",
+    "script_sha256": "a3ba26302f72b1cd7f08f2e287642bca116971650e6966f20c45bfad9f11b1d1"
+  }
+}

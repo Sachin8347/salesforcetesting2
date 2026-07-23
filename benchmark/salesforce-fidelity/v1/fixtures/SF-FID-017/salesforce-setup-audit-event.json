@@ -1,0 +1,11 @@
+{
+  "actor": "rogue.admin@example.test",
+  "event_id": "0YmFidelity000017",
+  "event_type": "ProfilePermissionChanged",
+  "member": "Finance Analyst",
+  "new_value": false,
+  "observed_time": "2026-07-23T08:15:07Z",
+  "old_value": true,
+  "permission": "Financial_Dashboard__c.read",
+  "valid_time": "2026-07-23T08:15:00Z"
+}

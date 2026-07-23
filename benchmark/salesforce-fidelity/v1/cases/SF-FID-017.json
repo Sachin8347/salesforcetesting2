@@ -1,0 +1,185 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-017/salesforce-setup-audit-event.json",
+          "needle": "ProfilePermissionChanged"
+        },
+        "from": "0YmFidelity000017",
+        "kind": "CHANGES_VALID_TIME",
+        "to": "Finance Analyst"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-017/salesforce-setup-audit-event.json",
+          "needle": "Finance Analyst"
+        },
+        "from": "Finance Analyst",
+        "kind": "ASSIGNED_TO",
+        "to": "finance.user@example.test"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-017/github-profile-state.json",
+          "needle": "Financial_Dashboard__c.read"
+        },
+        "from": "finance.user@example.test",
+        "kind": "LOSES_ACCESS_TO",
+        "to": "financialDashboard"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "0YmFidelity000017",
+        "type": "AuditEvent"
+      },
+      {
+        "id": "Finance Analyst",
+        "type": "Profile"
+      },
+      {
+        "id": "finance.user@example.test",
+        "type": "User"
+      },
+      {
+        "id": "financialDashboard",
+        "type": "LWC"
+      }
+    ],
+    "required_hops": 3,
+    "root": {
+      "id": "0YmFidelity000017",
+      "type": "AuditEvent"
+    }
+  },
+  "category": "bitemporal",
+  "description": "A production admin removes dashboard access outside GitHub, creating a valid-time state that disagrees with transaction-time source control.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark017Test",
+    "bundle_lock": "execution/SF-FID-017/bundle.lock.json",
+    "bundle_sha256": "df7db26c1369b2eac58ebb175898fccd69ea72a9623a7547ed7f9aafb2da4be3",
+    "descriptor": "execution/SF-FID-017/execution.json",
+    "descriptor_sha256": "50a109e9b1cacb55c2efb84242ba172b28750eedad0a7c4f6e096cc6aa5a37de",
+    "mode": "event_replay_adapter"
+  },
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-017",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "member": "Finance Analyst",
+          "metadata_type": "Profile",
+          "path": "objectPermissions[Financial_Dashboard__c].allowRead",
+          "type": "MetadataMutation",
+          "value": true
+        },
+        "operation": "update_metadata",
+        "target": {
+          "node_type": "MetadataNode",
+          "selector": "objectPermissions:Financial_Dashboard__c",
+          "symbol": "Finance Analyst"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "bitemporal_orphan_drift",
+  "source": {
+    "deployability": "event_replay_only",
+    "entry_symbol": "Finance Analyst.Financial_Dashboard__c.read",
+    "fixtures": [
+      {
+        "kind": "audit_event",
+        "path": "fixtures/SF-FID-017/salesforce-setup-audit-event.json",
+        "sha256": "f9354c00a95865dcebd7d96beb644e868571040812934a1d2da65c01f4493885"
+      },
+      {
+        "kind": "github_state",
+        "path": "fixtures/SF-FID-017/github-profile-state.json",
+        "sha256": "b4e3ecbd0c08c14ff7df4bbaf26b1a9fe59c92d2255cbb7152320ba7f21bd16b"
+      },
+      {
+        "kind": "profile_metadata",
+        "path": "fixtures/SF-FID-017/Finance Analyst.profile-meta.xml",
+        "sha256": "fa4bfc7bbae3ae0acd3b4c86f342479de10d9d7ae7add931bf958ed53c05a724"
+      },
+      {
+        "kind": "object_metadata",
+        "path": "fixtures/SF-FID-017/objects/Financial_Dashboard__c/Financial_Dashboard__c.object-meta.xml",
+        "sha256": "08d1adfd1f46161049c507fc71d35b9b158846a9f31e93c0a0b70b0e599ed48d"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": [
+      "Kafka audit topic",
+      "Temporal Salesforce audit workflow",
+      "Neo4j bitemporal projection"
+    ]
+  },
+  "title": "Bitemporal orphaned profile permission",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "Event replay creates one drift incident with distinct valid_time and transaction_time.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Bitemporal orphaned profile permission with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "The affected user regains the Financial Dashboard only after approval and sees the drift attribution.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: MATCH (p:Profile {name:'Finance Analyst'}) RETURN p.valid_time, p.transaction_time, p.drift_status"
+      ],
+      "assertions": [
+        "drift_status moves from ORPHANED to RECONCILED and both timestamps remain auditable."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

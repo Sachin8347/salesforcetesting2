@@ -1,0 +1,156 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-007/Guest Checkout.profile-meta.xml",
+          "needle": "<readable>true</readable>"
+        },
+        "from": "Guest Checkout",
+        "kind": "GRANTS_READ",
+        "to": "Contact.SSN__c"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-007/Guest Checkout.profile-meta.xml",
+          "needle": "Contact.SSN__c"
+        },
+        "from": "Contact.SSN__c",
+        "kind": "RENDERED_BY",
+        "to": "publicContactCard"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "Guest Checkout",
+        "type": "Profile"
+      },
+      {
+        "id": "Contact.SSN__c",
+        "type": "CustomField"
+      },
+      {
+        "id": "publicContactCard",
+        "type": "LWC"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "Guest Checkout",
+      "type": "Profile"
+    }
+  },
+  "category": "security",
+  "description": "A guest profile grants read access to an SSN field that is rendered by a public Experience Cloud component.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark007Test",
+    "bundle_lock": "execution/SF-FID-007/bundle.lock.json",
+    "bundle_sha256": "cd52dc988b088ab1ad28e2652b0c62586b28d41dab0c3bc4b1f2cd9556344d07",
+    "descriptor": "execution/SF-FID-007/execution.json",
+    "descriptor_sha256": "1e8ddf8aeb96c08c81aa56008ac89d7336117d86ab7c2fd99e85a920e6d12919",
+    "mode": "metadata_probe"
+  },
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-007",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "member": "Guest Checkout",
+          "metadata_type": "Profile",
+          "path": "fieldPermissions[Contact.SSN__c].readable",
+          "type": "MetadataMutation",
+          "value": false
+        },
+        "operation": "update_metadata",
+        "target": {
+          "node_type": "MetadataNode",
+          "selector": "fieldPermissions:Contact.SSN__c",
+          "symbol": "Guest Checkout"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "requires_fixture_metadata",
+    "entry_symbol": "Guest Checkout",
+    "fixtures": [
+      {
+        "kind": "profile_metadata",
+        "path": "fixtures/SF-FID-007/Guest Checkout.profile-meta.xml",
+        "sha256": "83a7e37978459f33d79d8ed6737fa6c78ba0aba8b5282cf927df4640826502eb"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": [
+      "Contact.SSN__c encrypted text fixture",
+      "Experience Cloud guest user"
+    ]
+  },
+  "title": "Guest profile exposes sensitive contact field",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "System.runAs guest-equivalent user cannot read Contact.SSN__c.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Guest profile exposes sensitive contact field with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "The public contact card never renders an SSN value or field label.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, SSN__c FROM Contact WITH USER_MODE"
+      ],
+      "assertions": [
+        "Guest execution is denied field access while an authorized compliance user succeeds."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

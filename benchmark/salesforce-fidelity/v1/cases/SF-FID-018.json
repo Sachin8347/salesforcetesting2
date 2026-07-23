@@ -1,0 +1,161 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-018/FidelityPartialSaveService.cls",
+          "needle": "insert accounts"
+        },
+        "from": "FidelityPartialSaveService.saveAccounts",
+        "kind": "INSERTS_ALL_OR_NONE",
+        "to": "Account"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-018/FidelityPartialSaveService.cls",
+          "needle": "List<Account> accounts"
+        },
+        "from": "Account",
+        "kind": "EVALUATED_BY",
+        "to": "AccountValidationRules"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityPartialSaveService.saveAccounts",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Account",
+        "type": "Object"
+      },
+      {
+        "id": "AccountValidationRules",
+        "type": "ValidationRule"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "FidelityPartialSaveService.saveAccounts",
+      "type": "ApexMethod"
+    }
+  },
+  "category": "data_integrity",
+  "description": "A bulk integration uses all-or-none DML, so one malformed Account rolls back hundreds of valid records without record-level evidence.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark018Test",
+    "bundle_lock": "execution/SF-FID-018/bundle.lock.json",
+    "bundle_sha256": "58df36614def529fd8ddd44cae7387da46213cf2727ecc39a313a6d95fef739e",
+    "descriptor": "execution/SF-FID-018/execution.json",
+    "descriptor_sha256": "b64f8d75f10bd068e5b7ec3d5129290484a65a73d2efda7e850826cdb5d615b7",
+    "mode": "deploy_and_test"
+  },
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-018",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "all_or_none": false,
+          "capture_results": true,
+          "operation": "INSERT",
+          "records": {
+            "name": "accounts",
+            "type": "Identifier"
+          },
+          "type": "DatabaseDml"
+        },
+        "operation": "replace_node",
+        "target": {
+          "node_type": "DmlStatement",
+          "selector": "insert:accounts",
+          "symbol": "FidelityPartialSaveService.saveAccounts"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityPartialSaveService",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-018/FidelityPartialSaveService.cls",
+        "sha256": "a524e8b65ac63f519f422b911d85877ee380ef8c998d76261414c05c49ffdeca"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-018/FidelityPartialSaveService.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "All-or-none bulk integration rollback",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "Valid records commit, invalid rows return indexed errors, and no failure is silently dropped.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for All-or-none bulk integration rollback with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "Bulk import shows independent success and error counts with downloadable row details.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, Name FROM Account WHERE Name LIKE 'Fidelity Partial %'"
+      ],
+      "assertions": [
+        "The count equals valid input rows, not zero and not total input rows."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-014/FidelityCaseExportController.cls",
+          "needle": "exportOpenCases"
+        },
+        "from": "FidelityCaseExportController",
+        "kind": "DECLARES",
+        "to": "FidelityCaseExportController.exportOpenCases"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-014/FidelityCaseExportController.cls",
+          "needle": "FROM Case WHERE IsClosed"
+        },
+        "from": "FidelityCaseExportController.exportOpenCases",
+        "kind": "QUERIES_WITHOUT_SHARING",
+        "to": "Case"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityCaseExportController",
+        "type": "ApexClass"
+      },
+      {
+        "id": "FidelityCaseExportController.exportOpenCases",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Case",
+        "type": "Object"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "FidelityCaseExportController",
+      "type": "ApexClass"
+    }
+  },
+  "category": "security",
+  "description": "An export controller runs without sharing and returns Cases outside the caller's row-level access.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark014Test",
+    "bundle_lock": "execution/SF-FID-014/bundle.lock.json",
+    "bundle_sha256": "17afa2635cdfc60927c44408eb7832a02a460a3603503fe453e456caaef069bd",
+    "descriptor": "execution/SF-FID-014/execution.json",
+    "descriptor_sha256": "8227675a861e5a7619b0597fa3c1a21d2ccb80a211580270cfed1e659ce08201",
+    "mode": "deploy_and_test"
+  },
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-014",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "mode": "WITH_SHARING",
+          "type": "SharingDeclaration"
+        },
+        "operation": "replace_node",
+        "target": {
+          "node_type": "SharingDeclaration",
+          "selector": "without sharing",
+          "symbol": "FidelityCaseExportController"
+        }
+      },
+      {
+        "node": {
+          "access_level": "USER_MODE",
+          "fields": [
+            "Id",
+            "CaseNumber",
+            "Subject",
+            "ContactEmail"
+          ],
+          "predicate": {
+            "field": "IsClosed",
+            "operator": "=",
+            "value": false
+          },
+          "sobject": "Case",
+          "type": "SoqlQuery"
+        },
+        "operation": "replace_node",
+        "target": {
+          "node_type": "SoqlQuery",
+          "selector": "query:Case",
+          "symbol": "FidelityCaseExportController.exportOpenCases"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityCaseExportController",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-014/FidelityCaseExportController.cls",
+        "sha256": "5d622aa38580cdc7afe91418af05275b71445a23117e96bdcc0e3eb9eaacc488"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-014/FidelityCaseExportController.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "Without-sharing case export leaks records",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "Restricted users receive only shared Cases and field-level access is enforced.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Without-sharing case export leaks records with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "Export contains only Cases visible in the user's standard list view.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, CaseNumber, Subject, ContactEmail FROM Case WHERE IsClosed = false WITH USER_MODE"
+      ],
+      "assertions": [
+        "The result Id set equals the user's accessible Case Id set."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

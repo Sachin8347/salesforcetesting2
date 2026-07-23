@@ -26,4 +26,8 @@
         <object>Knowledge_Translation_Request__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ApiEnabled</name>
+    </userPermissions>
 </Profile>

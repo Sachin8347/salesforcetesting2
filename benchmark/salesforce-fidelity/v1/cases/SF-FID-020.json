@@ -1,0 +1,162 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-020/FidelityEventConsumer.cls",
+          "needle": "List<Map<String, Object>> events"
+        },
+        "from": "FidelityIncidentEvent",
+        "kind": "DELIVERED_TO",
+        "to": "FidelityEventConsumer.consume"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-020/FidelityEventConsumer.cls",
+          "needle": "insert casesToInsert"
+        },
+        "from": "FidelityEventConsumer.consume",
+        "kind": "CREATES_WITHOUT_KEY",
+        "to": "Case"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityIncidentEvent",
+        "type": "PlatformEvent"
+      },
+      {
+        "id": "FidelityEventConsumer.consume",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Case",
+        "type": "Object"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "FidelityIncidentEvent",
+      "type": "PlatformEvent"
+    }
+  },
+  "category": "async",
+  "description": "A platform-event consumer creates a Case on every delivery without an idempotency key, duplicating incidents after replay.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark020Test",
+    "bundle_lock": "execution/SF-FID-020/bundle.lock.json",
+    "bundle_sha256": "8c3ab0e518ad982fb6eeda720829307883a321ea9b51bb53f013ab7ccfdee0a4",
+    "descriptor": "execution/SF-FID-020/execution.json",
+    "descriptor_sha256": "116c3c688f275383c81455ed22c4b6c0478f178c28b1c887bb1cf6f2532c2357",
+    "mode": "deploy_and_test"
+  },
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-020",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "key_expression": {
+            "key": "eventUuid",
+            "map": "eventRecord",
+            "type": "MapGet"
+          },
+          "lookup_field": "Case.External_Event_Id__c",
+          "on_duplicate": "SKIP",
+          "type": "IdempotencyFilter",
+          "write_key_to_field": "Case.External_Event_Id__c"
+        },
+        "operation": "insert_before",
+        "target": {
+          "node_type": "CollectionAdd",
+          "selector": "casesToInsert.add",
+          "symbol": "FidelityEventConsumer.consume"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityEventConsumer",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-020/FidelityEventConsumer.cls",
+        "sha256": "9d78b2667b53a67f41f1c61318b57502dbed03de1de5d864b0d445070e73ec8c"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-020/FidelityEventConsumer.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "Duplicate platform event delivery",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "Publishing the same event UUID twice creates exactly one Case.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for Duplicate platform event delivery with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "The incident console shows one Case and an idempotent replay annotation.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, External_Event_Id__c FROM Case WHERE External_Event_Id__c = :eventUuid"
+      ],
+      "assertions": [
+        "Exactly one Case exists for the event UUID."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

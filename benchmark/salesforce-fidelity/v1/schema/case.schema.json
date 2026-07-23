@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jataka.io/schemas/salesforce-fidelity-case-v1.json",
+  "title": "Jataka Salesforce Fidelity Case v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "category",
+    "showcase",
+    "description",
+    "source",
+    "blast_radius",
+    "patch_contract",
+    "verification",
+    "execution",
+    "expected_cleanup"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "id": {"type": "string", "pattern": "^SF-FID-[0-9]{3}$"},
+    "title": {"type": "string", "minLength": 8},
+    "category": {
+      "enum": [
+        "governor_limits",
+        "data_integrity",
+        "security",
+        "automation",
+        "async",
+        "dependency_graph",
+        "compiler",
+        "bitemporal"
+      ]
+    },
+    "showcase": {
+      "enum": [
+        "internal",
+        "hidden_dependency_5_hop",
+        "zero_syntax_1000_line",
+        "hidden_interprocedural_o_n2",
+        "bitemporal_orphan_drift"
+      ]
+    },
+    "description": {"type": "string", "minLength": 20},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fixtures", "deployability", "entry_symbol", "minimum_lines"],
+      "properties": {
+        "fixtures": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256", "kind"],
+            "properties": {
+              "path": {"type": "string", "pattern": "^fixtures/"},
+              "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+              "kind": {
+                "enum": [
+                  "apex_class",
+                  "apex_trigger",
+                  "apex_metadata",
+                  "flow_metadata",
+                  "profile_metadata",
+                  "object_metadata",
+                  "validation_rule_metadata",
+                  "audit_event",
+                  "github_state",
+                  "boundary_contract"
+                ]
+              }
+            }
+          }
+        },
+        "deployability": {
+          "enum": [
+            "standalone",
+            "requires_fixture_metadata",
+            "requires_managed_package_stub",
+            "event_replay_only"
+          ]
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "entry_symbol": {"type": "string", "minLength": 1},
+        "minimum_lines": {"type": "integer", "minimum": 1}
+      }
+    },
+    "blast_radius": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["root", "expected_nodes", "expected_edges", "required_hops"],
+      "properties": {
+        "root": {"$ref": "#/$defs/graphNode"},
+        "expected_nodes": {
+          "type": "array",
+          "minItems": 2,
+          "items": {"$ref": "#/$defs/graphNode"}
+        },
+        "expected_edges": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/graphEdge"}
+        },
+        "required_hops": {"type": "integer", "minimum": 1}
+      }
+    },
+    "patch_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_format", "raw_text_forbidden", "instructions"],
+      "properties": {
+        "output_format": {"const": "jataka.ast.instructions.v1"},
+        "raw_text_forbidden": {"const": true},
+        "instructions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/instruction"}
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apex", "browser", "soql"],
+      "properties": {
+        "apex": {"$ref": "#/$defs/verificationMode"},
+        "browser": {"$ref": "#/$defs/verificationMode"},
+        "soql": {"$ref": "#/$defs/verificationMode"}
+      }
+    },
+    "execution": {"$ref": "#/$defs/executionSummary"},
+    "expected_cleanup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scratch_org_destroyed",
+        "browser_context_closed",
+        "active_sandbox_destroyed",
+        "no_zombie_after_reaper"
+      ],
+      "properties": {
+        "scratch_org_destroyed": {"const": true},
+        "browser_context_closed": {"const": true},
+        "active_sandbox_destroyed": {"const": true},
+        "no_zombie_after_reaper": {"const": true}
+      }
+    }
+  },
+  "$defs": {
+    "graphNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "type": {
+          "enum": [
+            "ApexClass",
+            "ApexMethod",
+            "ApexTrigger",
+            "CustomField",
+            "Flow",
+            "ManagedPackageBoundary",
+            "ValidationRule",
+            "Profile",
+            "PermissionSet",
+            "Object",
+            "PlatformEvent",
+            "AsyncJob",
+            "AuditEvent",
+            "GitRevision",
+            "LWC",
+            "User"
+          ]
+        }
+      }
+    },
+    "graphEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "kind", "evidence"],
+      "properties": {
+        "from": {"type": "string", "minLength": 1},
+        "to": {"type": "string", "minLength": 1},
+        "kind": {"type": "string", "pattern": "^[A-Z_]+$"},
+        "evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fixture", "needle"],
+          "properties": {
+            "fixture": {"type": "string", "pattern": "^fixtures/"},
+            "needle": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "instruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation", "target", "node"],
+      "properties": {
+        "operation": {
+          "enum": [
+            "insert_before",
+            "insert_after",
+            "replace_node",
+            "delete_node",
+            "update_metadata"
+          ]
+        },
+        "target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["symbol", "node_type", "selector"],
+          "properties": {
+            "symbol": {"type": "string", "minLength": 1},
+            "node_type": {"type": "string", "minLength": 1},
+            "selector": {"type": "string", "minLength": 1}
+          }
+        },
+        "node": {
+          "type": "object",
+          "minProperties": 1
+        }
+      }
+    },
+    "verificationMode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "setup", "actions", "assertions", "evidence"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "setup": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string"}
+        },
+        "assertions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string"}
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "executionSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "descriptor",
+        "descriptor_sha256",
+        "bundle_lock",
+        "bundle_sha256",
+        "mode",
+        "apex_test_class"
+      ],
+      "properties": {
+        "descriptor": {
+          "type": "string",
+          "pattern": "^execution/SF-FID-[0-9]{3}/execution\\.json$"
+        },
+        "descriptor_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "bundle_lock": {
+          "type": "string",
+          "pattern": "^execution/SF-FID-[0-9]{3}/bundle\\.lock\\.json$"
+        },
+        "bundle_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "mode": {
+          "enum": ["deploy_and_test", "metadata_probe", "event_replay_adapter"]
+        },
+        "apex_test_class": {
+          "type": ["string", "null"],
+          "pattern": "^FidelityBenchmark[0-9]{3}Test$"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "salesforce-fidelity-sf-fid-015",
+  "namespace": "",
+  "packageDirectories": [
+    {
+      "default": true,
+      "path": "package"
+    }
+  ],
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "60.0"
+}

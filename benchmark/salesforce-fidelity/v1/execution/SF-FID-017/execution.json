@@ -1,0 +1,207 @@
+{
+  "apex": {
+    "assertions": [
+      "Event replay creates one drift incident with distinct valid_time and transaction_time.",
+      "The deployment record reports compilation_attempt=1 and compile_success=true."
+    ],
+    "command": "sf apex run test --tests FidelityBenchmark017Test --result-format json --wait 20 --target-org ${TARGET_ORG}",
+    "required": true,
+    "test_class": "FidelityBenchmark017Test",
+    "test_level": "RunSpecifiedTests"
+  },
+  "browser": {
+    "artifacts": [
+      "playwright/trace.zip",
+      "playwright/video.webm",
+      "playwright/final-state.png"
+    ],
+    "authentication": "sf_frontdoor_url",
+    "base_url": "${SCRATCH_ORG_INSTANCE_URL}",
+    "command": "node ../../tools/run_browser_case.mjs --descriptor execution.json --artifacts ${EVIDENCE_DIR}/playwright",
+    "driver": "jataka.salesforce.case.v1",
+    "driver_path": "../../tools/run_browser_case.mjs",
+    "driver_sha256": "920ab62174bce82b177534b268d6ae7f00c2a149ef7b39e1178d659f748e64e4",
+    "entrypoint": "SF-FID-017",
+    "inputs": {
+      "case_id": "SF-FID-017",
+      "entry_symbol": "Finance Analyst.Financial_Dashboard__c.read",
+      "seed_source": "seed_command_stdout"
+    },
+    "required": true,
+    "route": "/apex/FidelityBenchmark",
+    "runner": "playwright",
+    "scenario": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "The affected user regains the Financial Dashboard only after approval and sees the drift attribution.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "selectors": {
+      "action": "[data-jataka-case='SF-FID-017'][data-action='run']",
+      "result": "[data-jataka-case='SF-FID-017'][data-result]"
+    }
+  },
+  "case_id": "SF-FID-017",
+  "event_replay": {
+    "adapter_class": "FidelityBitemporalReplayAdapter",
+    "external_evidence_required": true,
+    "external_stages": [
+      "kafka",
+      "temporal",
+      "neo4j"
+    ],
+    "inputs": [
+      {
+        "path": "fixtures/SF-FID-017/salesforce-setup-audit-event.json",
+        "sha256": "f9354c00a95865dcebd7d96beb644e868571040812934a1d2da65c01f4493885"
+      },
+      {
+        "path": "fixtures/SF-FID-017/github-profile-state.json",
+        "sha256": "b4e3ecbd0c08c14ff7df4bbaf26b1a9fe59c92d2255cbb7152320ba7f21bd16b"
+      },
+      {
+        "path": "fixtures/SF-FID-017/Finance Analyst.profile-meta.xml",
+        "sha256": "fa4bfc7bbae3ae0acd3b4c86f342479de10d9d7ae7add931bf958ed53c05a724"
+      },
+      {
+        "path": "fixtures/SF-FID-017/objects/Financial_Dashboard__c/Financial_Dashboard__c.object-meta.xml",
+        "sha256": "08d1adfd1f46161049c507fc71d35b9b158846a9f31e93c0a0b70b0e599ed48d"
+      }
+    ],
+    "local_adapter_scope": "Validates payload parsing and bitemporal drift comparison only; it cannot satisfy the streaming-pipeline release gate."
+  },
+  "evidence": {
+    "pass_source": "observed_runtime_only",
+    "precomputed_results": false,
+    "required": [
+      "deploy-result.json",
+      "apex-test-result.json",
+      "query-result.json",
+      "playwright/trace.zip",
+      "playwright/video.webm",
+      "playwright/final-state.png",
+      "cleanup-result.json",
+      "evidence-manifest.sha256"
+    ]
+  },
+  "metadata_probe": null,
+  "mode": "event_replay_adapter",
+  "package": {
+    "api_version": "60.0",
+    "fixture_bindings": [
+      {
+        "fixture": "fixtures/SF-FID-017/Finance Analyst.profile-meta.xml",
+        "fixture_sha256": "fa4bfc7bbae3ae0acd3b4c86f342479de10d9d7ae7add931bf958ed53c05a724",
+        "package_member": "package/main/default/profiles/Finance Analyst.profile-meta.xml",
+        "package_member_sha256": "fa4bfc7bbae3ae0acd3b4c86f342479de10d9d7ae7add931bf958ed53c05a724"
+      },
+      {
+        "fixture": "fixtures/SF-FID-017/objects/Financial_Dashboard__c/Financial_Dashboard__c.object-meta.xml",
+        "fixture_sha256": "08d1adfd1f46161049c507fc71d35b9b158846a9f31e93c0a0b70b0e599ed48d",
+        "package_member": "package/main/default/objects/Financial_Dashboard__c/Financial_Dashboard__c.object-meta.xml",
+        "package_member_sha256": "08d1adfd1f46161049c507fc71d35b9b158846a9f31e93c0a0b70b0e599ed48d"
+      }
+    ],
+    "generated_members": [
+      {
+        "path": "package/main/default/classes/FidelityBenchmark017Test.cls",
+        "sha256": "9c879c156eff996dfd9750075dd4530e2e42909365cd7b46da71426c0c30e0c9"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmark017Test.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkHarnessController.cls",
+        "sha256": "d9b9a05be6ac73735de9e5ed3c18694055eb4b06cb6d131a3d78a1d859aa79c7"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkHarnessController.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkScenario.cls",
+        "sha256": "6cf79753c6399115437f57d88df605c39524aa4784a9e95b95d8e858d362e697"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkScenario.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBitemporalReplayAdapter.cls",
+        "sha256": "7fe4c0bf98c4b3950da96e0a9e3c959859339edc92f7208a836130fc0d0e3aa4"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBitemporalReplayAdapter.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/pages/FidelityBenchmark.page",
+        "sha256": "f31b90ea34a6de8d98df5ee196508841453ff9c68a042a755274ea9079a11634"
+      },
+      {
+        "path": "package/main/default/pages/FidelityBenchmark.page-meta.xml",
+        "sha256": "6541db68f73bc28f93ccccd1dba5dd5be8501dfddee9304feda06d836baf3f20"
+      }
+    ],
+    "project_file": "sfdx-project.json",
+    "source_adapters": [],
+    "source_root": "package"
+  },
+  "patch_contract": {
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true,
+    "sha256": "7fb803874c21c1fdeb45a97473e3a18f6ea741f8c22da389dff48150ae193c37"
+  },
+  "prerequisites": [
+    "authenticated target scratch org",
+    "AST compiler output bound to the source fixture SHA-256",
+    "Jataka Playwright driver jataka.salesforce.case.v1",
+    "Kafka audit topic",
+    "Temporal Salesforce audit workflow",
+    "Neo4j bitemporal projection"
+  ],
+  "queries": [
+    {
+      "assertions": [
+        "drift_status moves from ORPHANED to RECONCILED and both timestamps remain auditable."
+      ],
+      "bindings": {
+        "marker": "JATAKA_BINDINGS=",
+        "renderer": "salesforce_soql_literal_v1",
+        "source": "seed_command_stdout",
+        "syntax": "${bindingName}",
+        "variables": []
+      },
+      "engine": "cypher",
+      "id": "sf-fid-017-postcondition",
+      "read_only": true,
+      "runner": {
+        "command": "python3 ../../tools/run_query.py --descriptor execution.json --seed-result ${EVIDENCE_DIR}/seed-result.json --target-org ${TARGET_ORG} --output ${EVIDENCE_DIR}/query-result.json",
+        "path": "../../tools/run_query.py",
+        "sha256": "96a3f66e9624fc9d511c68c4c00b8a70d3741a843b6dee13b7a9b68e41f9939f"
+      },
+      "statement": "MATCH (p:Profile {name:'Finance Analyst'}) RETURN p.valid_time, p.transaction_time, p.drift_status"
+    }
+  ],
+  "schema_version": "1.0.0",
+  "seed": {
+    "command": "sf apex run --file scripts/seed.apex --json --target-org ${TARGET_ORG} > ${EVIDENCE_DIR}/seed-result.json",
+    "declared_bindings": [],
+    "idempotency": "fresh_scratch_org_once_per_case",
+    "output": {
+      "format": "salesforce_cli_json_log",
+      "marker": "JATAKA_BINDINGS=",
+      "value": "json_object"
+    },
+    "script": "scripts/seed.apex",
+    "script_sha256": "a3ba26302f72b1cd7f08f2e287642bca116971650e6966f20c45bfad9f11b1d1"
+  }
+}

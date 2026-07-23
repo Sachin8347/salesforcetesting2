@@ -1,0 +1,179 @@
+{
+  "apex": {
+    "assertions": [
+      "Updating an eligible Opportunity completes the Flow and leaves approval fields consistent.",
+      "The deployment record reports compilation_attempt=1 and compile_success=true."
+    ],
+    "command": "sf apex run test --tests FidelityBenchmark008Test --result-format json --wait 20 --target-org ${TARGET_ORG}",
+    "required": true,
+    "test_class": "FidelityBenchmark008Test",
+    "test_level": "RunSpecifiedTests"
+  },
+  "browser": {
+    "artifacts": [
+      "playwright/trace.zip",
+      "playwright/video.webm",
+      "playwright/final-state.png"
+    ],
+    "authentication": "sf_frontdoor_url",
+    "base_url": "${SCRATCH_ORG_INSTANCE_URL}",
+    "command": "node ../../tools/run_browser_case.mjs --descriptor execution.json --artifacts ${EVIDENCE_DIR}/playwright",
+    "driver": "jataka.salesforce.case.v1",
+    "driver_path": "../../tools/run_browser_case.mjs",
+    "driver_sha256": "920ab62174bce82b177534b268d6ae7f00c2a149ef7b39e1178d659f748e64e4",
+    "entrypoint": "SF-FID-008",
+    "inputs": {
+      "case_id": "SF-FID-008",
+      "entry_symbol": "FidelityDiscountApproval",
+      "seed_source": "seed_command_stdout"
+    },
+    "required": true,
+    "route": "/apex/FidelityBenchmark",
+    "runner": "playwright",
+    "scenario": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "Approve Discount completes without a flow interview error.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "selectors": {
+      "action": "[data-jataka-case='SF-FID-008'][data-action='run']",
+      "result": "[data-jataka-case='SF-FID-008'][data-result]"
+    }
+  },
+  "case_id": "SF-FID-008",
+  "event_replay": null,
+  "evidence": {
+    "pass_source": "observed_runtime_only",
+    "precomputed_results": false,
+    "required": [
+      "deploy-result.json",
+      "apex-test-result.json",
+      "query-result.json",
+      "playwright/trace.zip",
+      "playwright/video.webm",
+      "playwright/final-state.png",
+      "cleanup-result.json",
+      "evidence-manifest.sha256"
+    ]
+  },
+  "metadata_probe": null,
+  "mode": "deploy_and_test",
+  "package": {
+    "api_version": "60.0",
+    "fixture_bindings": [
+      {
+        "fixture": "fixtures/SF-FID-008/FidelityDiscountApproval.flow-meta.xml",
+        "fixture_sha256": "cc30bf290d9788f8c0abd6930b53f6dc6a8423a7db45f1e79cef10d0e64d7846",
+        "package_member": "package/main/default/flows/FidelityDiscountApproval.flow-meta.xml",
+        "package_member_sha256": "cc30bf290d9788f8c0abd6930b53f6dc6a8423a7db45f1e79cef10d0e64d7846"
+      }
+    ],
+    "generated_members": [
+      {
+        "path": "package/main/default/classes/FidelityBenchmark008Test.cls",
+        "sha256": "87b99911a4d10b899d7d07b80b005c667e894b17ec8125684d8e87a18584f71d"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmark008Test.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkHarnessController.cls",
+        "sha256": "d9b9a05be6ac73735de9e5ed3c18694055eb4b06cb6d131a3d78a1d859aa79c7"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkHarnessController.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkScenario.cls",
+        "sha256": "18d715c47b4eac858d9e249cc5afbbc8a359c3bcc0bccbbd33642f202f01e3e6"
+      },
+      {
+        "path": "package/main/default/classes/FidelityBenchmarkScenario.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      },
+      {
+        "path": "package/main/default/objects/Opportunity/fields/Approval_Context__c.field-meta.xml",
+        "sha256": "c758f30bfaccf0e7ff72afb2a409d3252aa1e045473569d60907ea45911dc78b"
+      },
+      {
+        "path": "package/main/default/objects/Opportunity/fields/Discount_Approved__c.field-meta.xml",
+        "sha256": "64c4ad77247f5113703e7b5edaa95ab59032e7dea6094dd9731545d6d6c760cd"
+      },
+      {
+        "path": "package/main/default/objects/Opportunity/validationRules/Require_Approval_Context.validationRule-meta.xml",
+        "sha256": "cbe860668e8a8f1246e9da3aed1b5b0ec6246d0e99f644e4c9e6fec9b5ee02a6"
+      },
+      {
+        "path": "package/main/default/pages/FidelityBenchmark.page",
+        "sha256": "e0bd48cea89487be3572208cf54a08ec59248da1623eb676a518aac45617b6ae"
+      },
+      {
+        "path": "package/main/default/pages/FidelityBenchmark.page-meta.xml",
+        "sha256": "6541db68f73bc28f93ccccd1dba5dd5be8501dfddee9304feda06d836baf3f20"
+      }
+    ],
+    "project_file": "sfdx-project.json",
+    "source_adapters": [],
+    "source_root": "package"
+  },
+  "patch_contract": {
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true,
+    "sha256": "8af1ebb4ab2244206a57371e63f6cdca7d8918e6a026cedbadcee0ffd1c176af"
+  },
+  "prerequisites": [
+    "authenticated target scratch org",
+    "AST compiler output bound to the source fixture SHA-256",
+    "Jataka Playwright driver jataka.salesforce.case.v1"
+  ],
+  "queries": [
+    {
+      "assertions": [
+        "Discount is approved and context equals AutomatedFlow."
+      ],
+      "bindings": {
+        "marker": "JATAKA_BINDINGS=",
+        "renderer": "salesforce_soql_literal_v1",
+        "source": "seed_command_stdout",
+        "syntax": "${bindingName}",
+        "variables": [
+          "opportunityId"
+        ]
+      },
+      "engine": "soql",
+      "id": "sf-fid-008-postcondition",
+      "read_only": true,
+      "runner": {
+        "command": "python3 ../../tools/run_query.py --descriptor execution.json --seed-result ${EVIDENCE_DIR}/seed-result.json --target-org ${TARGET_ORG} --output ${EVIDENCE_DIR}/query-result.json",
+        "path": "../../tools/run_query.py",
+        "sha256": "96a3f66e9624fc9d511c68c4c00b8a70d3741a843b6dee13b7a9b68e41f9939f"
+      },
+      "statement": "SELECT Id, Discount_Approved__c, Approval_Context__c FROM Opportunity WHERE Id = ${opportunityId}"
+    }
+  ],
+  "schema_version": "1.0.0",
+  "seed": {
+    "command": "sf apex run --file scripts/seed.apex --json --target-org ${TARGET_ORG} > ${EVIDENCE_DIR}/seed-result.json",
+    "declared_bindings": [
+      "opportunityId"
+    ],
+    "idempotency": "fresh_scratch_org_once_per_case",
+    "output": {
+      "format": "salesforce_cli_json_log",
+      "marker": "JATAKA_BINDINGS=",
+      "value": "json_object"
+    },
+    "script": "scripts/seed.apex",
+    "script_sha256": "a3ba26302f72b1cd7f08f2e287642bca116971650e6966f20c45bfad9f11b1d1"
+  }
+}

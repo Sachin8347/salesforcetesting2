@@ -1,0 +1,176 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-016/FidelityLargeInvoiceService.cls",
+          "needle": "for (Account accountRecord : accounts)"
+        },
+        "from": "FidelityLargeInvoiceService.calculateTotals",
+        "kind": "ITERATES",
+        "to": "Account"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-016/FidelityLargeInvoiceService.cls",
+          "needle": "WHERE AccountId = :accountRecord.Id"
+        },
+        "from": "Account",
+        "kind": "QUERIES_BY",
+        "to": "Opportunity.AccountId"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityLargeInvoiceService.calculateTotals",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Account",
+        "type": "Object"
+      },
+      {
+        "id": "Opportunity.AccountId",
+        "type": "CustomField"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "FidelityLargeInvoiceService.calculateTotals",
+      "type": "ApexMethod"
+    }
+  },
+  "category": "compiler",
+  "description": "A 1,000-plus-line Apex service contains one unsafe query loop; the benchmark requires a localized AST transformation without regenerating the class.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark016Test",
+    "bundle_lock": "execution/SF-FID-016/bundle.lock.json",
+    "bundle_sha256": "005b85d20fe3a3299c9c0792a326963931df200a4a194a7be7c4fc935d01a048",
+    "descriptor": "execution/SF-FID-016/execution.json",
+    "descriptor_sha256": "5d3e992ac732e404b169c0781f315a0c530a6a6b01e63132ee83d4ba44d4e7db",
+    "mode": "deploy_and_test"
+  },
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-016",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "query": {
+            "aggregates": [
+              {
+                "alias": "total",
+                "field": "Amount",
+                "function": "SUM"
+              }
+            ],
+            "group_by": "AccountId",
+            "predicate": {
+              "binding": "accountIds",
+              "field": "AccountId",
+              "operator": "IN"
+            },
+            "sobject": "Opportunity",
+            "type": "SoqlAggregateQuery"
+          },
+          "result_map": {
+            "default": 0,
+            "key": "AccountId",
+            "value": "total"
+          },
+          "type": "BulkAggregatePlan"
+        },
+        "operation": "replace_node",
+        "target": {
+          "node_type": "ForStatement",
+          "selector": "loop:accountRecord",
+          "symbol": "FidelityLargeInvoiceService.calculateTotals"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "zero_syntax_1000_line",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityLargeInvoiceService",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-016/FidelityLargeInvoiceService.cls",
+        "sha256": "9903fce5a4219eef0d8fc900fc6ac31d347a70212dbd121651f32838b5d88a53"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-016/FidelityLargeInvoiceService.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 1000,
+    "prerequisites": []
+  },
+  "title": "One-thousand-line deterministic bulkification",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "The deterministic output retains every helper and compiles on attempt one while totals remain exact.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for One-thousand-line deterministic bulkification with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "The invoice totals panel renders accurate totals for 200 Accounts.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT AccountId, SUM(Amount) total FROM Opportunity WHERE AccountId IN :accountIds GROUP BY AccountId"
+      ],
+      "assertions": [
+        "Aggregate values equal calculateTotals for every Account."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}

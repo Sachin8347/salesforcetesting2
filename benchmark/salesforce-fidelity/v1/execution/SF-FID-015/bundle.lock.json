@@ -1,0 +1,26 @@
+{
+  "algorithm": "sha256",
+  "bundle_sha256": "a1ab37802e28981e36964a2c338d345713b388d345cffaee200c90b7531f106a",
+  "files": {
+    "config/project-scratch-def.json": "2b86a3eafefcd2d4b68519c38295ddf176cc1b746bd9891d888bbc01a11cf813",
+    "execution.json": "87eeec09855af6a1cb04f5c494daa9b85cfa86df68ce70f2fc3faa8edbd67e5f",
+    "package/main/default/classes/FidelityBenchmark015Test.cls": "bbccddf6176b724e7f2ad4a92b52ff189d8108350484983df7319b51d33fba14",
+    "package/main/default/classes/FidelityBenchmark015Test.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityBenchmarkHarnessController.cls": "d9b9a05be6ac73735de9e5ed3c18694055eb4b06cb6d131a3d78a1d859aa79c7",
+    "package/main/default/classes/FidelityBenchmarkHarnessController.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityBenchmarkScenario.cls": "87ae3a77eb25ba8ee5b2eab917ed23deed2f63aed383dd82efb4c452550c0a3b",
+    "package/main/default/classes/FidelityBenchmarkScenario.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityCreditAction.cls": "90fc12f682e41173737137db33cf6dab477baba6a0641530db64efee2c696dd2",
+    "package/main/default/classes/FidelityCreditAction.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/classes/FidelityCreditDecisionServiceStub.cls": "4971abdf13dbdfdce124d44320867a3075c51477ca3164e1de414daedb8fe93f",
+    "package/main/default/classes/FidelityCreditDecisionServiceStub.cls-meta.xml": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237",
+    "package/main/default/flows/FidelityCreditReview.flow-meta.xml": "069626c4ce8c55439263db3d19bf3dbb6534e028f8fec211edcd688131ee40fc",
+    "package/main/default/objects/Account/fields/Jataka_Credit_Score__c.field-meta.xml": "80a3b2fc6339cadf99a757704337d762672d746eaae8bd115be2d92d225b2544",
+    "package/main/default/objects/Account/validationRules/Fidelity_Credit_Gate.validationRule-meta.xml": "e0974cddb1e9e1c6849fe1376cc14da79e1e0aaa87407281b73941934e577d2f",
+    "package/main/default/pages/FidelityBenchmark.page": "1666cde8ce94d12994022e831591f10fe5a6c66ba42600d74ecdc0eb02af51a4",
+    "package/main/default/pages/FidelityBenchmark.page-meta.xml": "6541db68f73bc28f93ccccd1dba5dd5be8501dfddee9304feda06d836baf3f20",
+    "scripts/seed.apex": "a3ba26302f72b1cd7f08f2e287642bca116971650e6966f20c45bfad9f11b1d1",
+    "sfdx-project.json": "7294247684041b2bbb745e8e0bef396e8b6219459f64b283f5792b13fd58027c"
+  },
+  "schema_version": "1.0.0"
+}

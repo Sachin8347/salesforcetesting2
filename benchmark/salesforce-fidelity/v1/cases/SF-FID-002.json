@@ -1,0 +1,157 @@
+{
+  "blast_radius": {
+    "expected_edges": [
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-002/FidelityDmlLoopService.cls",
+          "needle": "update opportunityRecord"
+        },
+        "from": "FidelityDmlLoopService.closeWon",
+        "kind": "MUTATES",
+        "to": "Opportunity"
+      },
+      {
+        "evidence": {
+          "fixture": "fixtures/SF-FID-002/FidelityDmlLoopService.cls",
+          "needle": "StageName = 'Closed Won'"
+        },
+        "from": "Opportunity",
+        "kind": "WRITES_FIELD",
+        "to": "Opportunity.StageName"
+      }
+    ],
+    "expected_nodes": [
+      {
+        "id": "FidelityDmlLoopService.closeWon",
+        "type": "ApexMethod"
+      },
+      {
+        "id": "Opportunity",
+        "type": "Object"
+      },
+      {
+        "id": "Opportunity.StageName",
+        "type": "CustomField"
+      }
+    ],
+    "required_hops": 2,
+    "root": {
+      "id": "FidelityDmlLoopService.closeWon",
+      "type": "ApexMethod"
+    }
+  },
+  "category": "governor_limits",
+  "description": "An opportunity stage update performs one database update per row and exceeds the DML statement governor limit.",
+  "execution": {
+    "apex_test_class": "FidelityBenchmark002Test",
+    "bundle_lock": "execution/SF-FID-002/bundle.lock.json",
+    "bundle_sha256": "69b4d0f629f6ab35594a21a513a25c4d2af8248d3ae65538f324fcd43f62859f",
+    "descriptor": "execution/SF-FID-002/execution.json",
+    "descriptor_sha256": "3d63beb26443337376f7b396147c8081d75bed8f064807beaf927fc2f16e7536",
+    "mode": "deploy_and_test"
+  },
+  "expected_cleanup": {
+    "active_sandbox_destroyed": true,
+    "browser_context_closed": true,
+    "no_zombie_after_reaper": true,
+    "scratch_org_destroyed": true
+  },
+  "id": "SF-FID-002",
+  "patch_contract": {
+    "instructions": [
+      {
+        "node": {
+          "collection": "opportunities",
+          "operation": "UPDATE",
+          "placement": "AFTER_LOOP",
+          "type": "DeferredDml"
+        },
+        "operation": "replace_node",
+        "target": {
+          "node_type": "DmlStatement",
+          "selector": "update:inside:loop",
+          "symbol": "FidelityDmlLoopService.closeWon"
+        }
+      }
+    ],
+    "output_format": "jataka.ast.instructions.v1",
+    "raw_text_forbidden": true
+  },
+  "schema_version": "1.0.0",
+  "showcase": "internal",
+  "source": {
+    "deployability": "standalone",
+    "entry_symbol": "FidelityDmlLoopService",
+    "fixtures": [
+      {
+        "kind": "apex_class",
+        "path": "fixtures/SF-FID-002/FidelityDmlLoopService.cls",
+        "sha256": "d06312b49732f14da48b9b82c6c324d5ed3c866413908b602ad2fbfab38c0fc2"
+      },
+      {
+        "kind": "apex_metadata",
+        "path": "fixtures/SF-FID-002/FidelityDmlLoopService.cls-meta.xml",
+        "sha256": "2d4aa15ffc3f7dee59accd322c084a696a3cce69705ebe994c97fbb9b2093237"
+      }
+    ],
+    "minimum_lines": 10,
+    "prerequisites": []
+  },
+  "title": "DML statement inside opportunity loop",
+  "verification": {
+    "apex": {
+      "actions": [
+        "Deploy the deterministic compiler output on attempt one.",
+        "Run the named benchmark Apex test with synchronous result collection."
+      ],
+      "assertions": [
+        "Two hundred Opportunities are closed using exactly one DML statement.",
+        "The deployment record reports compilation_attempt=1 and compile_success=true."
+      ],
+      "evidence": [
+        "Salesforce deploy result JSON",
+        "Apex test result JSON",
+        "compiler input/output SHA-256"
+      ],
+      "required": true,
+      "setup": [
+        "Create isolated records for DML statement inside opportunity loop with SeeAllData=false."
+      ]
+    },
+    "browser": {
+      "actions": [
+        "Open the affected Lightning record page as the affected user.",
+        "Perform the user action that reproduced the original failure."
+      ],
+      "assertions": [
+        "The bulk close action shows 200 successful records and no governor-limit toast.",
+        "The Playwright trace contains no uncaught page or console error."
+      ],
+      "evidence": [
+        "Playwright trace.zip",
+        "recorded video",
+        "final-state screenshot"
+      ],
+      "required": true,
+      "setup": [
+        "Create a least-privilege affected user and seed the declared records."
+      ]
+    },
+    "soql": {
+      "actions": [
+        "Execute read-only SOQL: SELECT Id, StageName, CloseDate FROM Opportunity WHERE Id IN :opportunityIds"
+      ],
+      "assertions": [
+        "Every row is Closed Won with today's close date."
+      ],
+      "evidence": [
+        "SOQL result JSON",
+        "query timestamp and target-org alias"
+      ],
+      "required": true,
+      "setup": [
+        "Capture record identifiers created by the Apex test-data factory."
+      ]
+    }
+  }
+}
